@@ -93,7 +93,7 @@ public class archivos_tester {
 				do {
 					cumple = esValido(q);
 				}
-				while(!comprobar(q.front(),"</lista_sub_carpetas>"));
+				while(!comprobar(q.front(),"</lista_sub_carpetas>") && cumple);
 				q.dequeue();
 			}
 			
