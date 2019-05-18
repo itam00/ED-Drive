@@ -22,7 +22,7 @@ public class archivos_tester {
 		FileReader fr = null;
 		BufferedReader br = null;
 		String c = "",line;
-		Queue<String> q = new ColaConLista<String>();
+		Queue<String> q = new ColaConArregloCircular<String>(20);
 		try {
 			archivo = new File(dir);
 			fr = new FileReader(archivo);
@@ -82,13 +82,12 @@ public class archivos_tester {
 				q.dequeue();
 				do {
 					cumple = esValido(q);
-					System.out.println("ciclo");
 				}
-				while(!comprobar(q.front(),"<lista_sub_carpetas>"));
+				while(!comprobar(q.front(),"</lista_sub_carpetas>"));
 				q.dequeue();
 			}
 
-			if(!comprobar(q.front(),"<lista_sub_carpetas>") && !comprobar(q.front(), "</carpeta>"))
+			if(!comprobar(q.front(),"</lista_sub_carpetas>") && !comprobar(q.front(), "</carpeta>"))
 				cumple = false;
 			
 			cumple=  comprobar(q.dequeue(),"</carpeta>") && cumple;
