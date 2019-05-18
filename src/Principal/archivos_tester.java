@@ -16,7 +16,12 @@ public class archivos_tester {
 		System.out.println(esValido(q));
 
 	}
-	
+	/**
+	 * Lee un archivo si es posible y retorna una cola con todos los elementos
+	 * separados por lineas y espacios que habia en un archivo 
+	 * @param dir direccion del archivo que se va a leer
+	 * @return cola con los elementos del archivo separados por espacios y saltos de linea
+	 */
 	private static Queue<String> readFile(String dir) {
 		File archivo = null;
 		FileReader fr = null;
@@ -68,12 +73,17 @@ public class archivos_tester {
 		}
 		return q;
 	}
+	/**
+	 * metodo que valida si el formato de los elementos de una cola cumple
+	 * con la sintaxis
+	 * @param q cola con elementos a ser comprobados
+	 * @return  true si el archivo es valido false en caso contrario
+	 */
 	
 	private static boolean esValido(Queue<String> q ) {
 		Boolean cumple = true;
 		try {
 			cumple=comprobar(q.dequeue(),"<carpeta>");
-			
 			if(esNombreValido(q.dequeue()) && cumple)
 				validarArchivos(q);
 			else 
@@ -86,9 +96,6 @@ public class archivos_tester {
 				while(!comprobar(q.front(),"</lista_sub_carpetas>"));
 				q.dequeue();
 			}
-
-			if(!comprobar(q.front(),"</lista_sub_carpetas>") && !comprobar(q.front(), "</carpeta>"))
-				cumple = false;
 			
 			cumple=  comprobar(q.dequeue(),"</carpeta>") && cumple;
 				
