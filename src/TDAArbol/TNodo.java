@@ -1,7 +1,6 @@
 package TDAArbol;
 
-import TDALista.InvalidPositionException;
-import TDALista.ListaDoblementeEnlazada;
+import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
 
@@ -14,7 +13,7 @@ public class TNodo<E> implements Position<E>{
 	public TNodo(E elem, TNodo<E> t) {
 		elemento = elem;
 		padre = t;
-		hijos = new ListaDoblementeEnlazada<TNodo<E>>();
+		hijos = new ListaDE<TNodo<E>>();
 	}
 	
 	public TNodo(E elem) { this(elem,null); }
@@ -35,7 +34,7 @@ public class TNodo<E> implements Position<E>{
 		padre = t;
 	}
 	
-	public E element() throws InvalidPositionException {
+	public E element()  {
 		return elemento;
 	}
 }

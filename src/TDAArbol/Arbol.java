@@ -1,16 +1,16 @@
 package TDAArbol;
 
-import java.util.Iterator;
+import java.util.Iterator; 
 
 import TDACola.ColaConArregloCircular;
 import TDALista.BoundaryViolationException;
 import TDALista.EmptyListException;
 import TDALista.InvalidPositionException;
-import TDALista.ListaDoblementeEnlazada;
+import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
 import TDAPila.EmptyStackException;
-import TDAPila.PilaConEnlaces;
+import TDAPila.PilaEnlazada;
 import TDAPila.Stack;
 
 public class Arbol<E> implements Tree<E> {
@@ -273,14 +273,14 @@ public class Arbol<E> implements Tree<E> {
 	
 	public Iterable<Position<E>> children(Position<E> v) throws InvalidPositionException{
 		TNodo<E> p = checkPosition(v);
-		PositionList<Position<E>> iterable = new ListaDoblementeEnlazada<Position<E>>();
+		PositionList<Position<E>> iterable = new ListaDE<Position<E>>();
 		for(TNodo<E> n : p.getHijos())
 			iterable.addLast(n);
 		return iterable;
 	}
 	
 	public Iterable<Position<E>> positions(){
-		PositionList<Position<E>> iterable = new ListaDoblementeEnlazada<Position<E>>();
+		PositionList<Position<E>> iterable = new ListaDE<Position<E>>();
 		if(!isEmpty())
 			pre(iterable,raiz);
 		return iterable;
@@ -293,13 +293,9 @@ public class Arbol<E> implements Tree<E> {
 	}
 	
 	public Iterator<E> iterator(){
-		PositionList<E> l = new ListaDoblementeEnlazada<E>();
+		PositionList<E> l = new ListaDE<E>();
 		for(Position<E> p : positions())
-			try {
 				l.addLast(p.element());
-			} catch (InvalidPositionException e) {
-				e.printStackTrace();
-			}
 		return l.iterator();
 	}
 	

@@ -1,19 +1,37 @@
 package Principal;
 import java.io.*;
 
+import TDAArbol.Arbol;
+import TDAArbol.EmptyTreeException;
+import TDAArbol.Tree;
 import TDACola.*;
+import TDALista.InvalidPositionException;
+import TDALista.ListaDE;
+import TDALista.Position;
+import TDALista.PositionList;
 
 
 public class archivos_tester {
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		String dir="C:\\Users\\mati\\Downloads\\prueba.txt";
+		String dir="C:\\Users\\Alan\\Desktop\\je.txt";
 		Queue<String> q = readFile(dir);
+		Queue<String> nombres= new ColaConArregloCircular<String>(20);
+		boolean crear;
 		/*try {
 			while(!q.isEmpty())
 				System.out.println(q.dequeue());
 		}
 		catch(EmptyQueueException e) {}*/
-		System.out.println(Valido(q));
+		crear=valido(q,nombres);
+		System.out.println(crear);
+		if (crear) { // En esta parte deberiamos crear cada directorio y ponerlo en el arbol.
+			Tree<Pair<String,PositionList<String>>> arbol= new Arbol<Pair<String,PositionList<String>>>();
+			Pair<String,PositionList<String>> directorio=null;
+			Position<Pair<String,PositionList<String>>> adentroDe=null;
+		}
+		else
+			nombres=null;
 
 	}
 	
@@ -23,8 +41,10 @@ public class archivos_tester {
  	* @param q cola con el archivo a validar
  	* @return Verdadero si es valido, falso en caso contrario
  	*/
-	public static boolean valido(Queue<String> q) {
-		return esValido(q) && q.isEmpty();
+	public static boolean valido(Queue<String> q, Queue<String> nom) {
+		return (esValido(q,nom) && q.isEmpty());
+
+			
 	}
 	
 	
@@ -87,23 +107,25 @@ public class archivos_tester {
 	}
 	/**
 	 * metodo que valida si el formato de los elementos de una cola cumple
-	 * con la sintaxis
+	 * con la sintaxis y por cada lista de sub carpetas agrega un String="lista"
+	 * a la cola "nom".
 	 * @param q cola con elementos a ser comprobados
 	 * @return  true si el archivo es valido false en caso contrario
 	 */
 	
-	private static boolean esValido(Queue<String> q ) {
+	private static boolean esValido(Queue<String> q, Queue<String> nom) {
 		Boolean cumple = true;
 		try {
 			cumple=comprobar(q.dequeue(),"<carpeta>");
-			if(esNombreValido(q.dequeue()) && cumple)
-				validarArchivos(q);
+			if(esNombreValido(q.dequeue(),nom) && cumple)
+				validarArchivos(q,nom);
 			else 
 				cumple = false;
 			if(comprobar(q.front(),"<lista_sub_carpetas>") &&cumple) {
+				nom.enqueue("lista");
 				q.dequeue();
 				do {
-					cumple = esValido(q);
+					cumple = esValido(q,nom);
 				}
 				while(!comprobar(q.front(),"</lista_sub_carpetas>") && cumple);
 				q.dequeue();
@@ -137,10 +159,11 @@ public class archivos_tester {
 	}
 	/**
 	 * verifica si la sintaxis del nombre de una carpeta es correcta
+	 * y agrega el nombre en la cola "nom" con una N al principio.
 	 * @param c nombre de la carpeta (puede contener o no tabulaciones)
 	 * @return verdadero si la sintaxis es correcta falso en caso contrario
 	 */
-	private static boolean esNombreValido(String c) {
+	private static boolean esNombreValido(String c, Queue<String> nom) {
 		String abre="";
 		String cierra="";
 		String nombre="";
@@ -164,15 +187,16 @@ public class archivos_tester {
 		}
 	
 		cierra=cierra+'>';
-		
+		nom.enqueue("N"+nombre);
 		return abre.equals("<nombre>") && cierra.equals("</nombre>") && !nombre.equals("");
 	}
 	/**
 	 * verifica si los elementos de la cola q respetan la sintaxis de los archivos
+	 * y agrega el nombre del archivo en la cola "nom" con una A al principio.
 	 * desencola un archivo si y solo si este verifica la sintaxis
 	 * @param c cola en la que se verifica la sintaxis de sus elementos
 	 */
-	public static void validarArchivos(Queue<String> c) {
+	public static void validarArchivos(Queue<String> c, Queue<String> nom) {
 		String aux = "";
 		boolean toReturn = true;
 		try {
@@ -218,8 +242,10 @@ public class archivos_tester {
 					else
 						toReturn = false;	
 				}
-				if(toReturn)
+				if(toReturn) {
 					c.dequeue();
+					nom.enqueue("A"+nombre);
+				}
 			}
 		} catch (EmptyQueueException e) {
 			e.printStackTrace();
