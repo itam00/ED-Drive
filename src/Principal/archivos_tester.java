@@ -13,9 +13,21 @@ public class archivos_tester {
 				System.out.println(q.dequeue());
 		}
 		catch(EmptyQueueException e) {}*/
-		System.out.println(esValido(q));
+		System.out.println(Valido(q));
 
 	}
+	
+	
+	/**
+ 	* Valida si el archivo leido es valido y queda vacio
+ 	* @param q cola con el archivo a validar
+ 	* @return Verdadero si es valido, falso en caso contrario
+ 	*/
+	public static boolean valido(Queue<String> q) {
+		return esValido(q) && q.isEmpty();
+	}
+	
+	
 	/**
 	 * Lee un archivo si es posible y retorna una cola con todos los elementos
 	 * separados por lineas y espacios que habia en un archivo 
