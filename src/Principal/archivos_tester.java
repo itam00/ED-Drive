@@ -1,8 +1,7 @@
 package Principal;
-import java.io.*;
+import java.io.*; 
 import java.util.Iterator;
 
-import Principal.archivos_tester.InvalidFileLocation;
 import TDAArbol.*;
 import TDACola.*;
 import TDALista.InvalidPositionException;
@@ -12,13 +11,8 @@ import TDALista.PositionList;
 
 
 public class archivos_tester {
-	public class InvalidFileLocation extends Exception {
 
-		public InvalidFileLocation(String string) {
-			// TODO Auto-generated constructor stub
-		}
 
-	}
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		try {
@@ -27,7 +21,7 @@ public class archivos_tester {
 			Queue<String> nombres= new ColaConArregloCircular<String>(20);
 			boolean crear;
 			Tree<Pair<String,ListaDE<String>>> arbol= new Arbol<Pair<String,ListaDE<String>>>();
-			if (valido(q,arbol)){
+			valido(q,arbol);
 				Iterator<Pair<String,ListaDE<String>>> it= arbol.iterator();
 				Pair<String,ListaDE<String>> par;
 				while (it.hasNext()) {
@@ -37,9 +31,7 @@ public class archivos_tester {
 						System.out.print("/"+s);
 					System.out.println(")");
 				}
-			}
-			else 
-				arbol=null;
+		}
 			/**
 			System.out.println(crear);
 			if (crear) { // En esta parte deberiamos crear cada directorio y ponerlo en el arbol.
@@ -49,7 +41,6 @@ public class archivos_tester {
 			}
 			else
 				nombres=null;*/
-		}
 		catch(Exception e) {
 			System.out.println("algo salio mal");
 		}
