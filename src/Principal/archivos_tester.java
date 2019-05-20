@@ -1,6 +1,8 @@
 package Principal;
 import java.io.*;
+import java.util.Iterator;
 
+import Principal.archivos_tester.InvalidFileLocation;
 import TDAArbol.*;
 import TDACola.*;
 import TDALista.InvalidPositionException;
@@ -10,15 +12,35 @@ import TDALista.PositionList;
 
 
 public class archivos_tester {
+	public class InvalidFileLocation extends Exception {
+
+		public InvalidFileLocation(String string) {
+			// TODO Auto-generated constructor stub
+		}
+
+	}
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		try {
-			String dir="C:\\Users\\mati\\Desktop\\je.txt";
+			String dir="C:\\Users\\Alan\\Desktop\\je.txt";
 			Queue<String> q = readFile(dir);
 			Queue<String> nombres= new ColaConArregloCircular<String>(20);
 			boolean crear;
-	
-			/*crear=valido(q,nombres);
+			Tree<Pair<String,ListaDE<String>>> arbol= new Arbol<Pair<String,ListaDE<String>>>();
+			if (valido(q,arbol)){
+				Iterator<Pair<String,ListaDE<String>>> it= arbol.iterator();
+				Pair<String,ListaDE<String>> par;
+				while (it.hasNext()) {
+					par=it.next();
+					System.out.print ("("+par.getKey()+",");
+					for (String s:par.getValue())
+						System.out.print("/"+s);
+					System.out.println(")");
+				}
+			}
+			else 
+				arbol=null;
+			/**
 			System.out.println(crear);
 			if (crear) { // En esta parte deberiamos crear cada directorio y ponerlo en el arbol.
 				Tree<Pair<String,PositionList<String>>> arbol= new Arbol<Pair<String,PositionList<String>>>();
@@ -66,7 +88,7 @@ public class archivos_tester {
 	 * @param dir direccion del archivo que se va a leer
 	 * @return cola con los elementos del archivo separados por espacios y saltos de linea
 	 */
-	private static Queue<String> readFile(String dir) throws InvalidFileLocation{
+	private static Queue<String> readFile(String dir) throws InvalidFileLocationException{
 		File archivo = null;
 		FileReader fr = null;
 		BufferedReader br = null;
@@ -93,7 +115,7 @@ public class archivos_tester {
 					fr.close();
 			}
 			catch(Exception e2) {
-				throw new InvalidFileLocation("La unicacion del archivo no es valida");
+				throw new InvalidFileLocationException("La unificacion del archivo no es valida");
 			}
 		}
 		return q;
