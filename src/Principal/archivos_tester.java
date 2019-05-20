@@ -16,7 +16,7 @@ public class archivos_tester {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		try {
-			String dir="C:\\Users\\Alan\\Desktop\\je.txt";
+			String dir="C:\\Users\\mati\\Downloads\\prueba.txt";
 			Queue<String> q = readFile(dir);
 			Queue<String> nombres= new ColaConArregloCircular<String>(20);
 			boolean crear;
@@ -24,6 +24,7 @@ public class archivos_tester {
 			valido(q,arbol);
 				Iterator<Pair<String,ListaDE<String>>> it= arbol.iterator();
 				Pair<String,ListaDE<String>> par;
+				System.out.println(arbol.isEmpty());
 				while (it.hasNext()) {
 					par=it.next();
 					System.out.print ("("+par.getKey()+",");
@@ -59,16 +60,12 @@ public class archivos_tester {
 		boolean cumple= false;
 		try {
 			Pair<String, ListaDE<String>> primerPar = new Pair<String,ListaDE<String>>("",new ListaDE<String>());
-			arbol = new Arbol<Pair<String,ListaDE<String>>>();
 			arbol.createRoot(primerPar);
 			cumple = esValido(q,arbol.root(),arbol) && q.isEmpty();
 		}
 		catch(InvalidOperationException | EmptyTreeException e) {
 			System.out.println("arreglar esto pls: " + e.getMessage());	//ESTO HAY Q SACARLO DPS !!!!!!!!!!!!!!!!!!!!
 		}
-		
-		if(!cumple)
-			arbol = new Arbol<Pair<String,ListaDE<String>>>();
 		
 		return cumple;			
 	}
