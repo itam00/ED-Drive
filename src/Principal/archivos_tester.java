@@ -46,6 +46,7 @@ public class archivos_tester {
 		boolean cumple= false;
 		try {
 			Pair<String, ListaDE<String>> primerPar = new Pair<String,ListaDE<String>>("",new ListaDE<String>());
+			arbol = new Arbol<Pair<String,ListaDE<String>>>();
 			arbol.createRoot(primerPar);
 			cumple = esValido(q,arbol.root(),arbol) && q.isEmpty();
 		}
