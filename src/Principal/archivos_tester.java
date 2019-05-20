@@ -47,10 +47,10 @@ public class archivos_tester {
 		try {
 			Pair<String, ListaDE<String>> primerPar = new Pair<String,ListaDE<String>>("",new ListaDE<String>());
 			arbol.createRoot(primerPar);
-			cumple = esValido(q,arbol.root()) && q.isEmpty();
+			cumple = esValido(q,arbol.root(),arbol) && q.isEmpty();
 		}
-		catch(InvalidOperationException e) {
-			System.out.println("arreglar esto pls");
+		catch(InvalidOperationException | EmptyTreeException e) {
+			System.out.println("arreglar esto pls: " + e.getMessage());	//ESTO HAY Q SACARLO DPS !!!!!!!!!!!!!!!!!!!!
 		}
 		
 		if(!cumple)
@@ -126,14 +126,14 @@ public class archivos_tester {
 	 * @return  true si el archivo es valido false en caso contrario
 	 */
 	
-	private static boolean esValido(Queue<String> q, TNodo<Pair<String,ListaDE<String>>> nodo) {
+	private static boolean esValido(Queue<String> q, Position<Pair<String,ListaDE<String>>> pos, Tree<Pair<String,ListaDE<String>>> arbol) {
 		Boolean cumple = true;
 		Pair<String,ListaDE<String>> nuevoPar;
-		TNodo<Pair<String,ListaDE<String>>> hijo;
+		Position<Pair<String,ListaDE<String>>> hijo;
 		try {
 			cumple=comprobar(q.dequeue(),"<carpeta>");
-			if(esNombreValido(q.dequeue(),nodo.element()) && cumple) {	//se valida el nombre y se agrega el nombre al par
-				validarArchivos(q,nodo.element().getValue());	//se obtiene la lista del nodo 
+			if(esNombreValido(q.dequeue(),pos.element()) && cumple) {	//se valida el nombre y se agrega el nombre al par
+				validarArchivos(q,pos.element().getValue());	//se obtiene la lista del nodo 
 				
 			}
 			else 
@@ -142,9 +142,8 @@ public class archivos_tester {
 				q.dequeue();			
 				do {
 					nuevoPar = new Pair<String,ListaDE<String>>("",new ListaDE<String>());
-					hijo = new TNodo<Pair<String,ListaDE<String>>>(nuevoPar,nodo);	//se crea un nuevo nodo antes de llamar a la recursion
-					nodo.getHijos().addLast(hijo);									//y se le añade como padre nodo y un hijo
-					cumple = esValido(q,hijo);
+					hijo = arbol.addLastChild(pos, nuevoPar);									//y se le añade como padre nodo y un hijo
+					cumple = esValido(q,hijo,arbol);
 				}
 				while(!comprobar(q.front(),"</lista_sub_carpetas>") && cumple);
 				q.dequeue();
@@ -155,6 +154,9 @@ public class archivos_tester {
 		}
 		catch(EmptyQueueException e) {
 			return false;
+		}
+		catch(InvalidPositionException e) {
+			System.out.println("algo salio mal");		//ESTO HAY QUE SACARLO DPS ES SOLO PARA SABER SI AL CREAR EL ARBOL NO SALTA NADA
 		}
 		return cumple;
 	}
