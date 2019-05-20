@@ -9,7 +9,12 @@ public class Pair<K,V> {
 		key=k;
 		value=val;
 	}
-
+	public void setKey(K k) {
+		key = k;
+	}
+	public void setValue(V val) {
+		value = val;
+	}
 	public K getKey() {
 		return key;
 	}
