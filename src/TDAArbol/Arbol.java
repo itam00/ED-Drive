@@ -300,41 +300,4 @@ public class Arbol<E> implements Tree<E> {
 	}
 	
 	
-	public static boolean archivoValido(Stack<String> c) {
-		String aux = "";
-		try {
-			aux = c.pop();
-		} catch (EmptyStackException e) {
-			e.printStackTrace();
-		}
-		String abre = "<archivo>";
-		String cierra = "</archivo>";
-		String nombre = "";
-		int i = 0;
-		int j = 0;
-		boolean toReturn = true;
-		while(toReturn && i < 9) {
-			if(aux.charAt(i) == abre.charAt(i))
-				i++;
-			else
-				toReturn = false;
-		}
-		while(toReturn && i < aux.length() && aux.charAt(i) != '<') {
-			nombre += aux.charAt(i);
-			i++;
-		}
-		if(nombre == "")
-			toReturn = false;
-		while(toReturn && j < 10) {
-			if(aux.charAt(i) == cierra.charAt(j)) {
-				i++;
-				j++;
-			}
-			else
-				toReturn = false;
-		}
-		return toReturn;
-	}
-	
-	
 }
