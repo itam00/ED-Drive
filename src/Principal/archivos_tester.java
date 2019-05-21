@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import TDAArbol.*;
 import TDACola.*;
+import TDALista.BoundaryViolationException;
+import TDALista.EmptyListException;
 import TDALista.InvalidPositionException;
 import TDALista.ListaDE;
 import TDALista.Position;
@@ -20,7 +22,7 @@ public class archivos_tester {
 			Queue<String> q = readFile(dir);
 			arbol= new Arbol<Pair<String,PositionList<String>>>();
 			if (valido(q)) {
-				Iterator<Pair<String,PositionList<String>>> it= arbol.iterator();
+				Iterator<Pair<String,PositionList<String>>> it= arbol.iterator(); //todo lo que está abajo de esto es para testearlo
 				Pair<String,PositionList<String>> par;
 				while (it.hasNext()) {
 					par=it.next();
@@ -29,9 +31,12 @@ public class archivos_tester {
 						System.out.print("/"+s);
 					System.out.println(")");
 				}
-				AgregarDirectorio("e/e2","creado");
+				agregarDirectorio("e/e2","creado");
 				eliminarDirectorio("e/e4");
 				agregarArchivo("e/e2","hola7");
+				agregarArchivo("e","agregado");
+				agregarArchivo("e/e2/creado","nuevonuevo");
+				eliminarArchivo("e/e2/hola3");
 				System.out.println ("--------------------------");
 				System.out.println ("habiendo creado el directorio 'creado' y eliminado el directorio 'e4' (y e5 por ser su hijo)");
 				Iterator<Pair<String,PositionList<String>>> it2= arbol.iterator();
@@ -43,7 +48,10 @@ public class archivos_tester {
 						System.out.print("/"+s);
 					System.out.println(")");
 				}
-			}
+				Pair<Integer,Integer> cant=cantidadDeDirectoriosYArchivos();
+				System.out.println("("+cant.getKey()+" , "+cant.getValue()+")");
+				listadoPorNiveles();
+				}
 			else
 				arbol=null;
 		}
@@ -93,9 +101,9 @@ public class archivos_tester {
 	public boolean valido(Queue<String> q) {
 		boolean cumple= false;
 		try {
-			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>());
-			arbol.createRoot(primerPar);
-			cumple = esValido(q,arbol.root()) && q.isEmpty();
+			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // es el directorio raíz del arbol
+			arbol.createRoot(primerPar); // crea la raiz del arbol con "primerPar".
+			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vacía (si no queda vacía la pila significa que hay mas de 1 carpeta principal.
 		}
 		catch(InvalidOperationException | EmptyTreeException e) {
 			System.out.println("arreglar esto pls: " + e.getMessage());	//ESTO HAY Q SACARLO DPS !!!!!!!!!!!!!!!!!!!!
@@ -326,23 +334,47 @@ public class archivos_tester {
 	
 	private void agregarArchivo(String direccionD,String nombreA) {
 		String separador="/";
-		String[] partes= direccionD.split(separador);
+		String[] partes= direccionD.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo.
 		try {
-			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root());
-			directorio.element().getValue().addLast(nombreA);
+			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root()); //busca el directorio y se lo asigna a "directorio".
+			directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
 		}
 		catch (EmptyTreeException | InvalidFileLocationException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	
-	private void AgregarDirectorio(String direccionD1,String nombreD2) {
+	private void eliminarArchivo(String direccionD) throws InvalidFileLocationException{
 		String separador="/";
-		String[] parts= direccionD1.split(separador);
+		String[] partes=direccionD.split(separador); // agrega cada string separado por "/" en una componente distinta del arreglo.
+		String nombreArchivo=partes[partes.length-1]; //guarda el nombre del archivo a eliminar.
+		boolean removi=false;
+		Position<String> pos;
+		try {
+			Position<Pair<String,PositionList<String>>> directorio=buscarArchivo(partes,0,arbol.root()); //busca el directorio y lo asigna a "directorio".
+			Iterator<Position<String>> it= directorio.element().getValue().positions().iterator();
+			while (it.hasNext() && !removi) { //busca la posicion de la lista de valores donde se encuentra el archivo a eliminar.
+				pos=it.next();
+				if (pos.element().equals(nombreArchivo)) {
+					directorio.element().getValue().remove(pos); //elimina el archivo de la lista de valores.
+					removi=true;
+				}	
+			}
+		}
+		catch (EmptyTreeException | InvalidPositionException e) {
+			System.out.println (e.getMessage());
+		}
+		if (!removi)
+			throw new InvalidFileLocationException("direccion invalida");
+	}
+	
+	private void agregarDirectorio(String direccionD1,String nombreD2) {
+		String separador="/";
+		String[] parts= direccionD1.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
 		Position<Pair<String, PositionList<String>>> agregardirectorio=null;
 		try {
-			agregardirectorio=buscar(parts,0,arbol.root());
-			arbol.addLastChild(agregardirectorio, new Pair<String,PositionList<String>> (nombreD2, new ListaDE<String>()));
+			agregardirectorio=buscar(parts,0,arbol.root()); //busca el directorio donde se debe agregar el nuevo.
+			arbol.addLastChild(agregardirectorio, new Pair<String,PositionList<String>> (nombreD2, new ListaDE<String>())); //agrega un directorio "nombreD2" como nuevo hijo "buscarDirectorio"
 		}
 		catch (EmptyTreeException | InvalidFileLocationException | InvalidPositionException e) {
 			System.out.println(e.getMessage());
@@ -379,13 +411,40 @@ public class archivos_tester {
 			System.out.println(e.getMessage());
 		}
 	}
+	/**
+	 * 	HAY QUE IMPLEMENTARLO
+	 * @param direccionD1 dirección donde se encuentra el directorio que va a ser movido.
+	 * @param direccionD2 dirección donde se colocará el directorio a mover.
+	 */
+	@SuppressWarnings("unused")
+	private void moverDirectorio(String direccionD1,String direccionD2) {
+		String separador="/";
+		String[] partesD1=direccionD1.split(separador);
+		String[] partesD2=direccionD2.split(separador);
+	}
+	/**
+	 * recorre todo el arbol buscando cada directorio y archivo en él.
+	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
+	 */
+	@SuppressWarnings("unused")
+	private Pair<Integer,Integer> cantidadDeDirectoriosYArchivos() {
+		int cantDirectorios=0;
+		int cantArchivos=0;
+		for (Pair<String,PositionList<String>> p: arbol) {
+			cantDirectorios++;
+			for (String arch:p.getValue())
+				cantArchivos++;
+		}
+		Pair<Integer,Integer> toreturn= new Pair<Integer,Integer>(cantDirectorios,cantArchivos);
+		return toreturn;
+	}
 	
 	/**
 	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.
 	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
 	 * @param indice Entero que indice qué String dentro el arreglo "partes" se debe comparar con el directorio "position".
 	 * @param position Directorio a comparar con el String en el subíndice "indice", si es el mismo la direccion del archivo es correcta.
-	 * @return Una posicion que encapsula el Directorio buscado.
+	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
@@ -400,48 +459,103 @@ public class archivos_tester {
 		boolean encontrado=false;
 		Position<Pair<String, PositionList<String>>> toreturn=null;
 		Position<Pair<String, PositionList<String>>> hijo;
-		if (partes[indice].equals(position.element().getKey())) {
-			indice++;
-			while (it.hasNext() && !encontrado) {
-				hijo=it.next();
-				if (hijo.element().getKey().equals(partes[indice])) {
-					if (indice==partes.length-1)
-						toreturn=hijo;
-					else {
-						toreturn= buscar(partes,indice,hijo);
+		if (partes[indice].equals(position.element().getKey()))
+			if(partes.length==1) {
+				toreturn=position;
+				encontrado=true;
+			}
+			else{
+				indice++;
+				while (it.hasNext() && !encontrado) {
+					hijo=it.next();
+					if (hijo.element().getKey().equals(partes[indice])) {
+						if (indice==partes.length-1 || partes.length==1)
+							toreturn=hijo;
+						else {
+							toreturn= buscar(partes,indice,hijo);
+						}
+						encontrado=true;
 					}
-					encontrado=true;
 				}
-		}
-		}
+			}
 		if (!encontrado)
 			throw new InvalidFileLocationException ("direccion no valida");
 		return toreturn;
 	}
 
 	/**
-	private static void preOrden(Tree<Pair<String,ListaDE<String>>> arbol, Position<Pair<String,ListaDE<String>>> visitado,ListaDE<Pair<String,ListaDE<String>>> toreturn) {
-		toreturn.addLast(visitado.element());
-		System.out.print(visitado.element().getKey()+"//");
+	 * Busca en el arbol el archivo ubicado dentro del directorio pasado a traves del parametro position y lo retorna.
+	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
+	 * @param indice Entero que indice qué String dentro el arreglo "partes" se debe comparar con el directorio "position".
+	 * @param position Directorio a comparar con el String en el subíndice "indice", si es el mismo la direccion del archivo es correcta.
+	 * @return Una posicion que encapsula el Directorio donde se buscará el archivo.
+	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
+	 */
+	
+	private Position<Pair<String,PositionList<String>>> buscarArchivo(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
+		Iterator<Position<Pair<String, PositionList<String>>>> it=null;
 		try {
-			for (Position<Pair<String,ListaDE<String>>> h:arbol.children(visitado))
-				preOrden(arbol,h,toreturn);
+			it= arbol.children(position).iterator();
 		}
-		catch (InvalidPositionException e){
+		catch (InvalidPositionException e) {
 			System.out.println(e.getMessage());
 		}
+		boolean encontrado=false;
+		Position<Pair<String, PositionList<String>>> toreturn=null;
+		Position<Pair<String, PositionList<String>>> hijo;
+		if (partes[indice].equals(position.element().getKey()))
+			if(partes.length==1) {
+				toreturn=position;
+				encontrado=true;
+			}
+			else{
+				indice++;
+				while (it.hasNext() && !encontrado) {
+					hijo=it.next();
+					if (hijo.element().getKey().equals(partes[indice])) {
+						if (indice==partes.length-2)
+							toreturn=hijo;
+						else {
+							toreturn= buscar(partes,indice,hijo);
+						}
+						encontrado=true;
+					}
+				}
+			}
+		if (!encontrado)
+			throw new InvalidFileLocationException ("direccion no valida");
+		return toreturn;
 	}
 	
-	public static ListaDE<Pair<String,ListaDE<String>>> listadoPreOrden(Tree<Pair<String,ListaDE<String>>> arbol){
-		ListaDE<Pair<String,ListaDE<String>>> toreturn= new ListaDE<Pair<String,ListaDE<String>>>();
-		if(!arbol.isEmpty())
-			try {
-				preOrden(arbol,arbol.root(),toreturn);
+	@SuppressWarnings("unused")
+	private PositionList<String> listadoPorNiveles(){
+		Queue<Position<Pair<String,PositionList<String>>>> aListar= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
+		Position<Pair<String,PositionList<String>>> directorio;
+		PositionList<String> toreturn= new ListaDE<String>();
+		Position<String> archivo;
+		toreturn.addLast("<");
+		try {
+			aListar.enqueue(arbol.root());
+			while(!aListar.isEmpty()){
+				directorio=aListar.dequeue();
+				toreturn.addLast(directorio.element().getKey()+", /, ");
+				if (!directorio.element().getValue().isEmpty()) {
+					archivo=directorio.element().getValue().first();
+					while (archivo!=directorio.element().getValue().last()) {
+						toreturn.addLast(archivo.element()+", ");
+						archivo=directorio.element().getValue().next(archivo);
+					}
+					toreturn.addLast(archivo.element()+", ");
+				}
+				for (Position<Pair<String,PositionList<String>>>pos: arbol.children(directorio))
+					aListar.enqueue(pos);
 			}
-		catch (EmptyTreeException e) {
-			System.out.println (e.getMessage());
+			toreturn.addLast(">");
+		}
+		catch (EmptyListException |InvalidPositionException|BoundaryViolationException| EmptyTreeException | EmptyQueueException e) {
+			System.out.println(e.getMessage());
 		}
 		return toreturn;
 	}
-	*/
+	
 }
