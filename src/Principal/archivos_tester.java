@@ -33,10 +33,10 @@ public class archivos_tester {
 				}
 				agregarDirectorio("e/e2","creado");
 				eliminarDirectorio("e/e4");
-				agregarArchivo("e/e2","hola7");
-				agregarArchivo("e","agregado");
-				agregarArchivo("e/e2/creado","nuevonuevo");
-				eliminarArchivo("e/e2/hola3");
+				agregarArchivo("e/e2","hola7.jar");
+				agregarArchivo("e","agregado.jar");
+				agregarArchivo("e/e2/creado","nuevonuevo.jar");
+				eliminarArchivo("e/e2/hola3.jar");
 				System.out.println ("--------------------------");
 				System.out.println ("habiendo creado el directorio 'creado' y eliminado el directorio 'e4' (y e5 por ser su hijo)");
 				Iterator<Pair<String,PositionList<String>>> it2= arbol.iterator();
@@ -50,7 +50,8 @@ public class archivos_tester {
 				}
 				Pair<Integer,Integer> cant=cantidadDeDirectoriosYArchivos();
 				System.out.println("("+cant.getKey()+" , "+cant.getValue()+")");
-				listadoPorNiveles();
+				for (String p:listadoPorNiveles())
+					System.out.print(p);
 				}
 			else
 				arbol=null;
@@ -95,7 +96,6 @@ public class archivos_tester {
  	* elementos haya quedado vacia. En caso de ser valido agrega al arbol todos los directorios con sus archivos
  	* correspondientes
  	* @param q cola con el archivo a validar
- 	* @param arbol Arbol al cual se le agregaran los directorios
  	* @return Verdadero si es valido, falso en caso contrario
  	*/
 	public boolean valido(Queue<String> q) {
@@ -138,15 +138,14 @@ public class archivos_tester {
 			agregarEtiquetas(etiquetas,q);	//agrega las etiquetas a la cola
 		}
 		catch(Exception e) {
-			System.out.println(e.getMessage());
+			throw new InvalidFileLocationException("La ubicacion del archivo no es valida");
 		}
 		finally {
 			try {
 				if(null!= fr)
 					fr.close();
 			}
-			catch(Exception e2) {
-				throw new InvalidFileLocationException("La unificacion del archivo no es valida");
+			catch(Exception e2) { // No debería lanzarse nunca.
 			}
 		}
 		return q;
@@ -205,11 +204,8 @@ public class archivos_tester {
 			cumple=  comprobar(q.dequeue(),"</carpeta>") && cumple;
 				
 		}
-		catch(EmptyQueueException e) {
+		catch(EmptyQueueException | InvalidPositionException e) {
 			return false;
-		}
-		catch(InvalidPositionException e) {
-			System.out.println("algo salio mal");		//ESTO HAY QUE SACARLO DPS ES SOLO PARA SABER SI AL CREAR EL ARBOL NO SALTA NADA
 		}
 		return cumple;
 	}
@@ -221,16 +217,11 @@ public class archivos_tester {
 	 * @return si las cadenas son iguales verdadero caso contrario falso
 	 */
 	private boolean comprobar(String c,String resultado) {
-		int i=0;
-		String cadena="";
-		while(i<c.length() && (c.charAt(i) == '\t' || c.charAt(i)== ' '))
-			i++;
-		while(i<c.length()) {
-			cadena+=c.charAt(i);
-			i++;
-		}
-		return cadena.equals(resultado);
+		c=c.replaceAll("\t","");
+		c=c.replaceAll("\\s","");
+		return c.equals(resultado);
 	}
+	
 	/**
 	 * verifica si la sintaxis del nombre de una carpeta es correcta
 	 * y agrega el nombre en la cola "nom" con una N al principio.
@@ -242,8 +233,8 @@ public class archivos_tester {
 		String cierra="";
 		String nombre="";
 		int i=0;
-		while(i<c.length() && (c.charAt(i)=='\t' ||c.charAt(i)== ' '))
-				i++;
+		c=c.replaceAll("\\s", "");
+		c=c.replaceAll("\t", "");
 		while (i<c.length() && c.charAt(i) !='>') {
 			abre=abre+c.charAt(i);
 			i++;
@@ -264,66 +255,74 @@ public class archivos_tester {
 		pair.setKey(nombre);
 		return abre.equals("<nombre>") && cierra.equals("</nombre>") && !nombre.equals("");
 	}
+
 	/**
 	 * verifica si los elementos de la cola q respetan la sintaxis de los archivos
 	 * y agrega el nombre del archivo en la cola "nom" con una A al principio.
 	 * desencola un archivo si y solo si este verifica la sintaxis
 	 * @param c cola en la que se verifica la sintaxis de sus elementos
+	 * @param l lista donde se guardarán los nombres de los archivos del directorio donde se encuentran.
 	 */
+	
 	public void validarArchivos(Queue<String> c, PositionList<String> l) {
-		String aux = "";
-		boolean toReturn = true;
+		String aux="";
+		boolean toReturn=true;
 		try {
-			while(toReturn) {
+			while (toReturn) {
 				if (!c.isEmpty())
-					aux = c.front();
+					aux=c.front();
 				else
-					toReturn = false;
-				String abre = "<archivo>";
-				String cierra = "</archivo>";
-				String nombre = "";
-				boolean encontre = false;
-				int k = 0;
-				int i = 0;
-				int j = 0;
-				while(i < aux.length() && !encontre) {
-					if(aux.charAt(i) == '<')
-						encontre = true;
-					else
-							i++;
-				}
-				if(!encontre)
-					toReturn = false;
-				while(toReturn && k < 9) {
-						if(aux.charAt(i) == abre.charAt(k) && i < aux.length()) {
-							i++;
-							k++;
-						}
-						else
-							toReturn = false;
-					}
-					while(toReturn && i < aux.length() && aux.charAt(i) != '<') {
-					nombre += aux.charAt(i);
+					toReturn=false;
+				
+				String abre="";
+				String cierra="";
+				String nombre="";
+				int i=0;
+				aux=aux.replaceAll("\\s", "");
+				aux=aux.replaceAll("\t", "");
+				while (i<aux.length() && aux.charAt(i) !='>') {
+					abre=abre+aux.charAt(i);
 					i++;
 				}
-				if(nombre == "")
-					toReturn = false;
-				while(toReturn && j < 10) {
-					if(aux.charAt(i) == cierra.charAt(j) && i < aux.length()) {
-						i++;
-						j++;
-						}
-					else
-						toReturn = false;	
+				abre=abre+'>';
+				i++;
+				while ( i<aux.length() && aux.charAt(i)!='<') {
+					nombre=nombre+aux.charAt(i);
+					i++;
 				}
-				if(toReturn) {
+			
+				while (i<aux.length() && aux.charAt(i)!='>') {
+					cierra=cierra+aux.charAt(i);
+					i++;
+				}
+				cierra=cierra+'>';
+				//System.out.println(abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") && (aux.charAt(punto-1)!='>' && aux.charAt(punto+1)!='<'));
+				toReturn=abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") && validarExtencion(nombre);
+				//System.out.println(validarExtencion(nombre));
+				if (toReturn) {
 					c.dequeue();
 					l.addLast(nombre);
 				}
 			}
-		} catch (EmptyQueueException e) {
-			e.printStackTrace();
 		}
+		catch(EmptyQueueException e) {
+			toReturn=false;
+		}
+	}
+	
+	public static boolean validarExtencion(String nombre){
+		boolean toReturn = false;
+		int i = 0;
+		if(nombre.length() > 3 && nombre.charAt(0) != '.' && nombre.charAt(nombre.length()-1) != '.') {
+			while (i <= nombre.length() && !toReturn) {
+				if(nombre.charAt(i) == '.') {
+					toReturn=true;
+				}
+				i++;
+			}
+		}
+
+		return toReturn;
 	}
 	
 	/**
@@ -538,14 +537,17 @@ public class archivos_tester {
 			aListar.enqueue(arbol.root());
 			while(!aListar.isEmpty()){
 				directorio=aListar.dequeue();
-				toreturn.addLast(directorio.element().getKey()+", /, ");
+				if (arbol.isRoot(directorio))
+					toreturn.addLast(directorio.element().getKey()+", /, ");
+				else
+					toreturn.addLast(", "+directorio.element().getKey()+", /, ");
 				if (!directorio.element().getValue().isEmpty()) {
 					archivo=directorio.element().getValue().first();
 					while (archivo!=directorio.element().getValue().last()) {
 						toreturn.addLast(archivo.element()+", ");
 						archivo=directorio.element().getValue().next(archivo);
 					}
-					toreturn.addLast(archivo.element()+", ");
+					toreturn.addLast(archivo.element());
 				}
 				for (Position<Pair<String,PositionList<String>>>pos: arbol.children(directorio))
 					aListar.enqueue(pos);
