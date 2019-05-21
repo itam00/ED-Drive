@@ -298,6 +298,4 @@ public class Arbol<E> implements Tree<E> {
 				l.addLast(p.element());
 		return l.iterator();
 	}
-	
-	
 }
