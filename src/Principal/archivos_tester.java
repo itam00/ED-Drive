@@ -15,83 +15,16 @@ import TDALista.PositionList;
 public class archivos_tester {
 	private Tree<Pair<String,PositionList<String>>> arbol;
 	
-	public archivos_tester(String dir) {
+	public archivos_tester(String dir) throws InvalidFileLocationException,InvalidFileException {
 		arbol= new Arbol<Pair<String,PositionList<String>>>();
 		//dir="C:\\Users\\mati\\Downloads\\prueba.txt";
-		try {
-			Queue<String> q = readFile(dir);
-			arbol= new Arbol<Pair<String,PositionList<String>>>();
-			boolean val = valido(q);
-			System.out.println(val);
-			if (val) {
-				Iterator<Pair<String,PositionList<String>>> it= arbol.iterator(); //todo lo que está abajo de esto es para testearlo
-				Pair<String,PositionList<String>> par;
-				while (it.hasNext()) {
-					par=it.next();
-					System.out.print ("("+par.getKey()+",");
-					for (String s:par.getValue())
-						System.out.print("/"+s);
-					System.out.println(")");
-				}
-				agregarDirectorio("e/e2","creado");
-				eliminarDirectorio("e/e4");
-				agregarArchivo("e/e2","hola7.jar");
-				agregarArchivo("e","agregado.jar");
-				agregarArchivo("e/e2/creado","nuevonuevo.jar");
-				eliminarArchivo("e/e2/hola3.jar");
-				System.out.println ("--------------------------");
-				System.out.println ("habiendo creado el directorio 'creado' y eliminado el directorio 'e4' (y e5 por ser su hijo)");
-				Iterator<Pair<String,PositionList<String>>> it2= arbol.iterator();
-				Pair<String,PositionList<String>> par2;
-				while (it2.hasNext()) {
-					par2=it2.next();
-					System.out.print ("("+par2.getKey()+",");
-					for (String s:par2.getValue())
-						System.out.print("/"+s);
-					System.out.println(")");
-				}
-				Pair<Integer,Integer> cant=cantidadDeDirectoriosYArchivos();
-				System.out.println("("+cant.getKey()+" , "+cant.getValue()+")");
-				for (String p:listadoPorNiveles())
-					System.out.print(p);
-				}
-			else
-				arbol=null;
-		}
-		catch (Exception e) {}
-	}
-	
-	@SuppressWarnings("unused")
-	public static void main(String[] args) {
-		archivos_tester p= new archivos_tester("C:\\Users\\mati\\Downloads\\prueba.txt");
-		System.out.println(p.generarArbolString());
-		/**try {
-			String dir="C:\\Users\\Alan\\Desktop\\je.txt";
-			Queue<String> q = readFile(dir);
-			Queue<String> nombres= new ColaConArregloCircular<String>(20);
-			boolean crear;
-			Tree<Pair<String,ListaDE<String>>>arbol= new Arbol<Pair<String,ListaDE<String>>>();
-			if (valido(q,arbol)) {
-				Iterator<Pair<String,ListaDE<String>>> it= arbol.iterator();
-				Pair<String,ListaDE<String>> par;
-				while (it.hasNext()) {
-					par=it.next();
-					System.out.print ("("+par.getKey()+",");
-					for (String s:par.getValue())
-						System.out.print("/"+s);
-					System.out.println(")");
-				}
-				AgregarDirectorio(arbol, "e/e2");
-			}
-			else
-				arbol=null;
-		}
+		Queue<String> q = readFile(dir);
 
-		catch(Exception e) {
-			System.out.println("algo salio mal");
-		}*/
-		
-
+		boolean val = valido(q);
+		if (!val) {
+			arbol=null;
+			throw new InvalidFileException("El formato del archivo no es valido");
+		}
 	}
 	
 	/**
@@ -111,10 +44,8 @@ public class archivos_tester {
 		catch(InvalidOperationException | EmptyTreeException e) {
 			System.out.println("arreglar esto pls: " + e.getMessage());	//ESTO HAY Q SACARLO DPS !!!!!!!!!!!!!!!!!!!!
 		}
-		
 		return cumple;			
 	}
-	
 	
 	/**
 	 * Lee un archivo si es posible y retorna una cola con todos los elementos
@@ -148,8 +79,7 @@ public class archivos_tester {
 				if(null!= fr)
 					fr.close();
 			}
-			catch(Exception e2) { // No debería lanzarse nunca.
-			}
+			catch(Exception e2) {}
 		}
 		return q;
 		
@@ -370,16 +300,25 @@ public class archivos_tester {
 			throw new InvalidFileLocationException("direccion invalida");
 	}
 	
-	public void agregarDirectorio(String direccionD1,String nombreD2) {
+	public void agregarDirectorio(String direccionD1,String nombreD2) throws InvalidFileLocationException{
 		String separador="/";
 		String[] parts= direccionD1.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
 		Position<Pair<String, PositionList<String>>> agregardirectorio=null;
+		
+		if(arbol.isEmpty() && parts.length>1)
+			throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
+		else {
+			if(arbol.isEmpty()) {
+				arbol.createRoot(new Pair<String,PositionList<String>>(parts[0],new ListaDE<String>()));
+				//si el arbol estaba vacio entonces se debe crear la raiz con un nuevo par
+			}
+		}
 		try {
 			agregardirectorio=buscar(parts,0,arbol.root()); //busca el directorio donde se debe agregar el nuevo.
 			arbol.addLastChild(agregardirectorio, new Pair<String,PositionList<String>> (nombreD2, new ListaDE<String>())); //agrega un directorio "nombreD2" como nuevo hijo "buscarDirectorio"
 		}
 		catch (EmptyTreeException | InvalidFileLocationException | InvalidPositionException e) {
-			System.out.println(e.getMessage());
+			throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
 		}
 	}
 	

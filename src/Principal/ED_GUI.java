@@ -99,11 +99,19 @@ public class ED_GUI extends JPanel implements ActionListener {
     
     if(GENERATE_COMMAND.equals(command)) {
     	direccion = JOptionPane.showInputDialog("Ingrese la direccion del archivo");
-    	tester = new archivos_tester(direccion);
-    	if(tester!=null)
-    		for(int i=0;i<botones.length;i++) {
-    			botones[i].setEnabled(true);
+    	try {
+			tester = new archivos_tester(direccion);
+			for(int i=0;i<botones.length;i++) {
+    			botones[i].setEnabled(true);		
     		}
+    		
+		} catch (InvalidFileLocationException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+			toolkit.beep();
+		} catch (InvalidFileException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+			toolkit.beep();
+		}
     		
     	
     }
@@ -152,12 +160,7 @@ public class ED_GUI extends JPanel implements ActionListener {
     if(EXTENSION_COMMAND.equals(command)) {
     	
     }
-    if(tester==null) {
-    	JOptionPane.showMessageDialog(null,"Direccion del arbol invalida");
-    	toolkit.beep();
-    	
-    }
-    else {
+    if(tester!=null) {
     	cadenaArbol.setText(tester.generarArbolString());
     }
   }
