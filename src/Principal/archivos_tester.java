@@ -512,6 +512,11 @@ public class archivos_tester {
 		}
 		return toreturn;
 	}
+	/** 
+	 * crea un listado por profundidad de los directorios del arbol, guarda la direccion de los directorios como clave
+	 * y la profundidad como valor en el mapeo
+	 * @return mapeo donde se cuardaran las direccion es y la profundidad de dicha direccion.
+	 */
 	public Map<String,Integer> listadoPorProfundidad(){
 		Map<String,Integer> toReturn=new MapeoHashAbierto<String,Integer>();
 		try {
@@ -520,8 +525,14 @@ public class archivos_tester {
 		}catch(EmptyTreeException e) {}//no deberia pasar
 		return toReturn;
 	}
-	
-	public void listadoProfundidad(String dir,int prof,Position<Pair<String,PositionList<String>>> pos,Map<String,Integer> m){
+	/**
+	 * metodo auxiliar de listadoPorProfundidad()
+	 * @param dir direccion del directorio
+	 * @param prof profunidad del directorio
+	 * @param pos posicion sobre la que se encuentra 
+	 * @param m	mapeo donde se añadiran los directorios y la profunidad de cada uno
+	 */
+	private void listadoProfundidad(String dir,int prof,Position<Pair<String,PositionList<String>>> pos,Map<String,Integer> m){
 		dir+=pos.element().getKey()+" \\ ";
 		try {
 			m.put(dir, prof);
