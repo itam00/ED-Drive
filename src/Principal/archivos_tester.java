@@ -264,15 +264,15 @@ public class archivos_tester {
 	 * @param nombreD2 Indica el nombre del nuevo directorio a agregar.
 	 */
 	
-	public void agregarArchivo(String direccionD,String nombreA) {
+	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException{
 		String separador="/";
 		String[] partes= direccionD.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
 		try {
 			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root()); //busca el directorio y se lo asigna a "directorio".
 			directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
 		}
-		catch (EmptyTreeException | InvalidFileLocationException e) {
-			System.out.println(e.getMessage());
+		catch (EmptyTreeException e) {	//NO DEBERIA pasar ya que el el usuario no prodra agregar un archivo
+										//si no exist un directorio
 		}
 	}
 	
@@ -307,18 +307,18 @@ public class archivos_tester {
 		
 		if(arbol.isEmpty() && parts.length>1)
 			throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
-		else {
-			if(arbol.isEmpty()) {
-				arbol.createRoot(new Pair<String,PositionList<String>>(parts[0],new ListaDE<String>()));
+		if(arbol.isEmpty()) {
+				arbol.createRoot(new Pair<String,PositionList<String>>(nombreD2,new ListaDE<String>()));
 				//si el arbol estaba vacio entonces se debe crear la raiz con un nuevo par
+		}
+		else {
+			try {
+				agregardirectorio=buscar(parts,0,arbol.root()); //busca el directorio donde se debe agregar el nuevo.
+				arbol.addLastChild(agregardirectorio, new Pair<String,PositionList<String>> (nombreD2, new ListaDE<String>())); //agrega un directorio "nombreD2" como nuevo hijo "buscarDirectorio"
 			}
-		}
-		try {
-			agregardirectorio=buscar(parts,0,arbol.root()); //busca el directorio donde se debe agregar el nuevo.
-			arbol.addLastChild(agregardirectorio, new Pair<String,PositionList<String>> (nombreD2, new ListaDE<String>())); //agrega un directorio "nombreD2" como nuevo hijo "buscarDirectorio"
-		}
-		catch (EmptyTreeException | InvalidFileLocationException | InvalidPositionException e) {
-			throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
+			catch (EmptyTreeException | InvalidFileLocationException | InvalidPositionException e) {
+				throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
+			}
 		}
 	}
 	
@@ -420,7 +420,7 @@ public class archivos_tester {
 				}
 			}
 		if (!encontrado)
-			throw new InvalidFileLocationException ("direccion no valida");
+			throw new InvalidFileLocationException ("La direccion no es valida en el sistema de archivos");
 		return toreturn;
 	}
 
@@ -464,7 +464,7 @@ public class archivos_tester {
 				}
 			}
 		if (!encontrado)
-			throw new InvalidFileLocationException ("direccion no valida");
+			throw new InvalidFileLocationException ("La direccion no es valida en el sistema de archivos");
 		return toreturn;
 	}
 	

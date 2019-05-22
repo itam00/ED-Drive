@@ -132,9 +132,13 @@ public class ED_GUI extends JPanel implements ActionListener {
     if (ADD_D_COMMAND.equals(command)) {
     	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
     	direccion = JOptionPane.showInputDialog("Ingrese la direccion donde desea crearlo");
-    	tester.agregarDirectorio(direccion,nombre);
+    	try {
+			tester.agregarDirectorio(direccion,nombre);
+		} catch (InvalidFileLocationException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+		}
     }
-    if (REMOVE_COMMAND.equals(command)) {
+    if (REMOVE_D_COMMAND.equals(command)) {
     	direccion = JOptionPane.showInputDialog("Ingrese la direccion del directorio a remover incluyendolo");
     	tester.eliminarDirectorio(direccion);
     }
@@ -162,6 +166,12 @@ public class ED_GUI extends JPanel implements ActionListener {
     }
     if(tester!=null) {
     	cadenaArbol.setText(tester.generarArbolString());
+    }
+    else {
+    	for(int i=0;i<botones.length;i++) {	//en caso de q halla fallado el constructor todos los botones se desactivan
+			botones[i].setEnabled(false);		
+		}
+    	botones[0].setEnabled(true);// se activa el generar gerarquia
     }
   }
 
