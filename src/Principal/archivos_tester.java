@@ -10,6 +10,7 @@ import TDALista.InvalidPositionException;
 import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
+import TDAMapeo.*;
 
 
 public class archivos_tester {
@@ -199,13 +200,13 @@ public class archivos_tester {
 	
 	public void validarArchivos(Queue<String> c, PositionList<String> l) {
 		String aux="";
-		boolean toReturn=true;
+		boolean cumple=true;
 		try {
-			while (toReturn) {
+			while (cumple) {
 				if (!c.isEmpty())
 					aux=c.front();
 				else
-					toReturn=false;
+					cumple=false;
 				
 				String abre="";
 				String cierra="";
@@ -230,32 +231,41 @@ public class archivos_tester {
 				}
 				cierra=cierra+'>';
 				//System.out.println(abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") && (aux.charAt(punto-1)!='>' && aux.charAt(punto+1)!='<'));
-				toReturn=abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") && validarExtencion(nombre);
+				try {
+					validarExtencion(nombre);
+				}
+				catch(InvalidFileNameException e) {
+					cumple = false;
+				}
+				cumple=abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") &&cumple; 
 				//System.out.println(validarExtencion(nombre));
-				if (toReturn) {
+				if (cumple) {
 					c.dequeue();
 					l.addLast(nombre);
 				}
 			}
 		}
-		catch(EmptyQueueException e) {
-			toReturn=false;
+		catch(EmptyQueueException e) {//si no cumple saldra del ciclo terminando asi el metodo
 		}
 	}
-	
-	private static boolean validarExtencion(String nombre){
-		boolean toReturn = false;
+	/**
+	 * valida en nombre de un archivo comprobando que tenga extension
+	 * @param nombre
+	 * @return
+	 */
+	private static void validarExtencion(String nombre) throws InvalidFileNameException{
+		boolean cumple= false;
 		int i = 0;
 		if(nombre.length() > 3 && nombre.charAt(0) != '.' && nombre.charAt(nombre.length()-1) != '.') {
-			while (i <= nombre.length() && !toReturn) {
+			while (i <= nombre.length() && !cumple) {
 				if(nombre.charAt(i) == '.') {
-					toReturn=true;
+					cumple=true;
 				}
 				i++;
 			}
 		}
-
-		return toReturn;
+		if(!cumple)
+			throw new InvalidFileNameException("El nombre del archivo no es valido");
 	}
 	
 	/**
@@ -264,9 +274,10 @@ public class archivos_tester {
 	 * @param nombreD2 Indica el nombre del nuevo directorio a agregar.
 	 */
 	
-	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException{
+	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException,InvalidFileNameException{
 		String separador="/";
 		String[] partes= direccionD.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
+		validarExtencion(nombreA);			//en caso de que el nombre no sea valido lanza una exception
 		try {
 			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root()); //busca el directorio y se lo asigna a "directorio".
 			directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
@@ -340,7 +351,7 @@ public class archivos_tester {
 	 * @param direccionD1 String que indica la dirección donde se encuentra el Directorio que se quiere eliminar.
 	 */
 	
-	public void eliminarDirectorio(String direccionD1) {
+	public void eliminarDirectorio(String direccionD1) throws InvalidFileLocationException {
 		String separador="/";
 		String[] partes= direccionD1.split(separador);
 		try {
@@ -348,8 +359,8 @@ public class archivos_tester {
 			eliminarSucesores(eliminar);
 			arbol.removeExternalNode(eliminar);
 		}
-		catch (EmptyTreeException |InvalidPositionException | InvalidFileLocationException e) {
-			System.out.println(e.getMessage());
+		catch (EmptyTreeException |InvalidPositionException e) {
+			//NO DEBERIA PASAR ya que el el usuario no tiene accesa elminarDirectorio si el arbol esta vacio															
 		}
 	}
 	/**
@@ -501,6 +512,7 @@ public class archivos_tester {
 		}
 		return toreturn;
 	}
+
 	/**
 	 * Metodo que transforma los directorios y los archivos del arbol a una cadena de caracteres para
 	 * poder mostrar su estado actual.

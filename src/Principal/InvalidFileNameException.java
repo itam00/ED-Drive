@@ -1,5 +1,8 @@
 package Principal;
 
-public class InvalidFileNameException {
-
+@SuppressWarnings("serial")
+public class InvalidFileNameException extends Exception{
+	public InvalidFileNameException(String msj) {
+		super(msj);
+	}
 }
