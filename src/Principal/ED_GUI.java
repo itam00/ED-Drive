@@ -97,6 +97,9 @@ public class ED_GUI extends JPanel implements ActionListener {
     String command = e.getActionCommand();
     String direccion;
     
+    //LUEGO ELIMINAR TODOS LOS TRY CATCH Y REEMPLAZARLOS SOLO X UNO, AHORA ESTA ASI PARA PROBAR LOS
+    //METODOS INDIVIDUALMENTE
+    
     if(GENERATE_COMMAND.equals(command)) {
     	direccion = JOptionPane.showInputDialog("Ingrese la direccion del archivo");
     	try {
@@ -118,7 +121,13 @@ public class ED_GUI extends JPanel implements ActionListener {
     if (ADD_COMMAND.equals(command)) {
     	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del archivo que desea añadir al sistema");
     	direccion = JOptionPane.showInputDialog("Ingrese la direccion donde desea crearlo");
-    	tester.agregarArchivo(direccion,nombre);
+    	try {
+			tester.agregarArchivo(direccion,nombre);
+		} catch (InvalidFileLocationException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+		} catch (InvalidFileNameException e1) {
+			JOptionPane.showMessageDialog(null,e1.getMessage());
+		}
     	
     }
     if (REMOVE_COMMAND.equals(command)) {
@@ -126,7 +135,7 @@ public class ED_GUI extends JPanel implements ActionListener {
     	try {
 			tester.eliminarArchivo(direccion);
 		} catch (InvalidFileLocationException e1) {
-			JOptionPane.showMessageDialog(null, "La direccion ingresada no es valida en el sistema de archivos");
+			JOptionPane.showMessageDialog(null, e1.getMessage());
 		}
     } 
     if (ADD_D_COMMAND.equals(command)) {
@@ -140,7 +149,11 @@ public class ED_GUI extends JPanel implements ActionListener {
     }
     if (REMOVE_D_COMMAND.equals(command)) {
     	direccion = JOptionPane.showInputDialog("Ingrese la direccion del directorio a remover incluyendolo");
-    	tester.eliminarDirectorio(direccion);
+    	try {
+			tester.eliminarDirectorio(direccion);
+		} catch (InvalidFileLocationException e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+		}
     }
     if(MOVE_D_COMMAND.equals(command)) {
     	String destino;
@@ -164,6 +177,8 @@ public class ED_GUI extends JPanel implements ActionListener {
     if(EXTENSION_COMMAND.equals(command)) {
     	
     }
+    
+    //HASTA ACA LLEGARIA EL TRY CATCH
     if(tester!=null) {
     	cadenaArbol.setText(tester.generarArbolString());
     }
