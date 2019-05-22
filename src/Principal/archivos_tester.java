@@ -512,7 +512,33 @@ public class archivos_tester {
 		}
 		return toreturn;
 	}
-
+	public Map<String,Integer> listadoPorProfundidad(){
+		Map<String,Integer> toReturn=new MapeoHashAbierto<String,Integer>();
+		try {
+			if(!arbol.isEmpty())
+				listadoProfundidad("",0,arbol.root(),toReturn);
+		}catch(EmptyTreeException e) {}//no deberia pasar
+		return toReturn;
+	}
+	
+	public void listadoProfundidad(String dir,int prof,Position<Pair<String,PositionList<String>>> pos,Map<String,Integer> m){
+		dir+=pos.element().getKey()+" \\ ";
+		try {
+			m.put(dir, prof);
+			prof++;
+			for(Position<Pair<String,PositionList<String>>> e: arbol.children(pos)) {
+				listadoProfundidad(dir,prof,e,m);
+			}
+		} catch (InvalidKeyException | InvalidPositionException e) {}
+	}
+	
+	public String listadoProf() {
+		String c="";
+		for(Entry<String,Integer> e:listadoPorProfundidad().entries()) {
+			c+=e.getKey()+" - "+e.getValue()+"\n";
+		}
+		return c;
+	}
 	/**
 	 * Metodo que transforma los directorios y los archivos del arbol a una cadena de caracteres para
 	 * poder mostrar su estado actual.
