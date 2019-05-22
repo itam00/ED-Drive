@@ -17,12 +17,14 @@ public class archivos_tester {
 	
 	public archivos_tester(String dir) {
 		arbol= new Arbol<Pair<String,PositionList<String>>>();
-		dir="C:\\Users\\Alan\\Desktop\\je.txt";
+		//dir="C:\\Users\\mati\\Downloads\\prueba.txt";
 		try {
 			Queue<String> q = readFile(dir);
 			arbol= new Arbol<Pair<String,PositionList<String>>>();
-			if (valido(q)) {
-				Iterator<Pair<String,PositionList<String>>> it= arbol.iterator(); //todo lo que est· abajo de esto es para testearlo
+			boolean val = valido(q);
+			System.out.println(val);
+			if (val) {
+				Iterator<Pair<String,PositionList<String>>> it= arbol.iterator(); //todo lo que est√° abajo de esto es para testearlo
 				Pair<String,PositionList<String>> par;
 				while (it.hasNext()) {
 					par=it.next();
@@ -61,7 +63,8 @@ public class archivos_tester {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		archivos_tester p= new archivos_tester("C:\\Users\\Alan\\Desktop\\je.txt");
+		archivos_tester p= new archivos_tester("C:\\Users\\mati\\Downloads\\prueba.txt");
+		System.out.println(p.generarArbolString());
 		/**try {
 			String dir="C:\\Users\\Alan\\Desktop\\je.txt";
 			Queue<String> q = readFile(dir);
@@ -86,8 +89,8 @@ public class archivos_tester {
 
 		catch(Exception e) {
 			System.out.println("algo salio mal");
-		}
-		*/
+		}*/
+		
 
 	}
 	
@@ -101,9 +104,9 @@ public class archivos_tester {
 	public boolean valido(Queue<String> q) {
 		boolean cumple= false;
 		try {
-			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // es el directorio raÌz del arbol
+			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // es el directorio ra√≠z del arbol
 			arbol.createRoot(primerPar); // crea la raiz del arbol con "primerPar".
-			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vacÌa (si no queda vacÌa la pila significa que hay mas de 1 carpeta principal.
+			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vac√≠a (si no queda vac√≠a la pila significa que hay mas de 1 carpeta principal.
 		}
 		catch(InvalidOperationException | EmptyTreeException e) {
 			System.out.println("arreglar esto pls: " + e.getMessage());	//ESTO HAY Q SACARLO DPS !!!!!!!!!!!!!!!!!!!!
@@ -145,7 +148,7 @@ public class archivos_tester {
 				if(null!= fr)
 					fr.close();
 			}
-			catch(Exception e2) { // No deberÌa lanzarse nunca.
+			catch(Exception e2) { // No deber√≠a lanzarse nunca.
 			}
 		}
 		return q;
@@ -194,7 +197,7 @@ public class archivos_tester {
 				q.dequeue();			
 				do {
 					nuevoPar = new Pair<String,PositionList<String>>("",new ListaDE<String>());
-					hijo = arbol.addLastChild(position, nuevoPar);									//y se le aÒade como padre nodo y un hijo
+					hijo = arbol.addLastChild(position, nuevoPar);									//y se le a√±ade como padre nodo y un hijo
 					cumple = esValido(q,hijo);
 				}
 				while(!comprobar(q.front(),"</lista_sub_carpetas>") && cumple);
@@ -261,7 +264,7 @@ public class archivos_tester {
 	 * y agrega el nombre del archivo en la cola "nom" con una A al principio.
 	 * desencola un archivo si y solo si este verifica la sintaxis
 	 * @param c cola en la que se verifica la sintaxis de sus elementos
-	 * @param l lista donde se guardar·n los nombres de los archivos del directorio donde se encuentran.
+	 * @param l lista donde se guardar√°n los nombres de los archivos del directorio donde se encuentran.
 	 */
 	
 	public void validarArchivos(Queue<String> c, PositionList<String> l) {
@@ -395,7 +398,7 @@ public class archivos_tester {
 	
 	/**
 	 * Elimina del arbol el Directorio correspondiente a la direccionD1
-	 * @param direccionD1 String que indica la direcciÛn donde se encuentra el Directorio que se quiere eliminar.
+	 * @param direccionD1 String que indica la direcci√≥n donde se encuentra el Directorio que se quiere eliminar.
 	 */
 	
 	private void eliminarDirectorio(String direccionD1) {
@@ -412,8 +415,8 @@ public class archivos_tester {
 	}
 	/**
 	 * 	HAY QUE IMPLEMENTARLO
-	 * @param direccionD1 direcciÛn donde se encuentra el directorio que va a ser movido.
-	 * @param direccionD2 direcciÛn donde se colocar· el directorio a mover.
+	 * @param direccionD1 direcci√≥n donde se encuentra el directorio que va a ser movido.
+	 * @param direccionD2 direcci√≥n donde se colocar√° el directorio a mover.
 	 */
 	@SuppressWarnings("unused")
 	private void moverDirectorio(String direccionD1,String direccionD2) {
@@ -422,7 +425,7 @@ public class archivos_tester {
 		String[] partesD2=direccionD2.split(separador);
 	}
 	/**
-	 * recorre todo el arbol buscando cada directorio y archivo en Èl.
+	 * recorre todo el arbol buscando cada directorio y archivo en √©l.
 	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
 	 */
 	@SuppressWarnings("unused")
@@ -441,9 +444,9 @@ public class archivos_tester {
 	/**
 	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.
 	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
-	 * @param indice Entero que indice quÈ String dentro el arreglo "partes" se debe comparar con el directorio "position".
-	 * @param position Directorio a comparar con el String en el subÌndice "indice", si es el mismo la direccion del archivo es correcta.
-	 * @return Una posicion que encapsula el directorio donde se buscar· el que directorio que se est· buscando.
+	 * @param indice Entero que indice qu√© String dentro el arreglo "partes" se debe comparar con el directorio "position".
+	 * @param position Directorio a comparar con el String en el sub√≠ndice "indice", si es el mismo la direccion del archivo es correcta.
+	 * @return Una posicion que encapsula el directorio donde se buscar√° el que directorio que se est√° buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
@@ -485,9 +488,9 @@ public class archivos_tester {
 	/**
 	 * Busca en el arbol el archivo ubicado dentro del directorio pasado a traves del parametro position y lo retorna.
 	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
-	 * @param indice Entero que indice quÈ String dentro el arreglo "partes" se debe comparar con el directorio "position".
-	 * @param position Directorio a comparar con el String en el subÌndice "indice", si es el mismo la direccion del archivo es correcta.
-	 * @return Una posicion que encapsula el Directorio donde se buscar· el archivo.
+	 * @param indice Entero que indice qu√© String dentro el arreglo "partes" se debe comparar con el directorio "position".
+	 * @param position Directorio a comparar con el String en el sub√≠ndice "indice", si es el mismo la direccion del archivo es correcta.
+	 * @return Una posicion que encapsula el Directorio donde se buscar√° el archivo.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
@@ -559,5 +562,31 @@ public class archivos_tester {
 		}
 		return toreturn;
 	}
+	public String generarArbolString() {
+		String toReturn="";
+		try {
+			if(!arbol.isEmpty()) {
+				toReturn =  generarString("",arbol.root());
+				toReturn = toReturn.replaceFirst("‚îú","‚îå");
+			}
+		}
+		catch(EmptyTreeException e ) {}	
+		return toReturn;	
+	}
 	
+	private String generarString(String i,Position<Pair<String,PositionList<String>>> p) {
+		String c = "‚îú"+i;
+		c+="√ê "+p.element().getKey()+"\n";
+		for(String e:p.element().getValue()) {
+			c+="‚îú‚îÄ‚îÄ‚îÄ‚îÄ‚îÄ"+i+"√ó "+e+"\n";
+		}
+		c+="|";
+		try {
+			for(Position<Pair<String, PositionList<String>>> e: arbol.children(p)) {
+				c+="\n"+generarString("‚îÄ‚îÄ‚îÄ‚îÄ"+i,e);
+			}
+		}
+		catch(InvalidPositionException e) {}
+		return c;	
+	}
 }
