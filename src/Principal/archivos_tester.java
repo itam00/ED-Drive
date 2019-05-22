@@ -313,7 +313,7 @@ public class archivos_tester {
 		}
 	}
 	
-	public static boolean validarExtencion(String nombre){
+	private static boolean validarExtencion(String nombre){
 		boolean toReturn = false;
 		int i = 0;
 		if(nombre.length() > 3 && nombre.charAt(0) != '.' && nombre.charAt(nombre.length()-1) != '.') {
@@ -334,9 +334,9 @@ public class archivos_tester {
 	 * @param nombreD2 Indica el nombre del nuevo directorio a agregar.
 	 */
 	
-	private void agregarArchivo(String direccionD,String nombreA) {
+	public void agregarArchivo(String direccionD,String nombreA) {
 		String separador="/";
-		String[] partes= direccionD.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo.
+		String[] partes= direccionD.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
 		try {
 			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root()); //busca el directorio y se lo asigna a "directorio".
 			directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
@@ -346,7 +346,7 @@ public class archivos_tester {
 		}
 	}
 	
-	private void eliminarArchivo(String direccionD) throws InvalidFileLocationException{
+	public void eliminarArchivo(String direccionD) throws InvalidFileLocationException{
 		String separador="/";
 		String[] partes=direccionD.split(separador); // agrega cada string separado por "/" en una componente distinta del arreglo.
 		String nombreArchivo=partes[partes.length-1]; //guarda el nombre del archivo a eliminar.
@@ -370,7 +370,7 @@ public class archivos_tester {
 			throw new InvalidFileLocationException("direccion invalida");
 	}
 	
-	private void agregarDirectorio(String direccionD1,String nombreD2) {
+	public void agregarDirectorio(String direccionD1,String nombreD2) {
 		String separador="/";
 		String[] parts= direccionD1.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
 		Position<Pair<String, PositionList<String>>> agregardirectorio=null;
@@ -401,7 +401,7 @@ public class archivos_tester {
 	 * @param direccionD1 String que indica la dirección donde se encuentra el Directorio que se quiere eliminar.
 	 */
 	
-	private void eliminarDirectorio(String direccionD1) {
+	public void eliminarDirectorio(String direccionD1) {
 		String separador="/";
 		String[] partes= direccionD1.split(separador);
 		try {
@@ -429,7 +429,7 @@ public class archivos_tester {
 	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
 	 */
 	@SuppressWarnings("unused")
-	private Pair<Integer,Integer> cantidadDeDirectoriosYArchivos() {
+	public Pair<Integer,Integer> cantidadDeDirectoriosYArchivos() {
 		int cantDirectorios=0;
 		int cantArchivos=0;
 		for (Pair<String,PositionList<String>> p: arbol) {
@@ -530,7 +530,7 @@ public class archivos_tester {
 	}
 	
 	@SuppressWarnings("unused")
-	private PositionList<String> listadoPorNiveles(){
+	public PositionList<String> listadoPorNiveles(){
 		Queue<Position<Pair<String,PositionList<String>>>> aListar= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
 		Position<Pair<String,PositionList<String>>> directorio;
 		PositionList<String> toreturn= new ListaDE<String>();
@@ -562,6 +562,12 @@ public class archivos_tester {
 		}
 		return toreturn;
 	}
+	/**
+	 * Metodo que transforma los directorios y los archivos del arbol a una cadena de caracteres para
+	 * poder mostrar su estado actual.
+	 * @return	cadena de caracteres que permite visualizar el estado actual del arbol, si 
+	 * el arbol esta vacio retorna nulo.
+	 */
 	public String generarArbolString() {
 		String toReturn="";
 		try {
@@ -573,12 +579,17 @@ public class archivos_tester {
 		catch(EmptyTreeException e ) {}	
 		return toReturn;	
 	}
-	
+	/**
+	 * metodo auxiliar del metodo generarArbolString()
+	 * @param i	cadena que se encargara de agregar "────" a cada directorio y archivo.
+	 * @param p	posicion del arbol a partir de la cual se agregaran las carpetas y archivos al string.
+	 * @return	cadena con el estado actual del arbol.
+	 */
 	private String generarString(String i,Position<Pair<String,PositionList<String>>> p) {
 		String c = "├"+i;
 		c+="Ð "+p.element().getKey()+"\n";
 		for(String e:p.element().getValue()) {
-			c+="├─────"+i+"× "+e+"\n";
+			c+="├────"+i+"× "+e+"\n";
 		}
 		c+="|";
 		try {
