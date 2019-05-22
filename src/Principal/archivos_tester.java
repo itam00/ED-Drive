@@ -275,8 +275,7 @@ public class archivos_tester {
 	 */
 	
 	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException,InvalidFileNameException{
-		String separador="/";
-		String[] partes= direccionD.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
+		String[] partes= direccionD.split("/"); //agrega cada string separado por "/" en una componente distinta del arreglo
 		validarExtencion(nombreA);			//en caso de que el nombre no sea valido lanza una exception
 		try {
 			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root()); //busca el directorio y se lo asigna a "directorio".
@@ -293,6 +292,7 @@ public class archivos_tester {
 		String nombreArchivo=partes[partes.length-1]; //guarda el nombre del archivo a eliminar.
 		boolean removi=false;
 		Position<String> pos;
+
 		try {
 			Position<Pair<String,PositionList<String>>> directorio=buscarArchivo(partes,0,arbol.root()); //busca el directorio y lo asigna a "directorio".
 			Iterator<Position<String>> it= directorio.element().getValue().positions().iterator();
@@ -468,7 +468,7 @@ public class archivos_tester {
 						if (indice==partes.length-2)
 							toreturn=hijo;
 						else {
-							toreturn= buscar(partes,indice,hijo);
+							toreturn= buscarArchivo(partes,indice,hijo);
 						}
 						encontrado=true;
 					}
