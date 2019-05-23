@@ -575,11 +575,11 @@ public class archivos_tester {
 	 */
 	private String generarString(String i,Position<Pair<String,PositionList<String>>> p) {
 		String c = "├"+i;
-		c+="Ð "+p.element().getKey()+"\n";
+		c+="■ "+p.element().getKey()+"\n";
 		for(String e:p.element().getValue()) {
 			c+="├────"+i+"× "+e+"\n";
 		}
-		c+="|";
+		c+="┼";
 		try {
 			for(Position<Pair<String, PositionList<String>>> e: arbol.children(p)) {
 				c+="\n"+generarString("────"+i,e);
