@@ -1,9 +1,12 @@
 package Principal;
 import java.io.*;  
+
 import java.util.Iterator;
 
 import TDAArbol.*;
 import TDACola.*;
+import TDADiccionario.DiccionarioHashAbierto;
+import TDADiccionario.Dictionary;
 import TDALista.BoundaryViolationException;
 import TDALista.EmptyListException;
 import TDALista.InvalidPositionException;
@@ -484,6 +487,7 @@ public class archivos_tester {
 		Queue<Position<Pair<String,PositionList<String>>>> aListar= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
 		Position<Pair<String,PositionList<String>>> directorio;
 		PositionList<String> toreturn= new ListaDE<String>();
+		PositionList<String> listaArchivos=null;
 		Position<String> archivo;
 		toreturn.addLast("<");
 		try {
@@ -495,19 +499,14 @@ public class archivos_tester {
 				else
 					toreturn.addLast(", "+directorio.element().getKey()+", /, ");
 				if (!directorio.element().getValue().isEmpty()) {
-					archivo=directorio.element().getValue().first();
-					while (archivo!=directorio.element().getValue().last()) {
-						toreturn.addLast(archivo.element()+", ");
-						archivo=directorio.element().getValue().next(archivo);
-					}
-					toreturn.addLast(archivo.element());
+					listaArchivos=directorio.element().getValue();
 				}
 				for (Position<Pair<String,PositionList<String>>>pos: arbol.children(directorio))
 					aListar.enqueue(pos);
 			}
 			toreturn.addLast(">");
 		}
-		catch (EmptyListException |InvalidPositionException|BoundaryViolationException| EmptyTreeException | EmptyQueueException e) {
+		catch (InvalidPositionException| EmptyTreeException | EmptyQueueException e) {
 			System.out.println(e.getMessage());
 		}
 		return toreturn;
@@ -546,10 +545,69 @@ public class archivos_tester {
 	public String listadoProf() {
 		String c="";
 		for(Entry<String,Integer> e:listadoPorProfundidad().entries()) {
-			c+=e.getKey()+" - "+e.getValue()+"\n";
+			c+="Direccion: "+e.getKey()+", Profundidad: "+e.getValue()+"\n";
 		}
 		return c;
 	}
+	
+	/**
+	 * Listado por extencion que retornar un Diccionario con las archivos
+	 * @return Diccionario con extencion como clave y nombre como valor
+	 */
+	public Dictionary<String,String> listadoPorExtencion(){
+		Dictionary<String,String> toReturn=new DiccionarioHashAbierto<String,String>();
+		try {
+			if(!arbol.isEmpty())
+				listadoExtencion(arbol.root(),toReturn);
+		}catch(EmptyTreeException e) {}//no deberia pasar
+		return toReturn;
+	}
+	
+	/**
+	 * Metodo auxiliar recursivo para Listado por extencion
+	 * @param pos Posicion con los hijos a insertar en el diccionario
+	 * @param D Diccionario con los archivos a agregar
+	 */
+	private void listadoExtencion(Position<Pair<String, PositionList<String>>> pos, Dictionary<String,String> D) {
+		try {
+			for(String e : pos.element().getValue()){
+				D.insert(obtenerExtencion(e), e);
+			}
+			for(Position<Pair<String,PositionList<String>>> e: arbol.children(pos)) {
+				listadoExtencion(e,D);
+			}
+		} catch (InvalidPositionException | TDADiccionario.InvalidKeyException e) {}
+	}
+	
+	/**
+	 * Metodo auxiliar para obtener la extencion de un archivo
+	 * @param c Archivo a obtener extencion
+	 * @return Extencion del archivo
+	 */
+	private String obtenerExtencion(String c) {
+		String toReturn = "";
+		int i = c.length() - 1;
+		while(c.charAt(i) != '.') {
+			toReturn = c.charAt(i) + toReturn;
+			i--;
+		}
+		return toReturn;
+	}
+	
+	public String mostrarListadoExtencion() {
+		Dictionary<String,String> D = listadoPorExtencion();
+		String toReturn = "";
+		String extencion = "";
+		for(TDADiccionario.Entry<String, String> e : D.entries()) {
+			if(!extencion.equals(e.getKey())) {
+				extencion = e.getKey();
+				toReturn += ""+extencion+":\n";
+			}
+			toReturn = toReturn+"   "+e.getValue()+"\n";
+		}
+		return toReturn;
+	}
+	
 	/**
 	 * Metodo que transforma los directorios y los archivos del arbol a una cadena de caracteres para
 	 * poder mostrar su estado actual.

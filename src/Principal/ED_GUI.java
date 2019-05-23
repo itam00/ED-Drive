@@ -21,15 +21,15 @@ import javax.swing.JTextArea;
 import TDALista.*;
 
 public class ED_GUI extends JPanel implements ActionListener {
-	private static String GENERATE_COMMAND = "Generar Gerarquia";
+	private static String GENERATE_COMMAND = "Generar jerarquia";
 	private static String ADD_COMMAND = "Añadir archivo";
 	private static String REMOVE_COMMAND = "Remover archivo";
-	private static String MOVE_D_COMMAND = "Mover Directorio";
-	private static String ADD_D_COMMAND = "Añadir Direcotrio";
-	private static String REMOVE_D_COMMAND = "Remover Directorio";
+	private static String MOVE_D_COMMAND = "Mover directorio";
+	private static String ADD_D_COMMAND = "Añadir directorio";
+	private static String REMOVE_D_COMMAND = "Remover directorio";
 	private static String LEVEL_COMMAND = "Listado por nivel";
 	private static String EXTENSION_COMMAND = "Listado por extension";
-	private static String DEPTH_COMMAND = "Listado Profundidad";
+	private static String DEPTH_COMMAND = "Listado por profundidad";
 	private static String TOTAL_COMMAND = "Cantidad de carpetas y archivos";
   
 	private Toolkit toolkit;
@@ -49,8 +49,8 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    nombres[0] =GENERATE_COMMAND;
 	    nombres[1] =ADD_COMMAND;
 	    nombres[2] =REMOVE_COMMAND;
-	    nombres[3] =REMOVE_D_COMMAND;
-	    nombres[4] =ADD_D_COMMAND;
+	    nombres[3] =ADD_D_COMMAND;
+	    nombres[4] =REMOVE_D_COMMAND;
 	    nombres[5] =MOVE_D_COMMAND;
 	    nombres[6] =LEVEL_COMMAND;
 	    nombres[7] =EXTENSION_COMMAND;
@@ -151,15 +151,23 @@ public class ED_GUI extends JPanel implements ActionListener {
     	
     }
     if(LEVEL_COMMAND.equals(command)) {
-
-    	JOptionPane.showMessageDialog(null,tester.listadoPorNiveles());
+    	JTextArea a = new JTextArea();
+    	a.setOpaque(false);
+  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+		JOptionPane.showMessageDialog(null, a,"Listado por Nivel",JOptionPane.INFORMATION_MESSAGE);
     	
     }
     if(DEPTH_COMMAND.equals(command)) {
-    	JOptionPane.showMessageDialog(null, tester.listadoProf());
+    	JTextArea a = new JTextArea(tester.listadoProf());
+    	a.setOpaque(false);
+  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+		JOptionPane.showMessageDialog(null, a,"Listado por Profundidad",JOptionPane.INFORMATION_MESSAGE);
     }
     if(EXTENSION_COMMAND.equals(command)) {
-    	
+    	JTextArea a = new JTextArea(tester.mostrarListadoExtencion());
+    	a.setOpaque(false);
+  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+		JOptionPane.showMessageDialog(null, a,"Listado por Extencion",JOptionPane.INFORMATION_MESSAGE);
     }
     
     if(tester!=null) {
