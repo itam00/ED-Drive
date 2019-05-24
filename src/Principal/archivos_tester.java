@@ -360,6 +360,20 @@ public class archivos_tester {
 			//NO DEBERIA PASAR ya que la posicion es del arbol														
 		}
 	}
+	
+	private boolean esHijo(Position<Pair<String,PositionList<String>>> origen, Position<Pair<String,PositionList<String>>> destino) {
+		boolean toreturn=false;
+		try {
+			Iterator<Position<Pair<String, PositionList<String>>>> it=arbol.children(origen).iterator();
+			while (it.hasNext() && !toreturn)
+				toreturn=it.next().equals(destino);
+		}
+		catch (InvalidPositionException e) {
+			//no debería ocurrir nunca porque las direcciones fueron verificadas y los directorios encontrados.
+		}
+		return toreturn;
+	}
+	
 	/**
 	 * Mueve un directorio y otodo su contenido a una direccion pasada por parametro
 	 * @param dir1 dirección donde se encuentra el directorio que va a ser movido.
@@ -370,9 +384,12 @@ public class archivos_tester {
 		String separador=Pattern.quote("\\");
 		Position<Pair<String,PositionList<String>>> origen=buscar(dir1);
 		Position<Pair<String,PositionList<String>>> destino=buscar(dir2);
-		
-		copiarDirectorio(origen,destino);
-		eliminarDirectorio(dir1);
+		if (!origen.equals(destino) && !esHijo(origen,destino)) {
+			copiarDirectorio(origen,destino);
+			eliminarDirectorio(dir1);
+		}
+		else
+			throw new InvalidFileLocationException("No se puede mover "+origen.element().getKey() +" dentro de "+ destino.element().getKey());
 	}
 	
 	private void copiarDirectorio(Position<Pair<String,PositionList<String>>> origen,Position<Pair<String,PositionList<String>>> destino) {
