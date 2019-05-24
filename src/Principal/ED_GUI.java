@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -95,13 +96,22 @@ public void actionPerformed(ActionEvent e) {
     try {
 	    if(GENERATE_COMMAND.equals(command)) {
 	    	String direccion = JOptionPane.showInputDialog("Ingrese la direccion del archivo");
-	    	if(direccion!=null&&direccion.length()>0) {
-	    		tester = new archivos_tester(direccion);
-				for(int i=0;i<botones.length;i++) {
-					botones[i].setEnabled(true);		
-				}
+	    	if(direccion!=null) {
+		    	String separador= Pattern.quote(".");
+		    	String [] partes=direccion.split(separador);
+		    	boolean cumple=false;
+		    	if (partes.length>1)
+		    		cumple = (partes[partes.length-2].charAt(partes[partes.length-1].length()-1)!='\\' &&partes[partes.length-1].equals("ed19"));
+		    	if(direccion!=null && cumple && direccion.length()>0) {
+			    		tester = new archivos_tester(direccion);
+						for(int i=0;i<botones.length;i++) {
+							botones[i].setEnabled(true);		
+						}
+		    	}
+		    	else
+		    		throw new InvalidFileLocationException("La direccion no es valida");
+		    	}
 	    	}
-	    }
 	    
 	    if (ADD_COMMAND.equals(command)) {
 	    	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del archivo que desea añadir al sistema");
