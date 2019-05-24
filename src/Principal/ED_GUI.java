@@ -42,10 +42,19 @@ public class ED_GUI extends JPanel implements ActionListener {
 	private JButton botones[];
 	private JScrollPane sc;
 	private JLabel label;
+	private JOptionPane panel;
 
 	public ED_GUI() {
 	    super(new BorderLayout());
+	    
+	    //cosas para la el listener
 	    toolkit = Toolkit.getDefaultToolkit();
+	    panel = new JOptionPane();
+	    panel.setFont(new Font("Century Gothic",Font.BOLD, 20) );
+	    label = new JLabel();
+	    label.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+	    //
+	    
 	    nombres = new String[cantBotones];
 	    nombres[0] =GENERATE_COMMAND;
 	    nombres[1] =ADD_COMMAND;
@@ -74,7 +83,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    panelBotones = new JPanel(new GridLayout(cantBotones, 0));
 	    cadenaArbol = new JTextArea();
 	    cadenaArbol.setEditable(false);
-	    cadenaArbol.setFont( new Font("Century Gothic",Font.BOLD, 20) );
+	    cadenaArbol.setFont(new Font("Century Gothic",Font.BOLD, 20) );
 	    
 	    sc = new JScrollPane(cadenaArbol,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	    
@@ -95,7 +104,7 @@ public void actionPerformed(ActionEvent e) {
     
     try {
 	    if(GENERATE_COMMAND.equals(command)) {
-	    	String direccion = JOptionPane.showInputDialog("Ingrese la direccion del archivo");
+	    	String direccion = panel.showInputDialog("Ingrese la direccion del archivo");
 	    	if(direccion!=null) {
 		    	String separador= Pattern.quote(".");
 		    	String [] partes=direccion.split(separador);
@@ -114,52 +123,51 @@ public void actionPerformed(ActionEvent e) {
 	    	}
 	    
 	    if (ADD_COMMAND.equals(command)) {
-	    	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del archivo que desea añadir al sistema");
+	    	String nombre = panel.showInputDialog("Ingrese el nombre del archivo que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) {
 	    		tester.validarExtencion(nombre);	//se valida el nombre del archivo antes de preguntar por su direccion
-	    		String direccion = JOptionPane.showInputDialog("Ingrese la direccion donde desea crearlo");			
+	    		String direccion = panel.showInputDialog("Ingrese la direccion donde desea crearlo");			
 	    		if(direccion!=null&&direccion.length()>0)	
 	    			tester.agregarArchivo(direccion,nombre);
 	    	}	
 	    }
 	    
 	    if (REMOVE_COMMAND.equals(command)) {
-	    	String direccion = JOptionPane.showInputDialog("Ingrese la direccion del archivo a remover incluyendo el nombre del archivo");
+	    	String direccion = panel.showInputDialog("Ingrese la direccion del archivo a remover incluyendo el nombre del archivo");
 	    	if(direccion!=null&&direccion.length()>0)
 	    		tester.eliminarArchivo(direccion);
 	    } 
 	    if (ADD_D_COMMAND.equals(command)) {
-	    	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
+	    	String nombre = panel.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) { 
-	    		String direccion = JOptionPane.showInputDialog("Ingrese la direccion donde desea crearlo");
+	    		String direccion = panel.showInputDialog("Ingrese la direccion donde desea crearlo");
 	    		if(direccion!=null)
 	    			tester.agregarDirectorio(direccion,nombre);
 			}
 
 	    }
 	    if (REMOVE_D_COMMAND.equals(command)) {
-	    	String direccion = JOptionPane.showInputDialog("Ingrese la direccion del directorio a remover incluyendolo");
+	    	String direccion = panel.showInputDialog("Ingrese la direccion del directorio a remover incluyendolo");
 	    	if(direccion!=null&&direccion.length()>0)
 				tester.eliminarDirectorio(direccion);
 	    }
 	    if(MOVE_D_COMMAND.equals(command)) {
-	    	String origen = JOptionPane.showInputDialog("Ingrese la direccion del directorio a mover");
+	    	String origen = panel.showInputDialog("Ingrese la direccion del directorio a mover");
 	    	if(origen!=null&&origen.length()>0) {
-	    		String destino = JOptionPane.showInputDialog("Ingrese el destino del directorio");
+	    		String destino = panel.showInputDialog("Ingrese el destino del directorio");
 	    		if(destino!=null&&origen.length()>0)
 	    			tester.moverDirectorio(origen, destino);
 	    	}
 	    }
   	} catch (InvalidFileLocationException|InvalidFileException|InvalidFileNameException e1) {
   		toolkit.beep();
-  		label = new JLabel(e1.getMessage());
-  		label.setFont(new Font("Century Gothic",Font.BOLD, 12) );
-		JOptionPane.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
+  		label.setText(e1.getMessage());
+  		
+		panel.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
 	} 
     catch(Exception w2) {
-    	label = new JLabel(w2.getMessage());
-  		label.setFont(new Font("Century Gothic",Font.BOLD, 12) );
-		JOptionPane.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
+    	label.setText(w2.getMessage());
+		panel.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
     }
    
     
@@ -217,17 +225,14 @@ public void actionPerformed(ActionEvent e) {
   }
 
   private static void createAndShowGUI() {
-    // Create and set up the window.
+    
     JFrame frame = new JFrame("ED-Drive");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   //frame.setIconImage(new ImageIcon(getClass().getResource("../icon.png")).getImage());
-
-    // Create and set up the content pane.
+       
     ED_GUI panelPrincipal = new ED_GUI();
     panelPrincipal.setOpaque(true);
     frame.setContentPane(panelPrincipal);
 
-    // Display the window.
     frame.pack();
     frame.setVisible(true);
   }
