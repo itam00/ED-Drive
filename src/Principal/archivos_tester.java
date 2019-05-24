@@ -467,13 +467,13 @@ public class archivos_tester {
 			it= arbol.children(position).iterator();
 		}
 		catch (InvalidPositionException e) {
-			System.out.println(e.getMessage());
+			//no deberia pasar ya que es un nodo del mismo arbol
 		}
 		boolean encontrado=false;
 		Position<Pair<String, PositionList<String>>> toreturn=null;
 		Position<Pair<String, PositionList<String>>> hijo;
 		if (partes[indice].equals(position.element().getKey()))
-			if(partes.length==1) {
+			if(partes.length==2) {
 				toreturn=position;
 				encontrado=true;
 			}
@@ -482,7 +482,7 @@ public class archivos_tester {
 				while (it.hasNext() && !encontrado) {
 					hijo=it.next();
 					if (hijo.element().getKey().equals(partes[indice])) {
-						if (indice==partes.length-2)
+						if (indice==partes.length-2 || partes.length==1)
 							toreturn=hijo;
 						else {
 							toreturn= buscarArchivo(partes,indice,hijo);
@@ -498,6 +498,7 @@ public class archivos_tester {
 	
 	@SuppressWarnings("unused")
 	public PositionList<String> listadoPorNiveles(){
+<<<<<<< HEAD
 		Queue<Position<Pair<String,PositionList<String>>>> cola= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
 		Position<Pair<String,PositionList<String>>> hijos;
 		Position<Pair<String,PositionList<String>>> dir;
@@ -529,6 +530,31 @@ public class archivos_tester {
 			}
 			
 		}
+=======
+		Queue<Position<Pair<String,PositionList<String>>>> aListar= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
+		Queue<String> nombresAListar= new ColaConArregloCircular<String>(20);
+		Position<Pair<String,PositionList<String>>> directorio;
+		PositionList<String> toreturn= new ListaDE<String>();
+		PositionList<String> listaArchivos=null;
+		Position<String> archivo;
+		int hijos;
+		toreturn.addLast("< ");
+		try {
+			directorio=arbol.root();
+			for (Position<Pair<String,PositionList<String>>> hijo:arbol.children(directorio))
+				aListar.enqueue(hijo);
+			nombresAListar.enqueue(directorio.element().getKey());
+			while(!aListar.isEmpty()){
+				while (!nombresAListar.isEmpty())
+					toreturn.addLast(nombresAListar.dequeue());
+				directorio=aListar.dequeue();
+			}
+			if (aListar.isEmpty()) 
+				while (!nombresAListar.isEmpty())
+					toreturn.addLast(" "+nombresAListar.dequeue());
+			toreturn.addLast(">");
+			}
+>>>>>>> deb8b280d732da228c4dfa06e82880125655a1e6
 		catch (InvalidPositionException| EmptyTreeException | EmptyQueueException e) {
 			System.out.println(e.getMessage());
 		}
