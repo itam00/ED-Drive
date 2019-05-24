@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +19,7 @@ import javax.swing.JTextArea;
 
 import TDALista.*;
 
+@SuppressWarnings("serial")
 public class ED_GUI extends JPanel implements ActionListener {
 	private static String GENERATE_COMMAND = "Generar jerarquia";
 	private static String ADD_COMMAND = "Añadir archivo";
@@ -88,7 +88,8 @@ public class ED_GUI extends JPanel implements ActionListener {
 
 
 
-  public void actionPerformed(ActionEvent e) {
+  @SuppressWarnings("static-access")
+public void actionPerformed(ActionEvent e) {
     String command = e.getActionCommand();
     
     try {
@@ -105,8 +106,9 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    if (ADD_COMMAND.equals(command)) {
 	    	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del archivo que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) {
+	    		tester.validarExtencion(nombre);	//se valida el nombre del archivo antes de preguntar por su direccion
 	    		String direccion = JOptionPane.showInputDialog("Ingrese la direccion donde desea crearlo");			
-	    		if(direccion!=null&&nombre.length()>0)
+	    		if(direccion!=null&&direccion.length()>0)	
 	    			tester.agregarArchivo(direccion,nombre);
 	    	}	
 	    }
@@ -120,7 +122,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    	String nombre = JOptionPane.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) { 
 	    		String direccion = JOptionPane.showInputDialog("Ingrese la direccion donde desea crearlo");
-	    		if(direccion!=null&&direccion.length()>0)
+	    		if(direccion!=null)
 	    			tester.agregarDirectorio(direccion,nombre);
 			}
 
@@ -130,20 +132,28 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    	if(direccion!=null&&direccion.length()>0)
 				tester.eliminarDirectorio(direccion);
 	    }
+	    if(MOVE_D_COMMAND.equals(command)) {
+	    	String origen = JOptionPane.showInputDialog("Ingrese la direccion del directorio a mover");
+	    	if(origen!=null&&origen.length()>0) {
+	    		String destino = JOptionPane.showInputDialog("Ingrese el destino del directorio");
+	    		if(destino!=null&&origen.length()>0)
+	    			tester.moverDirectorio(origen, destino);
+	    	}
+	    }
   	} catch (InvalidFileLocationException|InvalidFileException|InvalidFileNameException e1) {
   		toolkit.beep();
   		label = new JLabel(e1.getMessage());
   		label.setFont(new Font("Century Gothic",Font.BOLD, 12) );
 		JOptionPane.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
 	} 
+    catch(Exception w2) {
+    	label = new JLabel(w2.getMessage());
+  		label.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+		JOptionPane.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
+    }
    
     //ESTO NO TIRA EXCECIONES PERO DEBERIA AARREGLAR
-    if(MOVE_D_COMMAND.equals(command)) {
-    	String destino;
-    	String direccion = JOptionPane.showInputDialog("Ingrese la direccion del directorio a mover");
-    	if(direccion!=null&&direccion.length()>0)
-    		destino = JOptionPane.showInputDialog("Ingrese el destino del directorio");
-    }
+    
     if(TOTAL_COMMAND.equals(command)) {
     	Pair<Integer,Integer> p = tester.cantidadDeDirectoriosYArchivos();
     	int directorios=p.getKey(),archivos=p.getValue();

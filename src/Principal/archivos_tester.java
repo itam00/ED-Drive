@@ -2,13 +2,12 @@ package Principal;
 import java.io.*;  
 
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import TDAArbol.*;
 import TDACola.*;
 import TDADiccionario.DiccionarioHashAbierto;
 import TDADiccionario.Dictionary;
-import TDALista.BoundaryViolationException;
-import TDALista.EmptyListException;
 import TDALista.InvalidPositionException;
 import TDALista.ListaDE;
 import TDALista.Position;
@@ -256,11 +255,11 @@ public class archivos_tester {
 	 * @param nombre
 	 * @return
 	 */
-	private static void validarExtencion(String nombre) throws InvalidFileNameException{
+	public static void validarExtencion(String nombre) throws InvalidFileNameException{
 		boolean cumple= false;
 		int i = 0;
 		if(nombre.length() > 3 && nombre.charAt(0) != '.' && nombre.charAt(nombre.length()-1) != '.') {
-			while (i <= nombre.length() && !cumple) {
+			while (i < nombre.length() && !cumple) {
 				if(nombre.charAt(i) == '.') {
 					cumple=true;
 				}
@@ -278,19 +277,15 @@ public class archivos_tester {
 	 */
 	
 	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException,InvalidFileNameException{
-		String[] partes= direccionD.split("/"); //agrega cada string separado por "/" en una componente distinta del arreglo
 		validarExtencion(nombreA);			//en caso de que el nombre no sea valido lanza una exception
-		try {
-			Position<Pair<String,PositionList<String>>> directorio=buscar(partes,0,arbol.root()); //busca el directorio y se lo asigna a "directorio".
-			directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
-		}
-		catch (EmptyTreeException e) {	//NO DEBERIA pasar ya que el el usuario no prodra agregar un archivo
-										//si no exist un directorio
-		}
+		
+		Position<Pair<String,PositionList<String>>> directorio=buscar(direccionD); //busca el directorio y se lo asigna a "directorio".
+		directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
+
 	}
 	
 	public void eliminarArchivo(String direccionD) throws InvalidFileLocationException{
-		String separador="/";
+		String separador=Pattern.quote("\\");
 		String[] partes=direccionD.split(separador); // agrega cada string separado por "/" en una componente distinta del arreglo.
 		String nombreArchivo=partes[partes.length-1]; //guarda el nombre del archivo a eliminar.
 		boolean removi=false;
@@ -314,23 +309,24 @@ public class archivos_tester {
 			throw new InvalidFileLocationException("direccion invalida");
 	}
 	
-	public void agregarDirectorio(String direccionD1,String nombreD2) throws InvalidFileLocationException{
-		String separador="/";
-		String[] parts= direccionD1.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
+	public void agregarDirectorio(String dir,String nombreD2) throws InvalidFileLocationException{
+		String separador=Pattern.quote("\\");
+		String[] parts= dir.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
 		Position<Pair<String, PositionList<String>>> agregardirectorio=null;
 		
-		if(arbol.isEmpty() && parts.length>1)
-			throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
 		if(arbol.isEmpty()) {
+			if(parts.length!=1)
+				throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
+			else
 				arbol.createRoot(new Pair<String,PositionList<String>>(nombreD2,new ListaDE<String>()));
 				//si el arbol estaba vacio entonces se debe crear la raiz con un nuevo par
 		}
 		else {
 			try {
-				agregardirectorio=buscar(parts,0,arbol.root()); //busca el directorio donde se debe agregar el nuevo.
+				agregardirectorio=buscar(dir); //busca el directorio donde se debe agregar el nuevo.
 				arbol.addLastChild(agregardirectorio, new Pair<String,PositionList<String>> (nombreD2, new ListaDE<String>())); //agrega un directorio "nombreD2" como nuevo hijo "buscarDirectorio"
 			}
-			catch (EmptyTreeException | InvalidFileLocationException | InvalidPositionException e) {
+			catch (InvalidFileLocationException | InvalidPositionException e) {
 				throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
 			}
 		}
@@ -354,28 +350,40 @@ public class archivos_tester {
 	 * @param direccionD1 String que indica la dirección donde se encuentra el Directorio que se quiere eliminar.
 	 */
 	
-	public void eliminarDirectorio(String direccionD1) throws InvalidFileLocationException {
-		String separador="/";
-		String[] partes= direccionD1.split(separador);
+	public void eliminarDirectorio(String dir) throws InvalidFileLocationException {
 		try {
-			Position<Pair<String,PositionList<String>>> eliminar=buscar(partes,0,arbol.root());
+			Position<Pair<String,PositionList<String>>> eliminar=buscar(dir);
 			eliminarSucesores(eliminar);
 			arbol.removeExternalNode(eliminar);
 		}
-		catch (EmptyTreeException |InvalidPositionException e) {
-			//NO DEBERIA PASAR ya que el el usuario no tiene accesa elminarDirectorio si el arbol esta vacio															
+		catch (InvalidPositionException e) {
+			//NO DEBERIA PASAR ya que la posicion es del arbol														
 		}
 	}
 	/**
-	 * 	HAY QUE IMPLEMENTARLO
-	 * @param direccionD1 dirección donde se encuentra el directorio que va a ser movido.
-	 * @param direccionD2 dirección donde se colocará el directorio a mover.
+	 * Mueve un directorio y otodo su contenido a una direccion pasada por parametro
+	 * @param dir1 dirección donde se encuentra el directorio que va a ser movido.
+	 * @param dir2 dirección donde se colocará el directorio a mover.
 	 */
 	@SuppressWarnings("unused")
-	private void moverDirectorio(String direccionD1,String direccionD2) {
-		String separador="/";
-		String[] partesD1=direccionD1.split(separador);
-		String[] partesD2=direccionD2.split(separador);
+	public void moverDirectorio(String dir1,String dir2) throws InvalidFileLocationException{
+		String separador=Pattern.quote("\\");
+		Position<Pair<String,PositionList<String>>> origen=buscar(dir1);
+		Position<Pair<String,PositionList<String>>> destino=buscar(dir2);
+		
+		copiarDirectorio(origen,destino);
+		eliminarDirectorio(dir1);
+	}
+	
+	private void copiarDirectorio(Position<Pair<String,PositionList<String>>> origen,Position<Pair<String,PositionList<String>>> destino) {
+		try {
+			arbol.addFirstChild(destino, origen.element());
+			for(Position<Pair<String,PositionList<String>>> p:arbol.children(origen)) {
+				copiarDirectorio(p,destino);
+			}
+		} catch (InvalidPositionException e) {
+			//no deberia pasar ya que es una posicion del mismo arbol, por lo tanto es valida
+		}
 	}
 	/**
 	 * recorre todo el arbol buscando cada directorio y archivo en él.
@@ -403,13 +411,25 @@ public class archivos_tester {
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
+	public Position<Pair<String,PositionList<String>>> buscar(String dir)throws InvalidFileLocationException {
+		Position<Pair<String,PositionList<String>>> toReturn;
+		String separador=Pattern.quote("\\");
+		String[] partes=dir.split(separador);
+		try {
+			toReturn = buscar(partes,0,arbol.root());
+		}
+		catch(EmptyTreeException e ) {
+			throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
+		}
+		return toReturn;
+	}
 	private Position<Pair<String,PositionList<String>>> buscar(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
 		Iterator<Position<Pair<String, PositionList<String>>>> it=null;
 		try {
 			it= arbol.children(position).iterator();
 		}
 		catch (InvalidPositionException e) {
-			System.out.println(e.getMessage());
+			//no deberia pasar ya que es un nodo del mismo arbol
 		}
 		boolean encontrado=false;
 		Position<Pair<String, PositionList<String>>> toreturn=null;
