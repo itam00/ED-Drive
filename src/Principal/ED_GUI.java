@@ -161,7 +161,11 @@ public void actionPerformed(ActionEvent e) {
     	
     }
     if(LEVEL_COMMAND.equals(command)) {
-    	JTextArea a = new JTextArea();
+    	String listado="";
+    	for (String nombre:tester.listadoPorNiveles()) {
+    		listado+= nombre;
+    	}
+    	JTextArea a = new JTextArea(listado);
     	a.setOpaque(false);
   		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
 		JOptionPane.showMessageDialog(null, a,"Listado por Nivel",JOptionPane.INFORMATION_MESSAGE);
