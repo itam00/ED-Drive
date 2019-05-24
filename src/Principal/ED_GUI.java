@@ -162,7 +162,6 @@ public void actionPerformed(ActionEvent e) {
 		JOptionPane.showMessageDialog(null, label,"Error",JOptionPane.ERROR_MESSAGE);
     }
    
-    //ESTO NO TIRA EXCECIONES PERO DEBERIA AARREGLAR
     
     if(TOTAL_COMMAND.equals(command)) {
     	Pair<Integer,Integer> p = tester.cantidadDeDirectoriosYArchivos();
@@ -178,6 +177,7 @@ public void actionPerformed(ActionEvent e) {
     	JTextArea a = new JTextArea(listado);
     	a.setOpaque(false);
   		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+  		a.setText(recorrerListadoPorNivel(tester.listadoPorNiveles()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Nivel",JOptionPane.INFORMATION_MESSAGE);
     	
     }
@@ -203,6 +203,17 @@ public void actionPerformed(ActionEvent e) {
 		}
     	botones[0].setEnabled(true);// se activa el generar gerarquia
     }
+    
+  }
+  private String recorrerListadoPorNivel(PositionList<String> l) {
+	  String c="";
+	  for(String e: l) {
+		  if(e.equals("\\"))
+				  c+="\n";
+		  else
+			  c+=e;
+	  }
+	  return c;
   }
 
   private static void createAndShowGUI() {

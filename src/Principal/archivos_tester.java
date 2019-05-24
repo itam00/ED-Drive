@@ -272,10 +272,9 @@ public class archivos_tester {
 	
 	/**
 	 * Agrega un directorio "nombreD2" dentro del directorio correspondiente a la direccion "direccionD1".
-	 * @param direccionD1 Indica la direccion donde se encuentra el Directorio dentro del cual se agrega uno nuevo.
-	 * @param nombreD2 Indica el nombre del nuevo directorio a agregar.
+	 * @param direccionD Indica la direccion donde se encuentra el Directorio dentro del cual se agrega uno nuevo.
+	 * @param nombreA Indica el nombre del nuevo directorio a agregar.
 	 */
-	
 	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException,InvalidFileNameException{
 		validarExtencion(nombreA);			//en caso de que el nombre no sea valido lanza una exception
 		
@@ -310,12 +309,11 @@ public class archivos_tester {
 	}
 	
 	public void agregarDirectorio(String dir,String nombreD2) throws InvalidFileLocationException{
-		String separador=Pattern.quote("\\");
-		String[] parts= dir.split(separador); //agrega cada string separado por "/" en una componente distinta del arreglo
+
 		Position<Pair<String, PositionList<String>>> agregardirectorio=null;
 		
 		if(arbol.isEmpty()) {
-			if(parts.length!=1)
+			if(dir!="")
 				throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
 			else
 				arbol.createRoot(new Pair<String,PositionList<String>>(nombreD2,new ListaDE<String>()));
@@ -337,7 +335,6 @@ public class archivos_tester {
 	 * @param padre Es el directorio del cual se quieren eliminar sus hijos y los sucesores de estos.
 	 * @throws InvalidPositionException En caso de que no sea valido el directorio pasado por parametro.
 	 */
-	
 	private void eliminarSucesores(Position<Pair<String,PositionList<String>>> padre) throws InvalidPositionException {
 		for (Position<Pair<String,PositionList<String>>> p:arbol.children(padre)) {
 			eliminarSucesores(p);
@@ -349,7 +346,6 @@ public class archivos_tester {
 	 * Elimina del arbol el Directorio correspondiente a la direccionD1
 	 * @param direccionD1 String que indica la dirección donde se encuentra el Directorio que se quiere eliminar.
 	 */
-	
 	public void eliminarDirectorio(String dir) throws InvalidFileLocationException {
 		try {
 			Position<Pair<String,PositionList<String>>> eliminar=buscar(dir);
@@ -381,7 +377,6 @@ public class archivos_tester {
 	 */
 	@SuppressWarnings("unused")
 	public void moverDirectorio(String dir1,String dir2) throws InvalidFileLocationException{
-		String separador=Pattern.quote("\\");
 		Position<Pair<String,PositionList<String>>> origen=buscar(dir1);
 		Position<Pair<String,PositionList<String>>> destino=buscar(dir2);
 		if (!origen.equals(destino) && !esHijo(origen,destino)) {
@@ -427,7 +422,6 @@ public class archivos_tester {
 	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
-	
 	public Position<Pair<String,PositionList<String>>> buscar(String dir)throws InvalidFileLocationException {
 		Position<Pair<String,PositionList<String>>> toReturn;
 		String separador=Pattern.quote("\\");
@@ -484,7 +478,7 @@ public class archivos_tester {
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
-	private Position<Pair<String,PositionList<String>>> buscarArchivo(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
+	public Position<Pair<String,PositionList<String>>> buscarArchivo(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
 		Iterator<Position<Pair<String, PositionList<String>>>> it=null;
 		try {
 			it= arbol.children(position).iterator();
@@ -521,6 +515,39 @@ public class archivos_tester {
 	
 	@SuppressWarnings("unused")
 	public PositionList<String> listadoPorNiveles(){
+<<<<<<< HEAD
+		Queue<Position<Pair<String,PositionList<String>>>> cola= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
+		Position<Pair<String,PositionList<String>>> hijos;
+		Position<Pair<String,PositionList<String>>> dir;
+		PositionList<String> lista= new ListaDE<String>();
+		
+		try {
+			cola.enqueue(arbol.root());
+			cola.enqueue(null);
+			lista.addLast(arbol.root().element().getKey());
+			lista.addLast("\\");
+			while(!cola.isEmpty()){
+				dir = cola.dequeue();
+				if(dir!=null) {
+					for(String e:dir.element().getValue()) {
+						lista.addLast(e+", ");
+					} 
+					for (Position<Pair<String,PositionList<String>>>pos: arbol.children(dir)) {
+						cola.enqueue(pos);
+						lista.addLast(pos.element().getKey()+ ", ");
+					}
+				}
+				else {
+					lista.addLast("\\");
+					if(!cola.isEmpty())
+						cola.enqueue(null);
+				}
+					
+				
+			}
+			
+		}
+=======
 		Queue<Position<Pair<String,PositionList<String>>>> aListar= new ColaConArregloCircular<Position<Pair<String,PositionList<String>>>>(30);
 		Queue<String> nombresAListar= new ColaConArregloCircular<String>(20);
 		Position<Pair<String,PositionList<String>>> directorio;
@@ -544,10 +571,11 @@ public class archivos_tester {
 					toreturn.addLast(" "+nombresAListar.dequeue());
 			toreturn.addLast(">");
 			}
+>>>>>>> deb8b280d732da228c4dfa06e82880125655a1e6
 		catch (InvalidPositionException| EmptyTreeException | EmptyQueueException e) {
 			System.out.println(e.getMessage());
 		}
-		return toreturn;
+		return lista;
 	}
 	/** 
 	 * crea un listado por profundidad de los directorios del arbol, guarda la direccion de los directorios como clave
@@ -631,6 +659,7 @@ public class archivos_tester {
 		}
 		return toReturn;
 	}
+	
 	
 	public String mostrarListadoExtencion() {
 		Dictionary<String,String> D = listadoPorExtencion();
