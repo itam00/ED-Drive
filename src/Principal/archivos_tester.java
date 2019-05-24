@@ -536,10 +536,11 @@ public class archivos_tester {
 						lista.addLast(pos.element().getKey()+ ", ");
 					}
 				}
-				else {
-					lista.addLast("\\");
-					if(!cola.isEmpty())
+				else {					
+					if(!cola.isEmpty()) {
+						lista.addLast("\\");
 						cola.enqueue(null);
+					}
 				}
 					
 				
@@ -580,16 +581,7 @@ public class archivos_tester {
 			}
 		} catch (InvalidKeyException | InvalidPositionException e) {}
 	}
-	
-	public String listadoProf() {
-		String c="";
-		for(Entry<String,Integer> e:listadoPorProfundidad().entries()) {
-			c+="Direccion: "+e.getKey()+", Profundidad: "+e.getValue()+"\n";
-		}
-		return c;
-	}
-	
-	
+		
 	/**
 	 * Listado por extencion que retornar un Diccionario con las archivos
 	 * @return Diccionario con extencion como clave y nombre como valor
@@ -634,20 +626,6 @@ public class archivos_tester {
 		return toReturn;
 	}
 	
-	
-	public String mostrarListadoExtencion() {
-		Dictionary<String,String> D = listadoPorExtencion();
-		String toReturn = "";
-		String extencion = "";
-		for(TDADiccionario.Entry<String, String> e : D.entries()) {
-			if(!extencion.equals(e.getKey())) {
-				extencion = e.getKey();
-				toReturn += ""+extencion+":\n";
-			}
-			toReturn = toReturn+"   "+e.getValue()+"\n";
-		}
-		return toReturn;
-	}
 	
 	/**
 	 * Metodo que transforma los directorios y los archivos del arbol a una cadena de caracteres para

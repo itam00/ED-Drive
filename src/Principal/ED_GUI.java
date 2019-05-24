@@ -18,7 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import TDADiccionario.Dictionary;
 import TDALista.*;
+import TDAMapeo.Entry;
+import TDAMapeo.Map;
 
 @SuppressWarnings("serial")
 public class ED_GUI extends JPanel implements ActionListener {
@@ -43,6 +46,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	private JScrollPane sc;
 	private JLabel label;
 	private JOptionPane panel;
+	private JTextArea a;
 
 	public ED_GUI() {
 	    super(new BorderLayout());
@@ -53,6 +57,9 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    panel.setFont(new Font("Century Gothic",Font.BOLD, 20) );
 	    label = new JLabel();
 	    label.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+	    a = new JTextArea();
+    	a.setOpaque(false);
+  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
 	    //
 	    
 	    nombres = new String[cantBotones];
@@ -178,27 +185,16 @@ public void actionPerformed(ActionEvent e) {
     	
     }
     if(LEVEL_COMMAND.equals(command)) {
-    	String listado="";
-    	for (String nombre:tester.listadoPorNiveles()) {
-    		listado+= nombre;
-    	}
-    	JTextArea a = new JTextArea(listado);
-    	a.setOpaque(false);
-  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
   		a.setText(recorrerListadoPorNivel(tester.listadoPorNiveles()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Nivel",JOptionPane.INFORMATION_MESSAGE);
     	
     }
     if(DEPTH_COMMAND.equals(command)) {
-    	JTextArea a = new JTextArea(tester.listadoProf());
-    	a.setOpaque(false);
-  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+    	a.setText(recorrerListadoProfundidad(tester.listadoPorProfundidad()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Profundidad",JOptionPane.INFORMATION_MESSAGE);
     }
     if(EXTENSION_COMMAND.equals(command)) {
-    	JTextArea a = new JTextArea(tester.mostrarListadoExtencion());
-    	a.setOpaque(false);
-  		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
+    	a.setText(recorrerListadoExtencion(tester.listadoPorExtencion()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Extencion",JOptionPane.INFORMATION_MESSAGE);
     }
     
@@ -214,15 +210,39 @@ public void actionPerformed(ActionEvent e) {
     
   }
   private String recorrerListadoPorNivel(PositionList<String> l) {
-	  String c="";
+	  int i=0;
+	  String c="Nivel "+i+": ";
+	  i++;
 	  for(String e: l) {
-		  if(e.equals("\\"))
-				  c+="\n";
+		  if(e.equals("\\")) {
+				  c+="\nNivel "+i+": ";
+				  i++;
+		  }
 		  else
 			  c+=e;
 	  }
 	  return c;
   }
+  public String recorrerListadoExtencion(Dictionary<String,String> D) {
+		String toReturn = "";
+		String extencion = "";
+		for(TDADiccionario.Entry<String, String> e : D.entries()) {
+			if(!extencion.equals(e.getKey())) {
+				extencion = e.getKey();
+				toReturn += ""+extencion+":\n";
+			}
+			toReturn = toReturn+"   "+e.getValue()+"\n";
+		}
+		return toReturn;
+	}
+  
+	private String recorrerListadoProfundidad(Map<String,Integer> m) {
+		String c="";
+		for(Entry<String,Integer> e: m.entries()) {
+			c+="Direccion: "+e.getKey()+", Profundidad: "+e.getValue()+"\n";
+		}
+		return c;
+	}
 
   private static void createAndShowGUI() {
     
