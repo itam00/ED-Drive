@@ -28,8 +28,17 @@ public class archivos_tester {
 			arbol=null;
 			throw new InvalidFileException("El formato del archivo no es valido");
 		}
+		
 	}
 	
+	public archivos_tester() {
+		arbol=new Arbol<Pair<String,PositionList<String>>>();
+	}
+	
+	public boolean isEmptyTree() {
+		return arbol.isEmpty();
+	}
+
 	/**
  	* Valida si el archivo leido es valido comprobando su sintaxis y comprobando que la cola donde estaban todos los 
  	* elementos haya quedado vacia. En caso de ser valido agrega al arbol todos los directorios con sus archivos
