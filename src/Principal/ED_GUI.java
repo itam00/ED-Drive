@@ -85,6 +85,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	        botones[i].setFont( new Font("Century Gothic",Font.BOLD, 16) );
 	
 		}
+	    botones[3].setEnabled(true);
 	
 	    botones[0].setEnabled(true);
 	    panelBotones = new JPanel(new GridLayout(cantBotones, 0));
@@ -143,20 +144,35 @@ public void actionPerformed(ActionEvent e) {
 	    	String direccion = panel.showInputDialog("Ingrese la direccion del archivo a remover incluyendo el nombre del archivo");
 	    	if(direccion!=null&&direccion.length()>0)
 	    		tester.eliminarArchivo(direccion);
+	    	
 	    } 
 	    if (ADD_D_COMMAND.equals(command)) {
 	    	String nombre = panel.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) { 
-	    		String direccion = panel.showInputDialog("Ingrese la direccion donde desea crearlo");
-	    		if(direccion!=null)
-	    			tester.agregarDirectorio(direccion,nombre);
-			}
+		    	if (tester==null ||tester.isEmptyTree()) {
+		    		tester=new archivos_tester();
+		    		tester.agregarDirectorio("", nombre);
+		    		for (int i = 0; i < nombres.length; i++)
+		    			botones[i].setEnabled(true);
+		    	}
+		    	else {
+		    		String direccion = panel.showInputDialog("Ingrese la direccion donde desea crearlo");
+		    		if(direccion!=null)
+		    			tester.agregarDirectorio(direccion,nombre);
+				}
+	    	}
 
 	    }
 	    if (REMOVE_D_COMMAND.equals(command)) {
 	    	String direccion = panel.showInputDialog("Ingrese la direccion del directorio a remover incluyendolo");
 	    	if(direccion!=null&&direccion.length()>0)
 				tester.eliminarDirectorio(direccion);
+	    	if (tester.isEmptyTree()) {
+	    		for (int i=0;i<nombres.length;i++)
+	    			botones[i].setEnabled(false);
+	    		botones[0].setEnabled(true);
+	    		botones[3].setEnabled(true);
+	    	}
 	    }
 	    if(MOVE_D_COMMAND.equals(command)) {
 	    	String origen = panel.showInputDialog("Ingrese la direccion del directorio a mover");
