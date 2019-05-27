@@ -222,6 +222,7 @@ public void actionPerformed(ActionEvent e) {
 			botones[i].setEnabled(false);	//no deberia ejecutarse esto pero por si las moscas
 		}
     	botones[0].setEnabled(true);// se activa el generar gerarquia
+    	botones[3].setEnabled(true);// se activa el generar gerarquia
     }
     
   }
