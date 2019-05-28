@@ -40,7 +40,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	private JTextArea cadenaArbol;
 	private final int cantBotones = 10;
 	private String[] nombres;
-	private archivos_tester tester;
+	private Logica tester;
 	private JPanel panelBotones;
 	private JButton botones[];
 	private JScrollPane sc;
@@ -120,7 +120,7 @@ public void actionPerformed(ActionEvent e) {
 		    	if (partes.length>1)
 		    		cumple = (partes[partes.length-2].charAt(partes[partes.length-1].length()-1)!='\\' &&partes[partes.length-1].equals("ed19"));
 		    	if(direccion!=null && cumple && direccion.length()>0) {
-			    		tester = new archivos_tester(direccion);
+			    		tester = new Logica(direccion);
 						for(int i=0;i<botones.length;i++) {
 							botones[i].setEnabled(true);		
 						}
@@ -150,7 +150,7 @@ public void actionPerformed(ActionEvent e) {
 	    	String nombre = panel.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) { 
 		    	if (tester==null ||tester.isEmptyTree()) {
-		    		tester=new archivos_tester();
+		    		tester=new Logica();
 		    		tester.agregarDirectorio("", nombre);
 		    		for (int i = 0; i < nombres.length; i++)
 		    			botones[i].setEnabled(true);
@@ -211,7 +211,7 @@ public void actionPerformed(ActionEvent e) {
     }
     if(EXTENSION_COMMAND.equals(command)) {
     	a.setText(recorrerListadoExtencion(tester.listadoPorExtencion()));
-		JOptionPane.showMessageDialog(null, a,"Listado por Extencion",JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, a,"Listado por Extension",JOptionPane.INFORMATION_MESSAGE);
     }
     
     if(tester!=null) {
