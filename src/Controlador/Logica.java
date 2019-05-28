@@ -14,7 +14,11 @@ import TDALista.Position;
 import TDALista.PositionList;
 import TDAMapeo.*;
 
-
+/**
+ * clase donde se llevan a cabo las funcionalidades definidas por la consigna del proyecto.
+ * @author Nico, Mati y Alan
+ *
+ */
 public class Logica {
 	private Tree<Pair<String,PositionList<String>>> arbol;
 		
@@ -38,7 +42,7 @@ public class Logica {
 	}
 	
 	/**
-	 * crea un arbol vacío.
+	 * Crea un arbol vacio.
 	 */
 	
 	public Logica() {
@@ -46,8 +50,8 @@ public class Logica {
 	}
 	
 	/**
-	 * dice si el arbol esta vacío
-	 * @return true si el arbol está vacio o falso en caso contrario
+	 * Dice si el arbol esta vacio
+	 * @return true si el arbol esta vacio o falso en caso contrario
 	 */
 	
 	public boolean isEmptyTree() {
@@ -65,9 +69,9 @@ public class Logica {
 	private boolean valido(Queue<String> q) {
 		boolean cumple= false;
 		try {
-			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // es el directorio raíz del arbol
-			arbol.createRoot(primerPar); // crea la raiz del arbol con "primerPar".
-			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vacía (si no queda vacía la pila significa que hay mas de 1 carpeta principal.
+			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // Es el directorio raiz del arbol
+			arbol.createRoot(primerPar); // Crea la raiz del arbol con "primerPar".
+			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vacia (si no queda vacia la pila significa que hay mas de 1 carpeta principal.
 		}
 		catch(InvalidOperationException | EmptyTreeException e) {} // Esto no deberia pasar nunca
 		return cumple;			
@@ -227,7 +231,7 @@ public class Logica {
 	 * y agrega el nombre del archivo en la cola "nom" con una A al principio.
 	 * desencola un archivo si y solo si este verifica la sintaxis
 	 * @param c cola en la que se verifica la sintaxis de sus elementos
-	 * @param l lista donde se guardarán los nombres de los archivos del directorio donde se encuentran.
+	 * @param l lista donde se guardaran los nombres de los archivos del directorio donde se encuentran.
 	 */
 	
 	private void validarArchivos(Queue<String> c, PositionList<String> l) {
@@ -281,7 +285,7 @@ public class Logica {
 	
 	/**
 	 * valida en nombre de un archivo comprobando que tenga extension.
-	 * @param nombre que será evaluado.
+	 * @param nombre que sera evaluado.
 	 * @return true si el nombre es valido o falso en caso contrario.
 	 */
 	
@@ -347,7 +351,7 @@ public class Logica {
 	
 	/**
 	 * agrega un subdirectorio del directorio que se encuentra en dir
-	 * @param dir direccion donde se encuentra el directorio donde se agregará un nuevo subdirectorio
+	 * @param dir direccion donde se encuentra el directorio donde se agregara un nuevo subdirectorio
 	 * @param nombreD2 nombre del directorio que se agrega
 	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
 	 */
@@ -392,7 +396,7 @@ public class Logica {
 	
 	/**
 	 * Elimina del arbol el Directorio correspondiente a la direccionD1
-	 * @param direccionD1 String que indica la dirección donde se encuentra el Directorio que se quiere eliminar.
+	 * @param direccionD1 String que indica la direccion donde se encuentra el Directorio que se quiere eliminar.
 	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
 	 */
 	
@@ -409,8 +413,8 @@ public class Logica {
 	
 	/**
 	 * Mueve un directorio y otodo su contenido a una direccion pasada por parametro
-	 * @param dir1 dirección donde se encuentra el directorio que va a ser movido.
-	 * @param dir2 dirección donde se colocará el directorio a mover.
+	 * @param dir1 direccion donde se encuentra el directorio que va a ser movido.
+	 * @param dir2 direccion donde se colocara el directorio a mover.
 	 * @throws InvalidFileLocationException en caso de que dir1 o dir 2 no sean validas, y en caso de que la direccion destino sea igual a origen o sea sucesor de origen.
 	 */
 	
@@ -418,7 +422,11 @@ public class Logica {
 		Position<Pair<String,PositionList<String>>> origen=buscar(dir1);
 		Position<Pair<String,PositionList<String>>> destino=buscar(dir2);
 		String[] dirOrigen=dir1.split(Pattern.quote("\\"));
-		if (!origen.equals(destino) && dir2.lastIndexOf(dirOrigen[dirOrigen.length-1])<0) {
+		String[] dirDestino=dir2.split(Pattern.quote("\\"));
+		boolean contenido=false;
+		for (int i=0; i<dirDestino.length && !contenido;i++)
+			contenido=dirDestino[i].equals(dirOrigen[dirOrigen.length-1]);
+		if (!origen.equals(destino) && !contenido) {
 			copiarDirectorio(origen,destino);
 			eliminarDirectorio(dir1);
 		}
@@ -428,24 +436,23 @@ public class Logica {
 	
 	/**
 	 * Copia el directorio que se encuentra en la direccion origen y coloca la copia en la direccion destino.
-	 * @param origen	direccion donde se encuentra el directorio a copiar
-	 * @param destino direccion donde se colocará la copia del directorio copiado.
+	 * @param origen direccion donde se encuentra el directorio a copiar
+	 * @param destino direccion donde se colocara la copia del directorio copiado.
 	 */
 	
 	private void copiarDirectorio(Position<Pair<String,PositionList<String>>> origen,Position<Pair<String,PositionList<String>>> destino) {
 		try {
-			
+			destino=arbol.addFirstChild(destino, origen.element());
 			for(Position<Pair<String,PositionList<String>>> p:arbol.children(origen)) {
-				copiarDirectorio(p,origen);
+				copiarDirectorio(p,destino);
 			}
-			arbol.addFirstChild(destino, origen.element());
 		} catch (InvalidPositionException e) {
 			//no deberia pasar ya que es una posicion del mismo arbol, por lo tanto es valida
 		}
 	}
 	
 	/**
-	 * recorre todo el arbol buscando cada directorio y archivo en él.
+	 * recorre todo el arbol buscando cada directorio y archivo en el.
 	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
 	 */
 	
@@ -465,7 +472,7 @@ public class Logica {
 	/**
 	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.chivo es correcta.
 	 * @param dir Directorio a buscar.
-	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
+	 * @return Una posicion que encapsula el directorio donde se buscara el que directorio que se esta buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
@@ -485,9 +492,9 @@ public class Logica {
 	/**
 	 * Metodo auxiliar de buscar
 	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
-	 * @param indice Entero que indice qué String dentro el arreglo "partes" se debe comparar con el directorio "position".
-	 * @param position Directorio a comparar con el String en el subíndice "indice", si es el mismo la direccion del archivo es correcta.
-	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
+	 * @param indice Entero que indice que String dentro el arreglo "partes" se debe comparar con el directorio "position".
+	 * @param position Directorio a comparar con el String en el subindice "indice", si es el mismo la direccion del archivo es correcta.
+	 * @return Una posicion que encapsula el directorio donde se buscara el que directorio que se esta buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	private Position<Pair<String,PositionList<String>>> buscar(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
@@ -528,9 +535,9 @@ public class Logica {
 	/**
 	 * Busca en el arbol el archivo ubicado dentro del directorio pasado a traves del parametro position y lo retorna.
 	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
-	 * @param indice Entero que indice qué String dentro el arreglo "partes" se debe comparar con el directorio "position".
-	 * @param position Directorio a comparar con el String en el subíndice "indice", si es el mismo la direccion del archivo es correcta.
-	 * @return Una posicion que encapsula el Directorio donde se buscará el archivo.
+	 * @param indice Entero que indice que String dentro el arreglo "partes" se debe comparar con el directorio "position".
+	 * @param position Directorio a comparar con el String en el subindice "indice", si es el mismo la direccion del archivo es correcta.
+	 * @return Una posicion que encapsula el Directorio donde se buscara el archivo.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	

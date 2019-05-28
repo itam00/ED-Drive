@@ -24,7 +24,7 @@ public class PilaConArreglo<E> implements Stack<E> {
 	@Override
 	public E top() throws EmptyStackException {
 		if (isEmpty())
-			throw new EmptyStackException ("está vacia");
+			throw new EmptyStackException ("esta vacia");
 		else
 			return A[t];
 	}
@@ -39,7 +39,7 @@ public class PilaConArreglo<E> implements Stack<E> {
 	public E pop() throws EmptyStackException {
 		E e;
 		if (isEmpty())
-			throw new EmptyStackException("está vacía");
+			throw new EmptyStackException("esta vacia");
 		else
 		{
 			e=A[t];

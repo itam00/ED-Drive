@@ -24,7 +24,7 @@ public class ColaConArregloCircular<E> implements Queue<E> {
 
 	public E front() throws EmptyQueueException {
 		if (tamaño==0)
-			throw new EmptyQueueException("Cola vacía");
+			throw new EmptyQueueException("Cola vacia");
 		return A[f];
 	}
 
@@ -56,7 +56,7 @@ public class ColaConArregloCircular<E> implements Queue<E> {
 
 	public E dequeue() throws EmptyQueueException {
 		if (isEmpty())
-			throw new EmptyQueueException("Cola vacía");
+			throw new EmptyQueueException("Cola vacia");
 		E pri=A[f];
 		A[f]=null;
 		f=((f+1) % A.length);

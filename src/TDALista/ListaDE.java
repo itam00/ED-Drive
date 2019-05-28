@@ -30,7 +30,7 @@ public class ListaDE<E> implements PositionList<E> {
 	private NodoDE<E> checkPosition(Position<E> p) throws InvalidPositionException{
 		try {
 			if (p==null) 
-				throw new InvalidPositionException ("posición nula");
+				throw new InvalidPositionException ("posicion nula");
 			return (NodoDE<E>) p;
 		}
 		catch(ClassCastException e) {
@@ -41,14 +41,14 @@ public class ListaDE<E> implements PositionList<E> {
 	@Override
 	public Position<E> first() throws EmptyListException {
 		if (size()==0)
-			throw new EmptyListException("lista vacía");
+			throw new EmptyListException("lista vacia");
 		return head.getSiguiente();
 	}
 
 	@Override
 	public Position<E> last() throws EmptyListException {
 		if (size()==0)
-			throw new EmptyListException("lista vacía");
+			throw new EmptyListException("lista vacia");
 		return tail.getAnterior();
 	}
 
@@ -56,7 +56,7 @@ public class ListaDE<E> implements PositionList<E> {
 	public Position<E> next(Position<E> p) throws InvalidPositionException, BoundaryViolationException {
 		NodoDE<E> n=checkPosition(p);
 		if (n.getSiguiente()==tail)
-			throw new BoundaryViolationException("Siguiente al último");
+			throw new BoundaryViolationException("Siguiente al ultimo");
 		return n.getSiguiente();
 	}	
 
@@ -105,7 +105,7 @@ public class ListaDE<E> implements PositionList<E> {
 	@Override
 	public E remove(Position<E> p) throws InvalidPositionException {
 		if (isEmpty()) 
-			throw new InvalidPositionException("lista vacía");
+			throw new InvalidPositionException("lista vacia");
 		NodoDE<E> n=checkPosition(p);
 		E elem=n.element();
 		n.getAnterior().setSiguiente(n.getSiguiente());
@@ -117,7 +117,7 @@ public class ListaDE<E> implements PositionList<E> {
 	@Override
 	public E set(Position<E> p, E element) throws InvalidPositionException {
 		if (isEmpty())
-			throw new InvalidPositionException("lista vacía");
+			throw new InvalidPositionException("lista vacia");
 		NodoDE<E> n=checkPosition(p);
 		E elem= n.element();
 		n.setElemento(element);

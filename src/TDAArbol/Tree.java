@@ -7,159 +7,159 @@ import TDALista.Position;
 
 /**
  * Interface Tree
- * En esta interfaz se incluyen las operaciones necesarias para modificar el árbol.
+ * En esta interfaz se incluyen las operaciones necesarias para modificar el arbol.
  * @author Mati, Nico y Alan
  */
 
 public interface Tree<E> extends Iterable<E>
 {
 	/**
-	 * Consulta la cantidad de nodos en el árbol.
-	 * @return Cantidad de nodos en el árbol.
+	 * Consulta la cantidad de nodos en el arbol.
+	 * @return Cantidad de nodos en el arbol.
 	 */
 	public int size();
 	
 	/**
-	 * Consulta si el árbol está vacío.
-	 * @return Verdadero si el árbol está vacío, falso en caso contrario.
+	 * Consulta si el arbol esta vacio.
+	 * @return Verdadero si el arbol esta vacio, falso en caso contrario.
 	 */
 	public boolean isEmpty();
 	
 	/**
-	 * Devuelve un iterador de los elementos almacenados en el árbol en preorden.
-	 * @return Iterador de los elementos almacenados en el árbol.
+	 * Devuelve un iterador de los elementos almacenados en el arbol en preorden.
+	 * @return Iterador de los elementos almacenados en el arbol.
 	 */
 	
 	public Iterator<E> iterator();
 	
 	/**
-	 * Devuelve una colección iterable de las posiciones de los nodos del árbol.
-	 * @return Colección iterable de las posiciones de los nodos del árbol.
+	 * Devuelve una coleccion iterable de las posiciones de los nodos del arbol.
+	 * @return Coleccion iterable de las posiciones de los nodos del arbol.
 	 */
 	public Iterable<Position<E>> positions();
 	
 	/**
-	 * Reemplaza el elemento almacenado en la posición dada por el elemento pasado por parámetro. Devuelve el elemento reemplazado.
-	 * @param v Posición de un nodo.
-	 * @param e Elemento a reemplazar en la posición pasada por parámetro.
+	 * Reemplaza el elemento almacenado en la posicion dada por el elemento pasado por parametro. Devuelve el elemento reemplazado.
+	 * @param v Posicion de un nodo.
+	 * @param e Elemento a reemplazar en la posicion pasada por parametro.
 	 * @return Elemento reemplazado.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida.
 	 */
 	public E replace(Position<E> v, E e) throws InvalidPositionException;
 	
 	/**
-	 * Devuelve la posición de la raíz del árbol.
-	 * @return Posición de la raíz del árbol.
-	 * @throws EmptyTreeException si el árbol está vacío.
+	 * Devuelve la posicion de la raiz del arbol.
+	 * @return Posicion de la raiz del arbol.
+	 * @throws EmptyTreeException si el arbol esta vacio.
 	 */
 	public Position<E> root() throws EmptyTreeException;
 	
 	/**
-	 * Devuelve la posición del nodo padre del nodo correspondiente a una posición dada.
-	 * @param v Posición de un nodo.
-	 * @return Posición del nodo padre del nodo correspondiente a la posición dada.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida.
-	 * @throws BoundaryViolationException si la posición pasada por parámetro corresponde a la raíz del árbol.
+	 * Devuelve la posicion del nodo padre del nodo correspondiente a una posicion dada.
+	 * @param v Posicion de un nodo.
+	 * @return Posicion del nodo padre del nodo correspondiente a la posicion dada.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida.
+	 * @throws BoundaryViolationException si la posicion pasada por parametro corresponde a la raiz del arbol.
 	 */
 	public Position<E> parent(Position<E> v) throws InvalidPositionException, BoundaryViolationException;
 	
 	/**
-	 * Devuelve una colección iterable de los hijos del nodo correspondiente a una posición dada.
-	 * @param v Posición de un nodo.
-	 * @return Colección iterable de los hijos del nodo correspondiente a la posición pasada por parámetro.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida.
+	 * Devuelve una coleccion iterable de los hijos del nodo correspondiente a una posicion dada.
+	 * @param v Posicion de un nodo.
+	 * @return Coleccion iterable de los hijos del nodo correspondiente a la posicion pasada por parametro.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida.
 	 */
 	public Iterable<Position<E>> children(Position<E> v) throws InvalidPositionException;
 	
 	/**
-	 * Consulta si una posición corresponde a un nodo interno.
-	 * @param v Posición de un nodo.
-	 * @return Verdadero si la posición pasada por parámetro corresponde a un nodo interno, falso en caso contrario.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida.
+	 * Consulta si una posicion corresponde a un nodo interno.
+	 * @param v Posicion de un nodo.
+	 * @return Verdadero si la posicion pasada por parametro corresponde a un nodo interno, falso en caso contrario.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida.
 	 */
 	public boolean isInternal(Position<E> v) throws InvalidPositionException;
 	
 	/**
-	 * Consulta si una posición dada corresponde a un nodo externo.
-	 * @param v Posición de un nodo.
-	 * @return Verdadero si la posición pasada por parámetro corresponde a un nodo externo, falso en caso contrario.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida.
+	 * Consulta si una posicion dada corresponde a un nodo externo.
+	 * @param v Posicion de un nodo.
+	 * @return Verdadero si la posicion pasada por parametro corresponde a un nodo externo, falso en caso contrario.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida.
 	 */
 	public boolean isExternal(Position<E> v) throws InvalidPositionException;
 	
 	/**
-	 * Consulta si una posición dada corresponde a la raíz del árbol.
-	 * @param v Posición de un nodo.
-	 * @return Verdadero, si la posición pasada por parámetro corresponde a la raíz del árbol,falso en caso contrario.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida.
+	 * Consulta si una posicion dada corresponde a la raiz del arbol.
+	 * @param v Posicion de un nodo.
+	 * @return Verdadero, si la posicion pasada por parametro corresponde a la raiz del arbol,falso en caso contrario.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida.
 	 */
 	public boolean isRoot(Position<E> v) throws InvalidPositionException;
 	
 	/**
-	 * Crea un nodo con rótulo e como raíz del árbol.
-	 * @param E Rótulo que se asignará a la raíz del árbol.
-	 * @throws InvalidOperationException si el árbol ya tiene un nodo raíz.
+	 * Crea un nodo con rotulo e como raiz del arbol.
+	 * @param E Rotulo que se asignara a la raiz del arbol.
+	 * @throws InvalidOperationException si el arbol ya tiene un nodo raiz.
 	 */
 	public void createRoot(E e) throws InvalidOperationException;
 	
 	/**
-	 * Agrega un nodo con rótulo e como primer hijo de un nodo dado.
-	 * @param e Rótulo del nuevo nodo.
-	 * @param padre Posición del nodo padre.
-	 * @return La posición del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida o el árbol está vacío.
+	 * Agrega un nodo con rotulo e como primer hijo de un nodo dado.
+	 * @param e Rotulo del nuevo nodo.
+	 * @param padre Posicion del nodo padre.
+	 * @return La posicion del nuevo nodo creado.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida o el arbol esta vacio.
 	 */
 	public Position<E> addFirstChild(Position<E> p, E e) throws	InvalidPositionException;
 	
 	/**
-	 * Agrega un nodo con rótulo e como útimo hijo de un nodo dado.
-	 * @param e Rótulo del nuevo nodo.
-	 * @param p Posición del nodo padre.
-	 * @return La posición del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida o el árbol está vacío.
+	 * Agrega un nodo con rotulo e como utimo hijo de un nodo dado.
+	 * @param e Rotulo del nuevo nodo.
+	 * @param p Posicion del nodo padre.
+	 * @return La posicion del nuevo nodo creado.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida o el arbol esta vacio.
 	 */
 	public Position<E> addLastChild(Position<E> p, E e) throws InvalidPositionException;
 	
 	/**
-	 * Agrega un nodo con rótulo e como hijo de un nodo padre dado. El nuevo nodo se agregará delante de otro nodo también dado.
-	 * @param e Rótulo del nuevo nodo.
-	 * @param p Posición del nodo padre.
-	 * @param rb Posición del nodo que será el hermano derecho del nuevo nodo.
-	 * @return La posición del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida, o el árbol está vacío, o la posición rb no corresponde a un nodo hijo del nodo referenciado por p.
+	 * Agrega un nodo con rotulo e como hijo de un nodo padre dado. El nuevo nodo se agregara delante de otro nodo tambien dado.
+	 * @param e Rotulo del nuevo nodo.
+	 * @param p Posicion del nodo padre.
+	 * @param rb Posicion del nodo que sera el hermano derecho del nuevo nodo.
+	 * @return La posicion del nuevo nodo creado.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida, o el arbol esta vacio, o la posicion rb no corresponde a un nodo hijo del nodo referenciado por p.
 	 */
 	public Position<E> addBefore(Position<E> p, Position<E> rb, E e) throws InvalidPositionException;
 	
 	/**
-	 * Agrega un nodo con rótulo e como hijo de un nodo padre dado. El nuevo nodo se agregará a continuación de otro nodo también dado.
-	 * @param e Rótulo del nuevo nodo.
-	 * @param p Posición del nodo padre.
-	 * @param lb Posición del nodo que será el hermano izquierdo del nuevo nodo.
-	 * @return La posición del nuevo nodo creado.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida, o el árbol está vacío, o la posición lb no corresponde a un nodo hijo del nodo referenciado por p.
+	 * Agrega un nodo con rotulo e como hijo de un nodo padre dado. El nuevo nodo se agregara a continuacion de otro nodo tambien dado.
+	 * @param e Rotulo del nuevo nodo.
+	 * @param p Posicion del nodo padre.
+	 * @param lb Posicion del nodo que sera el hermano izquierdo del nuevo nodo.
+	 * @return La posicion del nuevo nodo creado.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida, o el arbol esta vacio, o la posicion lb no corresponde a un nodo hijo del nodo referenciado por p.
 	 */
 	public Position<E> addAfter (Position<E> p, Position<E> lb, E e) throws InvalidPositionException;
 	
 	/**
-	 * Elimina el nodo referenciado por una posición dada, si se trata de un nodo externo. 
-	 * @param n Posición del nodo a eliminar.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida o no corresponde a un nodo externo, o el árbol está vacío.
+	 * Elimina el nodo referenciado por una posicion dada, si se trata de un nodo externo. 
+	 * @param n Posicion del nodo a eliminar.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida o no corresponde a un nodo externo, o el arbol esta vacio.
 	 */
 	public void removeExternalNode (Position<E> p) throws InvalidPositionException;
 	
 	/**
-	 * Elimina el nodo referenciado por una posición dada, si se trata de un nodo interno. Los hijos del nodo eliminado lo reemplazan en el mismo orden en el que aparecen. 
-	 * Si el nodo a eliminar es la raíz del árbol,  únicamente podrá ser eliminado si tiene un solo hijo, el cual lo reemplazará.
-	 * @param n Posición del nodo a eliminar.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida o no corresponde a un nodo interno o corresponde a la raíz (con más de un hijo), o el árbol está vacío.
+	 * Elimina el nodo referenciado por una posicion dada, si se trata de un nodo interno. Los hijos del nodo eliminado lo reemplazan en el mismo orden en el que aparecen. 
+	 * Si el nodo a eliminar es la raiz del arbol,  unicamente podra ser eliminado si tiene un solo hijo, el cual lo reemplazara.
+	 * @param n Posicion del nodo a eliminar.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida o no corresponde a un nodo interno o corresponde a la raiz (con mas de un hijo), o el arbol esta vacio.
 	 */
 	public void removeInternalNode (Position<E> p) throws InvalidPositionException;
 	
 	/**
-	 * Elimina el nodo referenciado por una posición dada. Si se trata de un nodo interno. Los hijos del nodo eliminado lo reemplazan en el mismo orden en el que aparecen. 
-	 * Si el nodo a eliminar es la raíz del árbol,  únicamente podrá ser eliminado si tiene un solo hijo, el cual lo reemplazará.
-	 * @param n Posición del nodo a eliminar.
-	 * @throws InvalidPositionException si la posición pasada por parámetro es inválida o corresponde a la raíz (con más de un hijo), o el árbol está vacío.
+	 * Elimina el nodo referenciado por una posicion dada. Si se trata de un nodo interno. Los hijos del nodo eliminado lo reemplazan en el mismo orden en el que aparecen. 
+	 * Si el nodo a eliminar es la raiz del arbol,  unicamente podra ser eliminado si tiene un solo hijo, el cual lo reemplazara.
+	 * @param n Posicion del nodo a eliminar.
+	 * @throws InvalidPositionException si la posicion pasada por parametro es invalida o corresponde a la raiz (con mas de un hijo), o el arbol esta vacio.
 	 */
 	public void removeNode (Position<E> p) throws InvalidPositionException;
 	

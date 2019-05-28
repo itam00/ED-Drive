@@ -1,7 +1,7 @@
 package TDALista;
 
 /**
- * Clase BoundaryViolationException, la excepción se lanzará cuando se excede el límite de la estructura de datos.
+ * Clase BoundaryViolationException, la excepcion se lanzara cuando se excede el limite de la estructura de datos.
  * @author Alan, Nico y Mati
  *
  */
