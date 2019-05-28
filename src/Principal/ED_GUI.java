@@ -240,7 +240,7 @@ public void actionPerformed(ActionEvent e) {
 	  }
 	  return c;
   }
-  public String recorrerListadoExtencion(Dictionary<String,String> D) {
+  private String recorrerListadoExtencion(Dictionary<String,String> D) {
 		String toReturn = "";
 		String extencion = "";
 		for(TDADiccionario.Entry<String, String> e : D.entries()) {

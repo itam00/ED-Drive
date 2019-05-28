@@ -18,6 +18,14 @@ import TDAMapeo.*;
 public class Logica {
 	private Tree<Pair<String,PositionList<String>>> arbol;
 	
+	
+	/**
+	 * Parsea el contenido del archivo ubicado en a direccion dir y crea un arbol de acuerdo al contenido del archivo.
+	 * @param dir direccion donde se encuentra el archivo a parsear.
+	 * @throws InvalidFileLocationException en caso de que la direccion sea invalida.
+	 * @throws InvalidFileException en caso de que el archivo no tenga el formato valido.
+	 */
+	
 	public Logica (String dir) throws InvalidFileLocationException,InvalidFileException {
 		arbol= new Arbol<Pair<String,PositionList<String>>>();
 		//dir="C:\\Users\\mati\\Downloads\\prueba.txt";
@@ -31,9 +39,18 @@ public class Logica {
 		
 	}
 	
+	/**
+	 * crea un arbol vacío.
+	 */
+	
 	public Logica() {
 		arbol=new Arbol<Pair<String,PositionList<String>>>();
 	}
+	
+	/**
+	 * dice si el arbol esta vacío
+	 * @return true si el arbol está vacio o falso en caso contrario
+	 */
 	
 	public boolean isEmptyTree() {
 		return arbol.isEmpty();
@@ -46,7 +63,8 @@ public class Logica {
  	* @param q cola con el archivo a validar
  	* @return Verdadero si es valido, falso en caso contrario
  	*/
-	public boolean valido(Queue<String> q) {
+	
+	private boolean valido(Queue<String> q) {
 		boolean cumple= false;
 		try {
 			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // es el directorio raíz del arbol
@@ -65,6 +83,7 @@ public class Logica {
 	 * @param dir direccion del archivo que se va a leer
 	 * @return cola con los elementos del archivo separados por espacios y saltos de linea
 	 */
+	
 	private Queue<String> readFile(String dir) throws InvalidFileLocationException{
 		File archivo = null;
 		FileReader fr = null;
@@ -96,12 +115,14 @@ public class Logica {
 		return q;
 		
 	}
+	
 	/**
 	 * agrega el contenido de un arreglo de string a una cola 
 	 * @param c arreglo del strings
 	 * @param q cola en la que se colocaran las componentes del arreglo
 	 * @return cola con las componenetes del arreglo
 	 */
+	
 	private Queue<String> agregarEtiquetas(String[] c,Queue<String> q){
 		boolean agregar = false;
 		for(int i=0;i<c.length;i++) {
@@ -114,6 +135,7 @@ public class Logica {
 		}
 		return q;
 	}
+	
 	/**
 	 * metodo que auxiliar quevalida si el formato de los elementos de una cola cumple
 	 * con la sintaxis. Ademas agrega el nombre del directorio y los nombres los
@@ -154,6 +176,7 @@ public class Logica {
 		}
 		return cumple;
 	}
+	
 	/**
 	 * comprueba que los string pasados por parametro son iguales sin importar
 	 * las tabulaciones y espacios que esten delante
@@ -161,6 +184,7 @@ public class Logica {
 	 * @param resultado	cadena a comparar
 	 * @return si las cadenas son iguales verdadero caso contrario falso
 	 */
+	
 	private boolean comprobar(String c,String resultado) {
 		c=c.replaceAll("\t","");
 		c=c.replaceAll("\\s","");
@@ -173,6 +197,7 @@ public class Logica {
 	 * @param c nombre de la carpeta (puede contener o no tabulaciones)
 	 * @return verdadero si la sintaxis es correcta falso en caso contrario
 	 */
+	
 	private boolean esNombreValido(String c, Pair<String, PositionList<String>> pair) {
 		String abre="";
 		String cierra="";
@@ -209,7 +234,7 @@ public class Logica {
 	 * @param l lista donde se guardarán los nombres de los archivos del directorio donde se encuentran.
 	 */
 	
-	public void validarArchivos(Queue<String> c, PositionList<String> l) {
+	private void validarArchivos(Queue<String> c, PositionList<String> l) {
 		String aux="";
 		boolean cumple=true;
 		try {
@@ -256,14 +281,16 @@ public class Logica {
 				}
 			}
 		}
-		catch(EmptyQueueException e) {//si no cumple saldra del ciclo terminando asi el metodo
+		catch(EmptyQueueException e) {//si no cumple saldra del ciclo terminando asi el metodo.
 		}
 	}
+	
 	/**
-	 * valida en nombre de un archivo comprobando que tenga extension
-	 * @param nombre
-	 * @return
+	 * valida en nombre de un archivo comprobando que tenga extension.
+	 * @param nombre que será evaluado.
+	 * @return true si el nombre es valido o falso en caso contrario.
 	 */
+	
 	public static void validarExtencion(String nombre) throws InvalidFileNameException{
 		boolean cumple= false;
 		int i = 0;
@@ -284,6 +311,7 @@ public class Logica {
 	 * @param direccionD Indica la direccion donde se encuentra el Directorio dentro del cual se agrega uno nuevo.
 	 * @param nombreA Indica el nombre del nuevo directorio a agregar.
 	 */
+	
 	public void agregarArchivo(String direccionD,String nombreA) throws InvalidFileLocationException,InvalidFileNameException{
 		validarExtencion(nombreA);			//en caso de que el nombre no sea valido lanza una exception
 		
@@ -291,6 +319,12 @@ public class Logica {
 		directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
 
 	}
+	
+	/**
+	 * elimina el archivo que se encuentra en el directorio ubicado en la direccion direccionD
+	 * @param direccionD direccion donde se encuentra el directorio que contiene el archivo
+	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
+	 */
 	
 	public void eliminarArchivo(String direccionD) throws InvalidFileLocationException{
 		String separador=Pattern.quote("\\");
@@ -316,6 +350,13 @@ public class Logica {
 		if (!removi)
 			throw new InvalidFileLocationException("direccion invalida");
 	}
+	
+	/**
+	 * agrega un subdirectorio del directorio que se encuentra en dir
+	 * @param dir direccion donde se encuentra el directorio donde se agregará un nuevo subdirectorio
+	 * @param nombreD2 nombre del directorio que se agrega
+	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
+	 */
 	
 	public void agregarDirectorio(String dir,String nombreD2) throws InvalidFileLocationException{
 
@@ -344,6 +385,7 @@ public class Logica {
 	 * @param padre Es el directorio del cual se quieren eliminar sus hijos y los sucesores de estos.
 	 * @throws InvalidPositionException En caso de que no sea valido el directorio pasado por parametro.
 	 */
+	
 	private void eliminarSucesores(Position<Pair<String,PositionList<String>>> padre) throws InvalidPositionException {
 		for (Position<Pair<String,PositionList<String>>> p:arbol.children(padre)) {
 			eliminarSucesores(p);
@@ -354,7 +396,9 @@ public class Logica {
 	/**
 	 * Elimina del arbol el Directorio correspondiente a la direccionD1
 	 * @param direccionD1 String que indica la dirección donde se encuentra el Directorio que se quiere eliminar.
+	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
 	 */
+	
 	public void eliminarDirectorio(String dir) throws InvalidFileLocationException {
 		try {
 			Position<Pair<String,PositionList<String>>> eliminar=buscar(dir);
@@ -366,35 +410,31 @@ public class Logica {
 		}
 	}
 	
-	private boolean esHijo(Position<Pair<String,PositionList<String>>> origen, Position<Pair<String,PositionList<String>>> destino) {
-		boolean toreturn=false;
-		try {
-			Iterator<Position<Pair<String, PositionList<String>>>> it=arbol.children(origen).iterator();
-			while (it.hasNext() && !toreturn)
-				toreturn=it.next().equals(destino);
-		}
-		catch (InvalidPositionException e) {
-			//no debería ocurrir nunca porque las direcciones fueron verificadas y los directorios encontrados.
-		}
-		return toreturn;
-	}
-	
 	/**
 	 * Mueve un directorio y otodo su contenido a una direccion pasada por parametro
 	 * @param dir1 dirección donde se encuentra el directorio que va a ser movido.
 	 * @param dir2 dirección donde se colocará el directorio a mover.
+	 * @throws InvalidFileLocationException en caso de que dir1 o dir 2 no sean validas, y en caso de que la direccion destino sea igual a origen o sea sucesor de origen.
 	 */
-	@SuppressWarnings("unused")
+	
 	public void moverDirectorio(String dir1,String dir2) throws InvalidFileLocationException{
 		Position<Pair<String,PositionList<String>>> origen=buscar(dir1);
 		Position<Pair<String,PositionList<String>>> destino=buscar(dir2);
-		if (!origen.equals(destino) && !esHijo(origen,destino)) {
+		String[] dirOrigen=dir1.split(Pattern.quote("\\"));
+		System.out.println(dir2.lastIndexOf(dirOrigen[dirOrigen.length-1]));
+		if (!origen.equals(destino) && dir2.lastIndexOf(dirOrigen[dirOrigen.length-1])<0) {
 			copiarDirectorio(origen,destino);
 			eliminarDirectorio(dir1);
 		}
 		else
 			throw new InvalidFileLocationException("No se puede mover "+origen.element().getKey() +" dentro de "+ destino.element().getKey());
 	}
+	
+	/**
+	 * Copia el directorio que se encuentra en la direccion origen y coloca la copia en la direccion destino.
+	 * @param origen	direccion donde se encuentra el directorio a copiar
+	 * @param destino direccion donde se colocará la copia del directorio copiado.
+	 */
 	
 	private void copiarDirectorio(Position<Pair<String,PositionList<String>>> origen,Position<Pair<String,PositionList<String>>> destino) {
 		try {
@@ -406,10 +446,12 @@ public class Logica {
 			//no deberia pasar ya que es una posicion del mismo arbol, por lo tanto es valida
 		}
 	}
+	
 	/**
 	 * recorre todo el arbol buscando cada directorio y archivo en él.
 	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
 	 */
+	
 	@SuppressWarnings("unused")
 	public Pair<Integer,Integer> cantidadDeDirectoriosYArchivos() {
 		int cantDirectorios=0;
@@ -431,7 +473,8 @@ public class Logica {
 	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
-	public Position<Pair<String,PositionList<String>>> buscar(String dir)throws InvalidFileLocationException {
+	
+	private Position<Pair<String,PositionList<String>>> buscar(String dir)throws InvalidFileLocationException {
 		Position<Pair<String,PositionList<String>>> toReturn;
 		String separador=Pattern.quote("\\");
 		String[] partes=dir.split(separador);
@@ -443,6 +486,7 @@ public class Logica {
 		}
 		return toReturn;
 	}
+
 	private Position<Pair<String,PositionList<String>>> buscar(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
 		Iterator<Position<Pair<String, PositionList<String>>>> it=null;
 		try {
@@ -487,7 +531,7 @@ public class Logica {
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
 	
-	public Position<Pair<String,PositionList<String>>> buscarArchivo(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
+	private Position<Pair<String,PositionList<String>>> buscarArchivo(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
 		Iterator<Position<Pair<String, PositionList<String>>>> it=null;
 		try {
 			it= arbol.children(position).iterator();
@@ -521,6 +565,12 @@ public class Logica {
 			throw new InvalidFileLocationException ("La direccion no es valida en el sistema de archivos");
 		return toreturn;
 	}
+	
+	/**
+	 * Genera una coleccion de cadenas , las cuales contienen nombres de directorios, archivos y un separador '\'
+	 * que indica el fin d un nivel y el comienzo de otro
+	 * @return coleccion de cadenas con el listado por nivel	
+	 */
 	
 	@SuppressWarnings("unused")
 	public PositionList<String> listadoPorNiveles(){
@@ -560,11 +610,13 @@ public class Logica {
 		}
 		return lista;
 	}
+	
 	/** 
 	 * crea un listado por profundidad de los directorios del arbol, guarda la direccion de los directorios como clave
 	 * y la profundidad como valor en el mapeo
 	 * @return mapeo donde se cuardaran las direccion es y la profundidad de dicha direccion.
 	 */
+	
 	public Map<String,Integer> listadoPorProfundidad(){
 		Map<String,Integer> toReturn=new MapeoHashAbierto<String,Integer>();
 		try {
@@ -595,6 +647,7 @@ public class Logica {
 	 * Listado por extencion que retornar un Diccionario con las archivos
 	 * @return Diccionario con extencion como clave y nombre como valor
 	 */
+	
 	public Dictionary<String,String> listadoPorExtencion(){
 		Dictionary<String,String> toReturn=new DiccionarioHashAbierto<String,String>();
 		try {
@@ -609,6 +662,7 @@ public class Logica {
 	 * @param pos Posicion con los hijos a insertar en el diccionario
 	 * @param D Diccionario con los archivos a agregar
 	 */
+	
 	private void listadoExtencion(Position<Pair<String, PositionList<String>>> pos, Dictionary<String,String> D) {
 		try {
 			for(String e : pos.element().getValue()){
@@ -625,6 +679,7 @@ public class Logica {
 	 * @param c Archivo a obtener extencion
 	 * @return Extencion del archivo
 	 */
+	
 	private String obtenerExtencion(String c) {
 		String toReturn = "";
 		int i = c.length() - 1;
@@ -642,6 +697,7 @@ public class Logica {
 	 * @return	cadena de caracteres que permite visualizar el estado actual del arbol, si 
 	 * el arbol esta vacio retorna nulo.
 	 */
+	
 	public String generarArbolString() {
 		String toReturn="";
 		try {
@@ -653,12 +709,14 @@ public class Logica {
 		catch(EmptyTreeException e ) {}	
 		return toReturn;	
 	}
+	
 	/**
 	 * metodo auxiliar del metodo generarArbolString()
 	 * @param i	cadena que se encargara de agregar "────" a cada directorio y archivo.
 	 * @param p	posicion del arbol a partir de la cual se agregaran las carpetas y archivos al string.
 	 * @return	cadena con el estado actual del arbol.
 	 */
+	
 	private String generarString(String i,Position<Pair<String,PositionList<String>>> p) {
 		String c = "├"+i;
 		c+="■ "+p.element().getKey()+"\n";
