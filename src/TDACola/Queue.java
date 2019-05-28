@@ -1,5 +1,10 @@
 package TDACola;
 
+/**
+ * Interfaz Queue
+ * @author Nico, Alan y Mati
+ * @param <E> Tipo de elemento a guardar
+ */
 public interface Queue <E>{
 	/**
 	 * Devuelve la cantidad de elementos en la cola.

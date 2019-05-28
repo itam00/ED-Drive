@@ -1,4 +1,4 @@
-package Principal;
+package GUI;
 
 import java.awt.BorderLayout;
 
@@ -18,23 +18,32 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import Controlador.InvalidFileException;
+import Controlador.InvalidFileLocationException;
+import Controlador.InvalidFileNameException;
+import Controlador.Logica;
+import Controlador.Pair;
 import TDADiccionario.Dictionary;
 import TDALista.*;
 import TDAMapeo.Entry;
 import TDAMapeo.Map;
 
 @SuppressWarnings("serial")
+/**
+ * Clase encargada de la interfaz grafica
+ * @author Mati, Alan y Nico
+ */
 public class ED_GUI extends JPanel implements ActionListener {
-	private static String GENERATE_COMMAND = "Generar jerarquia";
-	private static String ADD_COMMAND = "Añadir archivo";
-	private static String REMOVE_COMMAND = "Remover archivo";
-	private static String MOVE_D_COMMAND = "Mover directorio";
-	private static String ADD_D_COMMAND = "Añadir directorio";
-	private static String REMOVE_D_COMMAND = "Remover directorio";
-	private static String LEVEL_COMMAND = "Listado por nivel";
-	private static String EXTENSION_COMMAND = "Listado por extension";
-	private static String DEPTH_COMMAND = "Listado por profundidad";
-	private static String TOTAL_COMMAND = "Cantidad de carpetas y archivos";
+	private final String GENERATE_COMMAND = "Generar jerarquia";
+	private final String ADD_COMMAND = "Añadir archivo";
+	private final String REMOVE_COMMAND = "Remover archivo";
+	private final String MOVE_D_COMMAND = "Mover directorio";
+	private final String ADD_D_COMMAND = "Añadir directorio";
+	private final String REMOVE_D_COMMAND = "Remover directorio";
+	private final String LEVEL_COMMAND = "Listado por nivel";
+	private final String EXTENSION_COMMAND = "Listado por extension";
+	private final String DEPTH_COMMAND = "Listado por profundidad";
+	private final String TOTAL_COMMAND = "Cantidad de carpetas y archivos";
   
 	private Toolkit toolkit;
 	private JTextArea cadenaArbol;
@@ -48,8 +57,11 @@ public class ED_GUI extends JPanel implements ActionListener {
 	private JOptionPane panel;
 	private JTextArea a;
 
+	/**
+	 * Contructor de la clase ED_GUI
+	 */
 	public ED_GUI() {
-	    super(new BorderLayout());
+	    super(new BorderLayout()); 
 	    
 	    //cosas para la el listener
 	    toolkit = Toolkit.getDefaultToolkit();
@@ -60,9 +72,8 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    a = new JTextArea();
     	a.setOpaque(false);
   		a.setFont(new Font("Century Gothic",Font.BOLD, 12) );
-	    //
 	    
-	    nombres = new String[cantBotones];
+	    nombres = new String[cantBotones]; //Botones a usar por el usuario
 	    nombres[0] =GENERATE_COMMAND;
 	    nombres[1] =ADD_COMMAND;
 	    nombres[2] =REMOVE_COMMAND;
@@ -77,7 +88,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	    
 	    botones = new JButton[cantBotones];
 	    
-	    for (int i = 0; i < nombres.length; i++) {
+	    for (int i = 0; i < nombres.length; i++) { // Se asignan los actionListener a los botones y se los deshabilita
 	    	botones[i] = new JButton(nombres[i]);
 	        botones[i].setActionCommand(nombres[i]);
 	        botones[i].addActionListener(this);
@@ -87,7 +98,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 		}
 	    botones[3].setEnabled(true);
 	
-	    botones[0].setEnabled(true);
+	    botones[0].setEnabled(true); // Se habilitan los botones para añadir jerarquia y directorio
 	    panelBotones = new JPanel(new GridLayout(cantBotones, 0));
 	    cadenaArbol = new JTextArea();
 	    cadenaArbol.setEditable(false);
@@ -107,13 +118,16 @@ public class ED_GUI extends JPanel implements ActionListener {
 
 
   @SuppressWarnings("static-access")
-public void actionPerformed(ActionEvent e) {
+  /**
+   * Metodo al cual se ejecutara al presionar alguno de los botones
+   */
+  public void actionPerformed(ActionEvent e) {
     String command = e.getActionCommand();
     
     try {
-	    if(GENERATE_COMMAND.equals(command)) {
+	    if(GENERATE_COMMAND.equals(command)) { // Generar jerarquia
 	    	String direccion = panel.showInputDialog("Ingrese la direccion del archivo");
-	    	if(direccion!=null) {
+	    	if(direccion!=null) { 
 		    	String separador= Pattern.quote(".");
 		    	String [] partes=direccion.split(separador);
 		    	boolean cumple=false;
@@ -130,7 +144,7 @@ public void actionPerformed(ActionEvent e) {
 		    	}
 	    	}
 	    
-	    if (ADD_COMMAND.equals(command)) {
+	    if (ADD_COMMAND.equals(command)) { // Añadir archivo
 	    	String nombre = panel.showInputDialog("Ingrese el nombre del archivo que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) {
 	    		tester.validarExtencion(nombre);	//se valida el nombre del archivo antes de preguntar por su direccion
@@ -140,13 +154,13 @@ public void actionPerformed(ActionEvent e) {
 	    	}	
 	    }
 	    
-	    if (REMOVE_COMMAND.equals(command)) {
+	    if (REMOVE_COMMAND.equals(command)) { // Remover archivo
 	    	String direccion = panel.showInputDialog("Ingrese la direccion del archivo a remover incluyendo el nombre del archivo");
 	    	if(direccion!=null&&direccion.length()>0)
 	    		tester.eliminarArchivo(direccion);
 	    	
 	    } 
-	    if (ADD_D_COMMAND.equals(command)) {
+	    if (ADD_D_COMMAND.equals(command)) { // Añadir directorio
 	    	String nombre = panel.showInputDialog("Ingrese el nombre del directorio que desea añadir al sistema");
 	    	if(nombre!=null&&nombre.length()>0) { 
 		    	if (tester==null ||tester.isEmptyTree()) {
@@ -163,7 +177,7 @@ public void actionPerformed(ActionEvent e) {
 	    	}
 
 	    }
-	    if (REMOVE_D_COMMAND.equals(command)) {
+	    if (REMOVE_D_COMMAND.equals(command)) { // Remover directorio
 	    	String direccion = panel.showInputDialog("Ingrese la direccion del directorio a remover incluyendolo");
 	    	if(direccion!=null&&direccion.length()>0)
 				tester.eliminarDirectorio(direccion);
@@ -174,7 +188,7 @@ public void actionPerformed(ActionEvent e) {
 	    		botones[3].setEnabled(true);
 	    	}
 	    }
-	    if(MOVE_D_COMMAND.equals(command)) {
+	    if(MOVE_D_COMMAND.equals(command)) { // Mover
 	    	String origen = panel.showInputDialog("Ingrese la direccion del directorio a mover");
 	    	if(origen!=null&&origen.length()>0) {
 	    		String destino = panel.showInputDialog("Ingrese el destino del directorio");
@@ -194,22 +208,22 @@ public void actionPerformed(ActionEvent e) {
     }
    
     
-    if(TOTAL_COMMAND.equals(command)) {
+    if(TOTAL_COMMAND.equals(command)) { // Cantidad de archivos y directorios
     	Pair<Integer,Integer> p = tester.cantidadDeDirectoriosYArchivos();
     	int directorios=p.getKey(),archivos=p.getValue();
     	JOptionPane.showMessageDialog(null, "Cantidad de directorios: "+directorios + "\nCantidad de archivos: "+archivos);
     	
     }
-    if(LEVEL_COMMAND.equals(command)) {
+    if(LEVEL_COMMAND.equals(command)) { // Listado por nivel
   		a.setText(recorrerListadoPorNivel(tester.listadoPorNiveles()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Nivel",JOptionPane.INFORMATION_MESSAGE);
     	
     }
-    if(DEPTH_COMMAND.equals(command)) {
+    if(DEPTH_COMMAND.equals(command)) { // Listado por profundidad
     	a.setText(recorrerListadoProfundidad(tester.listadoPorProfundidad()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Profundidad",JOptionPane.INFORMATION_MESSAGE);
     }
-    if(EXTENSION_COMMAND.equals(command)) {
+    if(EXTENSION_COMMAND.equals(command)) { // Listado por extencion
     	a.setText(recorrerListadoExtencion(tester.listadoPorExtencion()));
 		JOptionPane.showMessageDialog(null, a,"Listado por Extension",JOptionPane.INFORMATION_MESSAGE);
     }
@@ -226,6 +240,12 @@ public void actionPerformed(ActionEvent e) {
     }
     
   }
+  
+  /**
+   * Recorre el listado por nivel retornando un String a mostrar por pantalla
+   * @param l Lista a recorrer
+   * @return String a mostrar en pantalla
+   */
   private String recorrerListadoPorNivel(PositionList<String> l) {
 	  int i=0;
 	  String c="Nivel "+i+": ";
@@ -240,6 +260,12 @@ public void actionPerformed(ActionEvent e) {
 	  }
 	  return c;
   }
+  
+ /**
+  * Recorre un diccionario donde guarda las excepciones como key y los nombres como valor y los retorna para poder mostrar por pantalla
+  * @param D Diccionario a recorrer
+  * @return String a mostrar en pantalla
+  */
   private String recorrerListadoExtencion(Dictionary<String,String> D) {
 		String toReturn = "";
 		String extencion = "";
@@ -253,6 +279,11 @@ public void actionPerformed(ActionEvent e) {
 		return toReturn;
 	}
   
+  /**
+   * Recorre un mapero donde guarda la direccion como key y la profundidad como valor
+   * @param m Mapeo a recorrer
+   * @return String a mostrar en pantalla
+   */
 	private String recorrerListadoProfundidad(Map<String,Integer> m) {
 		String c="";
 		for(Entry<String,Integer> e: m.entries()) {
@@ -261,6 +292,9 @@ public void actionPerformed(ActionEvent e) {
 		return c;
 	}
 
+	/**
+	 * Crea y muestra la gui
+	 */
   private static void createAndShowGUI() {
     
     JFrame frame = new JFrame("ED-Drive");

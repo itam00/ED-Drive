@@ -4,7 +4,8 @@ import java.util.Iterator;
 
 /**
  * Interface PositionList
- * @author Cátedra de Estructuras de Datos, Departamento de Cs. e Ing. de la Computación, UNS.
+ * @author Alan, Mati y Nico
+ * @param <E> Tipo de elemento que se guardara en la lista
  */
 
 public interface PositionList<E> extends Iterable<E>

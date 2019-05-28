@@ -3,9 +3,7 @@ package TDAPila;
 
 	/**
 	 * Es la implementación de una pila con elementos de tipo E.
-	 * 
-	 * @author Alan
-	 *
+	 * @author Alan, Mati y Nico
 	 * @param <E> tipo de elementos que contendrá la pila
 	 */
 public interface Stack <E> {

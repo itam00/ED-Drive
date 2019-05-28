@@ -9,7 +9,7 @@ public interface Position<E> {
 	
 	/**
 	 * Retorna el elemento ubicado en la posición.
-	 *
+	 *@return Elemento de tipo E ubicado en la posicion
 	 */
 	public E element();
 }

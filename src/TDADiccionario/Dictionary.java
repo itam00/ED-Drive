@@ -1,5 +1,10 @@
 package TDADiccionario;
-
+/**
+ * Interfaz Dictionary
+ * @author Mati, Nico y Alan
+ * @param <K> Tipo de la clave 
+ * @param <V> Tipo de valor 
+ */
 	public interface Dictionary<K,V>
 	{
 		/**

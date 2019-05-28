@@ -2,7 +2,9 @@ package TDAMapeo;
 
 /**
  * Interface Map
- * @author Cátedra de Estructuras de Datos, Departamento de Cs. e Ing. de la Computación, UNS.
+ * @author Alan, Nico y Mati
+ * @param <K> Tipo de clave del mapeo
+ * @param <V> Tipo de valor a guardar 
  */
 
 public interface Map<K,V>{

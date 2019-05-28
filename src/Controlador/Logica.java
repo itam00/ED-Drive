@@ -1,4 +1,4 @@
-package Principal;
+package Controlador;
 import java.io.*;  
 
 import java.util.Iterator;
@@ -27,7 +27,6 @@ public class Logica {
 	
 	public Logica (String dir) throws InvalidFileLocationException,InvalidFileException {
 		arbol= new Arbol<Pair<String,PositionList<String>>>();
-		//dir="C:\\Users\\mati\\Downloads\\prueba.txt";
 		Queue<String> q = readFile(dir);
 
 		boolean val = valido(q);
@@ -70,9 +69,7 @@ public class Logica {
 			arbol.createRoot(primerPar); // crea la raiz del arbol con "primerPar".
 			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vacía (si no queda vacía la pila significa que hay mas de 1 carpeta principal.
 		}
-		catch(InvalidOperationException | EmptyTreeException e) {
-			System.out.println("arreglar esto pls: " + e.getMessage());	//ESTO HAY Q SACARLO DPS !!!!!!!!!!!!!!!!!!!!
-		}
+		catch(InvalidOperationException | EmptyTreeException e) {} // Esto no deberia pasar nunca
 		return cumple;			
 	}
 	
@@ -265,7 +262,6 @@ public class Logica {
 					i++;
 				}
 				cierra=cierra+'>';
-				//System.out.println(abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") && (aux.charAt(punto-1)!='>' && aux.charAt(punto+1)!='<'));
 				try {
 					validarExtencion(nombre);
 				}
@@ -273,7 +269,6 @@ public class Logica {
 					cumple = false;
 				}
 				cumple=abre.equals("<archivo>") && cierra.equals("</archivo>") && !nombre.equals("") &&cumple; 
-				//System.out.println(validarExtencion(nombre));
 				if (cumple) {
 					c.dequeue();
 					l.addLast(nombre);
@@ -365,7 +360,10 @@ public class Logica {
 			if(dir!="")
 				throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
 			else
-				arbol.createRoot(new Pair<String,PositionList<String>>(nombreD2,new ListaDE<String>()));
+				try {
+					arbol.createRoot(new Pair<String,PositionList<String>>(nombreD2,new ListaDE<String>()));
+				}
+				catch (InvalidOperationException e){} // No deveria suceder nunca
 				//si el arbol estaba vacio entonces se debe crear la raiz con un nuevo par
 		}
 		else {
@@ -420,7 +418,6 @@ public class Logica {
 		Position<Pair<String,PositionList<String>>> origen=buscar(dir1);
 		Position<Pair<String,PositionList<String>>> destino=buscar(dir2);
 		String[] dirOrigen=dir1.split(Pattern.quote("\\"));
-		System.out.println(dir2.lastIndexOf(dirOrigen[dirOrigen.length-1]));
 		if (!origen.equals(destino) && dir2.lastIndexOf(dirOrigen[dirOrigen.length-1])<0) {
 			copiarDirectorio(origen,destino);
 			eliminarDirectorio(dir1);
@@ -437,10 +434,11 @@ public class Logica {
 	
 	private void copiarDirectorio(Position<Pair<String,PositionList<String>>> origen,Position<Pair<String,PositionList<String>>> destino) {
 		try {
-			arbol.addFirstChild(destino, origen.element());
+			
 			for(Position<Pair<String,PositionList<String>>> p:arbol.children(origen)) {
-				copiarDirectorio(p,destino);
+				copiarDirectorio(p,origen);
 			}
+			arbol.addFirstChild(destino, origen.element());
 		} catch (InvalidPositionException e) {
 			//no deberia pasar ya que es una posicion del mismo arbol, por lo tanto es valida
 		}
@@ -465,10 +463,8 @@ public class Logica {
 	}
 	
 	/**
-	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.
-	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
-	 * @param indice Entero que indice qué String dentro el arreglo "partes" se debe comparar con el directorio "position".
-	 * @param position Directorio a comparar con el String en el subíndice "indice", si es el mismo la direccion del archivo es correcta.
+	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.chivo es correcta.
+	 * @param dir Directorio a buscar.
 	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
 	 */
@@ -486,6 +482,14 @@ public class Logica {
 		return toReturn;
 	}
 
+	/**
+	 * Metodo auxiliar de buscar
+	 * @param partes Es un String donde se encuentran los nombres de los directorios antecesores al buscado.
+	 * @param indice Entero que indice qué String dentro el arreglo "partes" se debe comparar con el directorio "position".
+	 * @param position Directorio a comparar con el String en el subíndice "indice", si es el mismo la direccion del archivo es correcta.
+	 * @return Una posicion que encapsula el directorio donde se buscará el que directorio que se está buscando.
+	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
+	 */
 	private Position<Pair<String,PositionList<String>>> buscar(String[] partes,int indice, Position<Pair<String, PositionList<String>>> position) throws InvalidFileLocationException {
 		Iterator<Position<Pair<String, PositionList<String>>>> it=null;
 		try {

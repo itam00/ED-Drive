@@ -7,9 +7,8 @@ import TDALista.Position;
 
 /**
  * Interface Tree
- * Es la versión extendida de la interfaz presentada por Goodrich y Tamassia en su cuarta edición. En esta interfaz se incluyen las operaciones necesarias 
- * para modificar el árbol.
- * @author Cátedra de Estructuras de Datos, Departamento de Cs. e Ing. de la Computación, UNS.
+ * En esta interfaz se incluyen las operaciones necesarias para modificar el árbol.
+ * @author Mati, Nico y Alan
  */
 
 public interface Tree<E> extends Iterable<E>

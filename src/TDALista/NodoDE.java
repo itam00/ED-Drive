@@ -2,7 +2,6 @@ package TDALista;
 	/**
 	 * clase nodo doblemente enlazado.
 	 * @author Alan, nico y matias
-	 *
 	 * @param <E> tipo de dato del elemento a guarda en el nodo.
 	 */
 public class NodoDE <E> implements Position<E> {
