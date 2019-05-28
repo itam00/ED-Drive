@@ -1,17 +1,13 @@
 package TDAArbol;
 
-import java.util.Iterator; 
+import java.util.Iterator;  
 
-import TDACola.ColaConArregloCircular;
 import TDALista.BoundaryViolationException;
 import TDALista.EmptyListException;
 import TDALista.InvalidPositionException;
 import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
-import TDAPila.EmptyStackException;
-import TDAPila.PilaEnlazada;
-import TDAPila.Stack;
 
 public class Arbol<E> implements Tree<E> {
 	

@@ -17,8 +17,7 @@ import TDAMapeo.*;
 
 public class Logica {
 	private Tree<Pair<String,PositionList<String>>> arbol;
-	
-	
+		
 	/**
 	 * Parsea el contenido del archivo ubicado en a direccion dir y crea un arbol de acuerdo al contenido del archivo.
 	 * @param dir direccion donde se encuentra el archivo a parsear.
@@ -618,7 +617,7 @@ public class Logica {
 	 */
 	
 	public Map<String,Integer> listadoPorProfundidad(){
-		Map<String,Integer> toReturn=new MapeoHashAbierto<String,Integer>();
+		Map<String,Integer> toReturn=new MapeoHashCerrado<String,Integer>();
 		try {
 			if(!arbol.isEmpty())
 				listadoProfundidad("",0,arbol.root(),toReturn);
