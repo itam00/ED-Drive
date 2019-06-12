@@ -118,7 +118,7 @@ public class Arbol<E> implements Tree<E> {
 		try {
 			pp = hijosPadre.first();
 		} catch (EmptyListException e2) {
-			e2.printStackTrace();
+			throw new InvalidPositionException("La posicion hermano no es hijo de su padre");
 		}
 		while(pp != null && !encontre) {
 			if(hermanoDerecho == pp.element()) 
@@ -151,7 +151,7 @@ public class Arbol<E> implements Tree<E> {
 		try {
 			pp = hijosPadre.first();
 		} catch (EmptyListException e2) {
-			e2.printStackTrace();
+			throw new InvalidPositionException("La posicion hermano no es hijo de su padre");
 		}
 		while(pp != null && !encontre) {
 			if(hermanoIzquierdo == pp.element()) 
@@ -200,6 +200,7 @@ public class Arbol<E> implements Tree<E> {
 			else
 				throw new InvalidPositionException("El nodo es la raiz y no puede ser eliminado si tiene hijos");
 		}
+		n.setElemento(null);
 		tamaño--;
 	}
 	
@@ -290,8 +291,18 @@ public class Arbol<E> implements Tree<E> {
 	
 	public Iterator<E> iterator(){
 		PositionList<E> l = new ListaDE<E>();
-		for(Position<E> p : positions())
-				l.addLast(p.element());
+		if(raiz != null)
+			pre(l,raiz);
 		return l.iterator();
+	}
+	
+	private void pre(PositionList<E> l, Position<E> p) {
+		l.addLast(p.element());
+		try {
+			for(Position<E> w : children(p))
+				pre(l,w);
+		} catch (InvalidPositionException e) {
+			e.printStackTrace();
+		}
 	}
 }
