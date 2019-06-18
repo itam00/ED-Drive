@@ -12,14 +12,14 @@ import TDALista.PositionList;
  * Clase DiccionarioHashAbierto
  * @author mati, nico y alan
  *
- * @param <K> 
- * @param <V>
+ * @param <K> Tipo de dato de las claves
+ * @param <V> Tipo de dato de los valores
  */
 public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 
-	protected PositionList<Entry<K,V>>[] arreglo;
-	protected int cant;
-	protected int primo;
+	protected PositionList<Entry<K,V>>[] arreglo; //Arreglo donde se guardaran las entradas
+	protected int cant; // Cantidad de elementos
+	protected int primo; //Cantidad maxima de elementos del diccionario
 	
 	@SuppressWarnings("unchecked")
 	/**
@@ -57,7 +57,7 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	
 	/**
 	 * Metodo auxiliar que calcula el codigo hash de una clave pasada por parametro.
-	 * @param k clave de la cual se calcular· el codigo hash.
+	 * @param k clave de la cual se calcular√° el codigo hash.
 	 * @return codigo hash de la clave pasada por parametro.
 	 */
 	private int getHashCode(K k) {
@@ -105,7 +105,7 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	
 	/**
 	 * Metodo auxiliar que calcula el proximo primo mayor a un n pasado por parametro.
-	 * @param n numero del cual se calcular· el proximo primo
+	 * @param n numero del cual se calcular√° el proximo primo
 	 * @return proximo primo mayor a n pasado por parametro.
 	 */
 	private int proximo_primo(int n) {
@@ -117,7 +117,7 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	}
 	
 	/**
-	 * Metodo auxiliar que amplia el tamaÒo del arreglo de listas de entry donde se almacenan las entradas.
+	 * Metodo auxiliar que amplia el tama√±o del arreglo de listas de entry donde se almacenan las entradas.
 	 */
 	
 	@SuppressWarnings("unchecked")
@@ -126,6 +126,8 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		primo=proximo_primo(primo*2);
 		arreglo=(ListaDE<Entry<K,V>>[])new ListaDE[primo];
 		cant=0;
+		for(int i=0;i<arreglo.length;i++)
+			arreglo[i] = new ListaDE<Entry<K,V>>();
 		for (int i=0; i<aux.length;i++) {
 				for (Entry<K,V> e:aux[i]) {
 						arreglo[getHashCode(e.getKey())].addLast(e);
