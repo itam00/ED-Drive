@@ -114,6 +114,8 @@ public class ListaDE<E> implements PositionList<E> {
 		n.getAnterior().setSiguiente(n.getSiguiente());
 		n.getSiguiente().setAnterior(n.getAnterior());
 		n.setElemento(null);
+		n.setAnterior(null);
+		n.setSiguiente(null);
 		tamaño--;
 		return elem;
 	}

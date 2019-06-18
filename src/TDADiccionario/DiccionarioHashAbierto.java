@@ -12,14 +12,14 @@ import TDALista.PositionList;
  * Clase DiccionarioHashAbierto
  * @author mati, nico y alan
  *
- * @param <K> 
- * @param <V>
+ * @param <K> Tipo de dato de las claves
+ * @param <V> Tipo de dato de los valores
  */
 public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 
-	protected PositionList<Entry<K,V>>[] arreglo;
-	protected int cant;
-	protected int primo;
+	protected PositionList<Entry<K,V>>[] arreglo; //Arreglo donde se guardaran las entradas
+	protected int cant; // Cantidad de elementos
+	protected int primo; //Cantidad maxima de elementos del diccionario
 	
 	@SuppressWarnings("unchecked")
 	/**
@@ -43,6 +43,12 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return cant==0;
 	}
 
+	/**
+	 *
+	 * @param key 
+	 * @return
+	 * @throws InvalidKeyException
+	 */
 	private int checkKey (K key) throws InvalidKeyException {
 		if (key==null)
 			throw new InvalidKeyException("clave invalida");
@@ -101,17 +107,12 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		PositionList<Entry<K,V>>[] aux=arreglo;
 		primo=proximo_primo(primo*2);
 		arreglo=(ListaDE<Entry<K,V>>[])new ListaDE[primo];
-		cant=0;
-		try {
-			for (int i=0; i<aux.length;i++) {
-				//if(aux[i]!= null)
-					for (Entry<K,V> e:aux[i]) {
-							insert(e.getKey(),e.getValue());
-					}
-			}
-		}
-		catch (InvalidKeyException x) {
-			System.out.println(x.getMessage());
+		for(int i=0;i<arreglo.length;i++)
+			arreglo[i] = new ListaDE<Entry<K,V>>();
+		for (int i=0; i<aux.length;i++) {
+				for (Entry<K,V> e:aux[i]) {
+						arreglo[getHashCode(e.getKey())].addLast(e);
+				}
 		}
 	}
 	
