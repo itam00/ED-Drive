@@ -11,8 +11,8 @@ import TDALista.PositionList;
 
 public class Arbol<E> implements Tree<E> {
 	
-	protected TNodo<E> raiz;
-	protected Integer tamaño;
+	protected TNodo<E> raiz; //Raiz del arbol
+	protected Integer tamaño; //cantidad de nodos del arbol
 
 	/**
 	 * Crea un nuevo arbol vacio
@@ -75,6 +75,12 @@ public class Arbol<E> implements Tree<E> {
 		return !nodo.getHijos().isEmpty();
 	}
 	
+	/**
+	 * Metedo auxiliar que recibe una posicion y la valida
+	 * @param p Posicion a validar
+	 * @return un nodo correspondiente a la posicion
+	 * @throws InvalidPositionException si la posicion no es valida
+	 */
 	protected TNodo<E> checkPosition(Position<E> p) throws InvalidPositionException{
 		if (p == null) {
 			throw new InvalidPositionException("Posicion nula");
@@ -287,6 +293,11 @@ public class Arbol<E> implements Tree<E> {
 		return iterable;
 	}
 	
+	/**
+	 * Metodo auxiliar para la creacion de positions insertando nodos en preorden en una lista de posiciones
+	 * @param iterable Lista donde se insertaran las position
+	 * @param r nodo a insertar en la lista de positions
+	 */
 	private void pre(PositionList<Position<E>> iterable, TNodo<E> r) {
 		iterable.addLast(r);
 		for(TNodo<E> h : r.getHijos())
@@ -296,15 +307,16 @@ public class Arbol<E> implements Tree<E> {
 	public Iterator<E> iterator(){
 		PositionList<E> l = new ListaDE<E>();
 		if(raiz != null)
-			try {
-				preI(l,raiz);
-			} catch (InvalidPositionException e) {
-				e.printStackTrace();
-			}
+			preI(l,raiz);
 		return l.iterator();
 	}
 	
-	private void preI(PositionList<E> l, TNodo<E> p) throws InvalidPositionException {
+	/**
+	 * Metodo auxiliar para la creacion de iterator insertando nodos en preorden en una lista de nodos
+	 * @param l	Lista donde se insertaran los nodos
+	 * @param p Nodo a insertar
+	 */
+	private void preI(PositionList<E> l, TNodo<E> p) {
 		l.addLast(p.element());
 		for(TNodo<E> w : p.getHijos())
 			preI(l,w);

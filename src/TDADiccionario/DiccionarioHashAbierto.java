@@ -8,6 +8,13 @@ import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
 
+/**
+ * Clase DiccionarioHashAbierto
+ * @author mati, nico y alan
+ *
+ * @param <K> 
+ * @param <V>
+ */
 public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 
 	protected PositionList<Entry<K,V>>[] arreglo;

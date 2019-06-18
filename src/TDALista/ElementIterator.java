@@ -36,7 +36,7 @@ public class ElementIterator<E> implements Iterator<E> {
 		return (cursor!=null);
 	}
 
-	@Override
+	
 	/**
 	 * Retorna el siguiente elemento de la lista y mueve el cursor al siguiente
 	 * @return Elemento de tipo <E> de la lista

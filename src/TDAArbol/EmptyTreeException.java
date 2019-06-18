@@ -9,7 +9,7 @@ package TDAArbol;
 public class EmptyTreeException extends Exception {
 
 	/**
-	 * Llama a la clase exception con el mensaje de error
+	 * Modela una excepcion cuando el arbol esta vacio
 	 * @param msg Mensaje de error
 	 */
 	public EmptyTreeException(String msg) {
