@@ -4,10 +4,13 @@ import java.util.Iterator;
 
 public class ListaDE<E> implements PositionList<E> {
 
-	protected int tamaño;
+	protected int tamaño; //Cantidad de elementos
 	protected NodoDE<E> head;
 	protected NodoDE<E> tail;
 	
+	/**
+	 * Crea una nueva lista
+	 */
 	public ListaDE () {
 		tamaño=0;
 		head=new NodoDE<E>(null);
@@ -110,6 +113,7 @@ public class ListaDE<E> implements PositionList<E> {
 		E elem=n.element();
 		n.getAnterior().setSiguiente(n.getSiguiente());
 		n.getSiguiente().setAnterior(n.getAnterior());
+		n.setElemento(null);
 		tamaño--;
 		return elem;
 	}

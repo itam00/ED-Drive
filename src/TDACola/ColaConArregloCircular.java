@@ -7,12 +7,21 @@ public class ColaConArregloCircular<E> implements Queue<E> {
 	protected E[] A;
 	protected int tamaño;
 	
+	/**
+	 * Crea un nueva cola con capacidad max, que se puede ampliar
+	 * @param max capacidad con la que se creara la cola
+	 */
 	public ColaConArregloCircular (int max){
 		A= (E[]) new Object[max];
 		f=0;
 		t=0;
 		tamaño=0;
 	}
+	
+	/**
+	 * Crea una nueva cola
+	 */
+	public ColaConArregloCircular() {this(20);}
 	
 	public int size() {
 		return ((A.length-f+t) % A.length);

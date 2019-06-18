@@ -2,14 +2,23 @@ package TDAPila;
 
 public class PilaConArreglo<E> implements Stack<E> {
 
-	private int t;
-	private E[] A;
+	private int t; //tamaño de la pila
+	private E[] A; //arreglo donde se almacenan los elementos
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * Crea una nueva pila con max como capacidad
+	 * @param max capacidad inicial de la pila
+	 */
 	public PilaConArreglo(int max) {
 		t=0;
 		A= (E[]) new Object[max];
 	}
+	
+	/**
+	 * Crea una nueva pila
+	 */
+	public PilaConArreglo() {this(20);}
 	
 	@Override
 	public int size() {
@@ -47,17 +56,6 @@ public class PilaConArreglo<E> implements Stack<E> {
 			t--;
 		}
 		return e;
-	}
-	
-	public void invertir() {
-		E elem;
-		int i=0;
-		int j=t;
-		while (i!=j && i+1!=j) {
-			elem=A[i];
-			A[i]=A[j];
-			A[j]=elem;
-		}	
 	}
 	
 }

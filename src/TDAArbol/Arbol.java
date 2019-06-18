@@ -14,6 +14,9 @@ public class Arbol<E> implements Tree<E> {
 	protected TNodo<E> raiz;
 	protected Integer tamaño;
 
+	/**
+	 * Crea un nuevo arbol vacio
+	 */
 	public Arbol() {
 		raiz = null;
 		tamaño = 0;
@@ -200,6 +203,7 @@ public class Arbol<E> implements Tree<E> {
 			else
 				throw new InvalidPositionException("El nodo es la raiz y no puede ser eliminado si tiene hijos");
 		}
+		n.setPadre(null);
 		n.setElemento(null);
 		tamaño--;
 	}
@@ -292,17 +296,17 @@ public class Arbol<E> implements Tree<E> {
 	public Iterator<E> iterator(){
 		PositionList<E> l = new ListaDE<E>();
 		if(raiz != null)
-			pre(l,raiz);
+			try {
+				preI(l,raiz);
+			} catch (InvalidPositionException e) {
+				e.printStackTrace();
+			}
 		return l.iterator();
 	}
 	
-	private void pre(PositionList<E> l, Position<E> p) {
+	private void preI(PositionList<E> l, TNodo<E> p) throws InvalidPositionException {
 		l.addLast(p.element());
-		try {
-			for(Position<E> w : children(p))
-				pre(l,w);
-		} catch (InvalidPositionException e) {
-			e.printStackTrace();
-		}
+		for(TNodo<E> w : p.getHijos())
+			preI(l,w);
 	}
 }

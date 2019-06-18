@@ -5,8 +5,8 @@ import TDALista.PositionList;
 
 public class MapeoHashCerrado<K,V> implements Map<K,V> {
 
-	protected Entrada<K,V>[] arreglo;
-	protected int cant;
+	protected Entrada<K,V>[] arreglo; //Arreglo donde se almacenan entradas
+	protected int cant; //Cantidad de 
 	protected int primo;
 	
 	protected final Entrada<K,V> disponible= new Entrada<K,V>(null,null);

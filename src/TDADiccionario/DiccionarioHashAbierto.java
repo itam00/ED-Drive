@@ -15,8 +15,11 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	protected int primo;
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * Crea un nuevo diccionario
+	 */
 	public DiccionarioHashAbierto() {
-		primo=5519;
+		primo=3;
 		cant=0;
 		arreglo= (ListaDE<Entry<K,V>>[]) new ListaDE[primo];
 		for (int i=0; i<primo;i++)
@@ -33,10 +36,14 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return cant==0;
 	}
 
-	protected int checkKey (K key) throws InvalidKeyException {
+	private int checkKey (K key) throws InvalidKeyException {
 		if (key==null)
 			throw new InvalidKeyException("clave invalida");
-		return ((Math.abs(key.hashCode()))%primo);
+		return getHashCode(key);
+	}
+	
+	private int getHashCode(K k) {
+		return ((Math.abs(k.hashCode()))%primo);
 	}
 	
 	@Override
@@ -90,9 +97,10 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		cant=0;
 		try {
 			for (int i=0; i<aux.length;i++) {
-				for (Entry<K,V> e:aux[i]) {
-					insert (e.getKey(),e.getValue());
-				}
+				//if(aux[i]!= null)
+					for (Entry<K,V> e:aux[i]) {
+							insert(e.getKey(),e.getValue());
+					}
 			}
 		}
 		catch (InvalidKeyException x) {
