@@ -43,12 +43,23 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return cant==0;
 	}
 
+	/**
+	 * Valida la clave pasada por parametro.
+	 * @param key clave a validar.
+	 * @return codigo hash de la clave pasada por parametro.
+	 * @throws InvalidKeyException en caso de que la clave no sea valida.
+	 */
 	private int checkKey (K key) throws InvalidKeyException {
 		if (key==null)
 			throw new InvalidKeyException("clave invalida");
 		return getHashCode(key);
 	}
 	
+	/**
+	 * Metodo auxiliar que calcula el codigo hash de una clave pasada por parametro.
+	 * @param k clave de la cual se calculará el codigo hash.
+	 * @return codigo hash de la clave pasada por parametro.
+	 */
 	private int getHashCode(K k) {
 		return ((Math.abs(k.hashCode()))%primo);
 	}
@@ -80,6 +91,11 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return toreturn;
 	}
 
+	/**
+	 * Metodo auxiliar que verifica si un numero n pasado por parametro es primo.
+	 * @param n numero del cual se quiere verificar si es primo.
+	 * @return true en caso de que n sea primo, false en caso contrario.
+	 */
 	private boolean es_primo(int n) {
 		boolean toreturn=true;
 		for (int i=3;i<Math.sqrt(n) && toreturn;i+=2)
@@ -87,14 +103,22 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return toreturn;
 	}
 	
+	/**
+	 * Metodo auxiliar que calcula el proximo primo mayor a un n pasado por parametro.
+	 * @param n numero del cual se calculará el proximo primo
+	 * @return proximo primo mayor a n pasado por parametro.
+	 */
 	private int proximo_primo(int n) {
-		n++;
-		while (!es_primo(n))
-			n+=2;
-		return n;
+		int m=n;
+		m++;
+		while (!es_primo(m))
+			m+=2;
+		return m;
 	}
 	
-	
+	/**
+	 * Metodo auxiliar que amplia el tamaño del arreglo de listas de entry donde se almacenan las entradas.
+	 */
 	
 	@SuppressWarnings("unchecked")
 	protected void redimensionar() {
@@ -102,19 +126,12 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		primo=proximo_primo(primo*2);
 		arreglo=(ListaDE<Entry<K,V>>[])new ListaDE[primo];
 		cant=0;
-		try {
-			for (int i=0; i<aux.length;i++) {
-				//if(aux[i]!= null)
-					for (Entry<K,V> e:aux[i]) {
-							insert(e.getKey(),e.getValue());
-					}
-			}
-		}
-		catch (InvalidKeyException x) {
-			System.out.println(x.getMessage());
+		for (int i=0; i<aux.length;i++) {
+				for (Entry<K,V> e:aux[i]) {
+						arreglo[getHashCode(e.getKey())].addLast(e);
+				}
 		}
 	}
-	
 	
 	@Override
 	public Entry<K,V> insert(K key, V value) throws InvalidKeyException {

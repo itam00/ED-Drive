@@ -29,7 +29,12 @@ public class ListaDE<E> implements PositionList<E> {
 		return size()==0;
 	}
 
-	
+	/**
+	 * Metodo auxiliar que valida una posicion pasada por parametro.
+	 * @param p posicion a validar.
+	 * @return nodo correspondiente a la posicion validada.
+	 * @throws InvalidPositionException en caso de que la posicion sea invalida.
+	 */
 	private NodoDE<E> checkPosition(Position<E> p) throws InvalidPositionException{
 		try {
 			if (p==null) 

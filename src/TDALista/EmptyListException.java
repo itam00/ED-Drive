@@ -1,7 +1,7 @@
 package TDALista;
 
 /**
- * Clase EmptyListException, que sera lanzada en situaciones donde la lista no deba estar vacia
+ * Clase EmptyListException, modela una excepcion que refleja una lista vacia.
  * @author Alan, Nico, Mati
  *
  */
@@ -9,8 +9,8 @@ package TDALista;
 public class EmptyListException extends Exception {
 
 	/**
-	 * Llama a la clase Exception con el mensaje de error
-	 * @param msg Mensaje con la excepcion
+	 * Constructor de la clase.
+	 * @param msg Mensaje de error.
 	 */
 	public EmptyListException(String msg) {
 		super(msg);

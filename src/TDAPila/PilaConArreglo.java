@@ -34,28 +34,36 @@ public class PilaConArreglo<E> implements Stack<E> {
 	public E top() throws EmptyStackException {
 		if (isEmpty())
 			throw new EmptyStackException ("esta vacia");
-		else
-			return A[t];
+		return A[t-1];
 	}
 
 	@Override
 	public void push(E element) {
+		if (t==A.length)
+			redimensionar();
 		A[t]=element;
 		t++;
 	}
 
 	@Override
 	public E pop() throws EmptyStackException {
-		E e;
 		if (isEmpty())
 			throw new EmptyStackException("esta vacia");
-		else
-		{
-			e=A[t];
-			A[t]=null;
-			t--;
-		}
+		E e=A[t-1];
+		A[t-1]=null;
+		t--;
 		return e;
 	}
 	
+	/**
+	 * Método auxiliar que se ejecuta en caso de que se quiera insertar algo cuando la pila esté llena.
+	 * Este metodo aumenta el tamaño de la pila al doble del actual.
+	 */
+	@SuppressWarnings("unchecked")
+	private void redimensionar() {
+		E[] aux = A;
+		A = (E[]) new Object[t*2];
+		for (int i=0; i<aux.length;i++)
+			A[i]=aux[i];
+	}
 }

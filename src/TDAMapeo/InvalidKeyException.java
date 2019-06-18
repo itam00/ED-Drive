@@ -2,15 +2,15 @@ package TDAMapeo;
 
 @SuppressWarnings("serial")
 /**
- * Clase InvalidKeyException, que lanzara excepciones en caso de que la clave no sea valida
+ * Clase InvalidKeyException, modela una excepcion que refleja una clave invalida.
  * @author Mati, Alan y Nico
  *
  */
 public class InvalidKeyException extends Exception {
 	
 	/**
-	 * Llama a la clase Exception con un mensaje de error
-	 * @param msg Mensaje con la excepcion
+	 * Constructor de la clase.
+	 * @param msg Mensaje de error.
 	 */
 	public InvalidKeyException (String msg) {
 		super(msg);

@@ -18,6 +18,11 @@ public class MapeoHashCerrado<K,V> implements Map<K,V> {
 		primo=5519;
 	}
 	
+	/**
+	 * Metodo auxiliar que calcula el codigo hash de la clave pasada por parametro.
+	 * @param key clave de la que se calculara el codigo hash.
+	 * @return codigo hash de la clave pasada por parametro.
+	 */
 	protected int hash(K key) {
 		return (Math.abs(key.hashCode()) % primo);
 	}
@@ -56,6 +61,11 @@ public class MapeoHashCerrado<K,V> implements Map<K,V> {
 		return toreturn;
 	}
 
+	/**
+	 * Metodo auxiliar que valida si un entero n pasado por parametro es primo o no.
+	 * @param n numero a verificar si es primo o no.
+	 * @return true en caso de que n sea primo y false en caso contrario.
+	 */
 	private boolean es_primo(int n) {
 		boolean es=true;
 		int d;
@@ -72,14 +82,20 @@ public class MapeoHashCerrado<K,V> implements Map<K,V> {
 		return es;
 	}
 	
+	/**
+	 * Metodo auxiliar que calcula el proximo primo mayor al entero c pasado por parametro.
+	 * @param c entero a partir del cual se calculara el proximo primo
+	 * @return proximo primo mayor al entero pasado por parametro.
+	 */
 	private int proximo_primo(int c) {
-		if (c%2==0)
-			c++;
+		int n=c;
+		if (n%2==0)
+			n++;
 		else
-			c+=2;
-		while (!es_primo(c))
-			c+=2;
-		return c;
+			n+=2;
+		while (!es_primo(n))
+			n+=2;
+		return n;
 	}
 	
 	

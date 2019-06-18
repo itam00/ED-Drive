@@ -1,7 +1,7 @@
 package TDALista;
 
 /**
- * Clase InvalidPositionException, que sera lanzada en situaciones donde la posicion no sea valida
+ * Clase InvalidPositionException, modela una excepcion que refleja una posicion invalida.
  * @author Alan, Nico, Mati
  *
  */
@@ -9,8 +9,8 @@ package TDALista;
 public class InvalidPositionException extends Exception {
 
 	/**
-	 * Llama a la clase Exception con el mensaje de error
-	 * @param msg Mensaje con la excepcion
+	 * Constructor de la clase
+	 * @param msg Mensaje de error.
 	 */
 	public InvalidPositionException(String msg) {
 		super(msg);

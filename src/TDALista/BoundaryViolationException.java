@@ -1,7 +1,7 @@
 package TDALista;
 
 /**
- * Clase BoundaryViolationException, la excepcion se lanzara cuando se excede el limite de la estructura de datos.
+ * Clase BoundaryViolationException, modela una excepcion que refleja una violacion de los limites de la ED.
  * @author Alan, Nico y Mati
  *
  */
@@ -9,8 +9,8 @@ package TDALista;
 public class BoundaryViolationException extends Exception {
 
 	/**
-	 * Llama a la clase Exception con el mensaje de error
-	 * @param msg Mensaje con la excepcion
+	 * Constructor de la clase.
+	 * @param msg Mensaje de error
 	 */
 	public BoundaryViolationException(String msg) {
 		super(msg);
