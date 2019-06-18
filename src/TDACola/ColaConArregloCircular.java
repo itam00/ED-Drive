@@ -3,9 +3,10 @@ package TDACola;
 @SuppressWarnings("unchecked")
 public class ColaConArregloCircular<E> implements Queue<E> {
 
-	protected int f,t;
-	protected E[] A;
-	protected int tamaño;
+	protected int f,t; //f: Posicion del proximo elemento a eliminar
+					   //t: Posicion del proximo elemento a insertar
+	protected E[] A; //Arreglo donde se almacenaran los elementos
+	protected int tamaño; //Cantidad de elementos
 	
 	/**
 	 * Crea un nueva cola con capacidad max, que se puede ampliar
@@ -37,7 +38,9 @@ public class ColaConArregloCircular<E> implements Queue<E> {
 		return A[f];
 	}
 
-	
+	/**
+	 * Metodo auxiliar del metodo enqueue el cual agrandara la cola de ser necesario
+	 */
 	private void agrandar() {
 		E[] aux= (E[]) new Object[tamaño*2];
 		int i=0;

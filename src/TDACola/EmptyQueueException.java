@@ -1,7 +1,7 @@
 package TDACola;
 
 /**
- * Clase EmptyQueueExeption, que sera lanzada en situaciones donde la cola no deba estar vacia
+ * Clase EmptyQueueExeption, modela una excepcion que refleja si la cola esta vacia
  * @author Alan, Nico y Mati
  *
  */
@@ -10,7 +10,7 @@ public class EmptyQueueException extends Exception{
 
 
 	/**
-     * Llama a la clase Exception con el mensaje de error
+     * Contructor de la clase EmptyQueueException
      * @param msg Mensaje con la excepcion
 	 */
 	public EmptyQueueException(String msg) {

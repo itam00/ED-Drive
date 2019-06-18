@@ -9,6 +9,11 @@ import TDALista.ListaDE;
 import TDALista.Position;
 import TDALista.PositionList;
 
+/**
+ * Clase arbol
+ * @author Alan, nico y mati
+ * @param <E> tipo de dato de los elementos a almacenar en el arbol
+ */
 public class Arbol<E> implements Tree<E> {
 	
 	protected TNodo<E> raiz; //Raiz del arbol

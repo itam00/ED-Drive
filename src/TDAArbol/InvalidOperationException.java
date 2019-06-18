@@ -2,14 +2,14 @@ package TDAArbol;
 
 @SuppressWarnings("serial")
 /**
- * Clase InvalidOperationException, la cual lanzara excepcion cuando se intente ejecutar una operacion no valida
+ * Clase InvalidOperationException, modela una excepcion que refleja un operacion invalida
  * @author Mati, Nico y Alan
  *
  */
 public class InvalidOperationException extends Exception {
 	
 	/**
-	 * Llama a la clase Exception con el mensaje de error
+	 * Contructor de la clase InvalidOperationException
 	 * @param msg Mensaje de error
 	 */
 	public InvalidOperationException (String msg) {

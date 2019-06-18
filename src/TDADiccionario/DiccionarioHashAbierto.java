@@ -1,12 +1,7 @@
 package TDADiccionario;
 
 import java.util.Iterator;
-import TDALista.BoundaryViolationException;
-import TDALista.EmptyListException;
-import TDALista.InvalidPositionException;
-import TDALista.ListaDE;
-import TDALista.Position;
-import TDALista.PositionList;
+import TDALista.*;
 
 /**
  * Clase DiccionarioHashAbierto
@@ -44,21 +39,20 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	}
 
 	/**
-	 * Valida la clave pasada por parametro.
+	 * Metodo que valida la clave pasada por parametro.
 	 * @param key clave a validar.
-	 * @return codigo hash de la clave pasada por parametro.
-	 * @throws InvalidKeyException en caso de que la clave no sea valida.
+	 * @return codigo hash de la clave validada.
+	 * @throws InvalidKeyException si la clave es nula.
 	 */
 	private int checkKey (K key) throws InvalidKeyException {
 		if (key==null)
 			throw new InvalidKeyException("clave invalida");
 		return getHashCode(key);
 	}
-	
 	/**
-	 * Metodo auxiliar que calcula el codigo hash de una clave pasada por parametro.
-	 * @param k clave de la cual se calculará el codigo hash.
-	 * @return codigo hash de la clave pasada por parametro.
+	 * Metodo auxiliar que calcula el lugar donde ira una entrada con dicha clave.
+	 * @param k clave sobre la cual se calculara el indice.
+	 * @return indice donde ira la entrada con dicha clave.
 	 */
 	private int getHashCode(K k) {
 		return ((Math.abs(k.hashCode()))%primo);
@@ -91,11 +85,6 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return toreturn;
 	}
 
-	/**
-	 * Metodo auxiliar que verifica si un numero n pasado por parametro es primo.
-	 * @param n numero del cual se quiere verificar si es primo.
-	 * @return true en caso de que n sea primo, false en caso contrario.
-	 */
 	private boolean es_primo(int n) {
 		boolean toreturn=true;
 		for (int i=3;i<Math.sqrt(n) && toreturn;i+=2)
@@ -103,43 +92,36 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return toreturn;
 	}
 	
-	/**
-	 * Metodo auxiliar que calcula el proximo primo mayor a un n pasado por parametro.
-	 * @param n numero del cual se calculará el proximo primo
-	 * @return proximo primo mayor a n pasado por parametro.
-	 */
 	private int proximo_primo(int n) {
-		int m=n;
-		m++;
-		while (!es_primo(m))
-			m+=2;
-		return m;
+		n++;
+		while (!es_primo(n))
+			n+=2;
+		return n;
 	}
 	
-	/**
-	 * Metodo auxiliar que amplia el tamaño del arreglo de listas de entry donde se almacenan las entradas.
-	 */
+	
 	
 	@SuppressWarnings("unchecked")
 	protected void redimensionar() {
-		PositionList<Entry<K,V>>[] aux=arreglo;
+		PositionList<Entry<K,V>>[] aux;
 		primo=proximo_primo(primo*2);
-		arreglo=(ListaDE<Entry<K,V>>[])new ListaDE[primo];
-		cant=0;
-		for(int i=0;i<arreglo.length;i++)
-			arreglo[i] = new ListaDE<Entry<K,V>>();
-		for (int i=0; i<aux.length;i++) {
-				for (Entry<K,V> e:aux[i]) {
-						arreglo[getHashCode(e.getKey())].addLast(e);
+		aux=(ListaDE<Entry<K,V>>[])new ListaDE[primo];
+		for(int i=0;i<aux.length;i++)
+			aux[i] = new ListaDE<Entry<K,V>>();
+		for (int i=0; i<arreglo.length;i++) {
+				for (Entry<K,V> e:arreglo[i]) {
+						aux[getHashCode(e.getKey())].addLast(e);
 				}
 		}
+		arreglo = aux;
 	}
+	
 	
 	@Override
 	public Entry<K,V> insert(K key, V value) throws InvalidKeyException {
-		int indice=checkKey(key);
 		if ((float)cant/primo>0.9)
 			redimensionar();
+		int indice=checkKey(key);
 		Entrada<K,V> entrada= new Entrada<K,V>(key,value);
 		arreglo[indice].addLast(entrada);
 		cant++;
