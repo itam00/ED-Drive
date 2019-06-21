@@ -5,7 +5,7 @@ package TDALista;
  * @author Alan, Nico y Mati
  *
  */
-@SuppressWarnings("serial")
+
 public class BoundaryViolationException extends Exception {
 
 	/**

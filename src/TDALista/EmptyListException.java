@@ -5,7 +5,7 @@ package TDALista;
  * @author Alan, Nico, Mati
  *
  */
-@SuppressWarnings("serial")
+
 public class EmptyListException extends Exception {
 
 	/**

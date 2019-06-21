@@ -28,9 +28,8 @@ import TDALista.*;
 import TDAMapeo.Entry;
 import TDAMapeo.Map;
 
-@SuppressWarnings("serial")
 /**
- * Clase encargada de la interfaz grafica u
+ * Clase encargada de la interfaz grafica.
  * @author Mati, Alan y Nico
  */
 public class ED_GUI extends JPanel implements ActionListener {

@@ -1,11 +1,16 @@
 package TDAPila;
-
+/**
+ * Clase PilaConArreglo.
+ * @author Alan, Nico y Mati.
+ *
+ * @param <E> Tipo de los elementos a almacenar en la pila.
+ */
 public class PilaConArreglo<E> implements Stack<E> {
 
 	private int t; //tamaño de la pila
 	private E[] A; //arreglo donde se almacenan los elementos
 	
-	@SuppressWarnings("unchecked")
+
 	/**
 	 * Crea una nueva pila con max como capacidad
 	 * @param max capacidad inicial de la pila

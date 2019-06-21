@@ -1,6 +1,6 @@
 package Controlador;
 
-@SuppressWarnings("serial")
+
 /**
  * Clase InvalidFileNameException, modela una excepcion que refleja si el nombre del archivo no es valido.
  * @author Nico, Alan y Mati

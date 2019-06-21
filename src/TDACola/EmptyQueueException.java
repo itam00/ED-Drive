@@ -5,7 +5,6 @@ package TDACola;
  * @author Alan, Nico y Mati
  *
  */
-@SuppressWarnings("serial")
 public class EmptyQueueException extends Exception{
 
 

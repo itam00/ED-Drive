@@ -1,7 +1,5 @@
 package TDAPila;
 
-@SuppressWarnings("serial")
-
 /**
  * Clase EmptyStackException, modela una excepcion que refleja una pila vacia.
  * @author Alan, Nico y Mati

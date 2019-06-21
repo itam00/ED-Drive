@@ -1,5 +1,11 @@
 package TDADiccionario;
-
+/**
+ * Clase Entrada.
+ * @author Alan, Nico y Mati.
+ *
+ * @param <K> tipo de las claves de la entrada.
+ * @param <V> tipo de los valores de la entrada.
+ */
 public class Entrada <K,V> implements Entry<K,V> {
 
 	protected K key; //clave 

@@ -7,12 +7,12 @@ package Controlador;
  * @param <V> Tipo de elemento a usar como valor
  */
 public class Pair<K,V> {
-	
+
 	private K key; // Clave almacenada en Pair
 	private V value; // Valor almacenado en Pair
 	
 	/**
-	 * Le asigna una clave y un valor
+	 * Le asigna una clave y un valor al par.
 	 * @param k Clave a asignar
 	 * @param val Valor a asignar
 	 */

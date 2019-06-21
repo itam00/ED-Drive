@@ -2,7 +2,13 @@ package TDAMapeo;
 
 import TDALista.ListaDE;
 import TDALista.PositionList;
-
+/**
+ * Clase MapeoHashCerrado.
+ * @author Alan,Nico y Mati.
+ *
+ * @param <K> Tipo de las claves del mapeo.
+ * @param <V> Tipo de los valores del mapeo.
+ */
 public class MapeoHashCerrado<K,V> implements Map<K,V> {
 
 	protected Entrada<K,V>[] arreglo; //Arreglo donde se almacenan entradas
@@ -11,7 +17,10 @@ public class MapeoHashCerrado<K,V> implements Map<K,V> {
 	
 	protected final Entrada<K,V> disponible= new Entrada<K,V>(null,null); // entrada constante que refleja cuando un lugar en el arreglo esta libre.
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Constructor de la clase MapeoHashCerrado.
+	 * Crea un nuevo mapeo.
+	 */
 	public MapeoHashCerrado() {
 		arreglo=  (Entrada<K,V>[]) new Entrada[5519];
 		cant=0;

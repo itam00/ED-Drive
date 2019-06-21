@@ -1,6 +1,6 @@
 package TDAArbol;
 
-@SuppressWarnings("serial")
+
 /**
  * Clase EmptyTreeException, modela una excepcion que refleja si el arbol esta vacio
  * @author Nico, Alan y Mati

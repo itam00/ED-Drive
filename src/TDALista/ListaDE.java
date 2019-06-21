@@ -1,7 +1,12 @@
 package TDALista;
 
 import java.util.Iterator;
-
+/**
+ * Clase ListaDoblementeEnlazada.
+ * @author Alan, Nico y Mati.
+ *
+ * @param <E> Tipo de dato a almacenar en la lista.
+ */
 public class ListaDE<E> implements PositionList<E> {
 
 	protected int tamaño; //Cantidad de elementos

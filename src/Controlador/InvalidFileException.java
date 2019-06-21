@@ -1,6 +1,6 @@
 package Controlador;
 
-@SuppressWarnings("serial")
+
 /**
  * Clase InvalidFileException, modela una excepcion que refleja si un archivo no es valido.
  * @author Alan, Nico y Mati

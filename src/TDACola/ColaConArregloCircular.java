@@ -1,6 +1,12 @@
 package TDACola;
+/**
+ * Clase ColaConArregloCircular.
+ * 
+ * @author Alan, Nico y Mati
+ *
+ * @param <E> Tipo de dato de los elementos a almacenar en la cola
+ */
 
-@SuppressWarnings("unchecked")
 public class ColaConArregloCircular<E> implements Queue<E> {
 
 	protected int f,t; //f: Posicion del proximo elemento a eliminar

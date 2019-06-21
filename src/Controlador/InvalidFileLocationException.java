@@ -1,6 +1,6 @@
 package Controlador;
 
-@SuppressWarnings("serial")
+
 /**
  * Clase InvalidFileLocation, modela una excepcion que refleja si la ubicacion no es valida.
  * @author Alan, Mati y Nico

@@ -1,15 +1,22 @@
 package TDAMapeo;
-
+/**
+ * Clase Entrada
+ * @author Alan, Nico y Mati.
+ *
+ * @param <K> Tipo de dato de las claves de la entrada.
+ * @param <V> Tipo de dato de los valores de la entrada.
+ */
 public class Entrada <K,V> implements Entry<K,V> {
 
 	protected K key; //clave 
 	protected V value; //valor
 	
 	/**
-	 * Crea una entrada con una clave y un valor
-	 * @param key2 clave a asignar
-	 * @param value2 valor a asignar
+	 * Crea una entrada con una clave y un valor.
+	 * @param key2 clave a asignar.
+	 * @param value2 valor a asignar.
 	 */
+	
 	public Entrada(K key2, V value2) {
 		key=key2;
 		value=value2;
