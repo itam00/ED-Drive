@@ -10,8 +10,8 @@ import java.util.Iterator;
 public class ListaDE<E> implements PositionList<E> {
 
 	protected int tamaño; //Cantidad de elementos
-	protected NodoDE<E> head;
-	protected NodoDE<E> tail;
+	protected NodoDE<E> head; //Nodo dummy primero
+	protected NodoDE<E> tail; //Nodo dummy ultimo
 	
 	/**
 	 * Crea una nueva lista

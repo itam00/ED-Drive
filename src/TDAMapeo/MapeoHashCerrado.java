@@ -107,8 +107,9 @@ public class MapeoHashCerrado<K,V> implements Map<K,V> {
 		return n;
 	}
 	
-	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Metodo auxiliar de put donde se agranda el mapeo
+	 */
 	protected void redimensionar() {
 		Entrada<K,V>[] aux= arreglo;
 		primo=proximo_primo(primo*2);
