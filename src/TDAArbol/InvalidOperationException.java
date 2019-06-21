@@ -2,7 +2,7 @@ package TDAArbol;
 
 @SuppressWarnings("serial")
 /**
- * Clase InvalidOperationException, modela una excepcion que refleja un operacion invalida
+ * Clase InvalidOperationException, modela una excepcion que refleja una operacion invalida
  * @author Mati, Nico y Alan
  *
  */

@@ -2,13 +2,13 @@ package Controlador;
 
 @SuppressWarnings("serial")
 /**
- * Clase InvalidFileException, la cual lanzara excepciones si un archivo no es valido
+ * Clase InvalidFileException, modela una excepcion que refleja si un archivo no es valido.
  * @author Alan, Nico y Mati
  */
 public class InvalidFileException extends Exception{
 	
 	/**
-	 * Llama a la clase Exception con un mensaje de error
+	 * Constructor de la clase.
 	 * @param msj Mensaje de error
 	 */
 	public InvalidFileException(String msj) {

@@ -9,7 +9,7 @@ package TDALista;
 public class InvalidPositionException extends Exception {
 
 	/**
-	 * Constructor de la clase
+	 * Constructor de la clase InvalidPositionException.
 	 * @param msg Mensaje de error.
 	 */
 	public InvalidPositionException(String msg) {

@@ -9,7 +9,7 @@ package TDADiccionario;
 public class InvalidKeyException extends Exception {
 	
 	/**
-	 * Constructor de la clase.
+	 * Constructor de la clase InvalidKeyException.
 	 * @param msg Mensaje de error
 	 */
 	public InvalidKeyException (String msg) {

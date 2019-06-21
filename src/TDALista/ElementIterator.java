@@ -29,7 +29,7 @@ public class ElementIterator<E> implements Iterator<E> {
 	}
 	
 	/**
-	 * Consulta lo cual se fija si hay un elemento seguiente
+	 * Consulta que se fija si hay un elemento seguiente
 	 * @return Verdadero si tiene siguiente falso en caso contrario
 	 */
 	public boolean hasNext() {

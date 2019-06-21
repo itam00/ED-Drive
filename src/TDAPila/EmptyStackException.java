@@ -10,7 +10,7 @@ package TDAPila;
 public class EmptyStackException extends Exception {
 	
 	/**
-	 * Constructor de la clase.
+	 * Constructor de la clase EmptyStackException.
 	 * @param msg Mensaje de error.
 	 */
 	public EmptyStackException (String msg) {

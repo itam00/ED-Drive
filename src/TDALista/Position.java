@@ -3,7 +3,7 @@ package TDALista;
 /**
  * Clase position
  * @author Alan,Nico y Mati
- * @param <E> Tido de dato del elemento
+ * @param <E> Tipo de dato del elemento
  */
 public interface Position<E> {
 	

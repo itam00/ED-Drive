@@ -9,7 +9,7 @@ package TDADiccionario;
 public class InvalidEntryException extends Exception {
 	
 	/**
-	 * Constructor de la clase
+	 * Constructor de la clase InvalidEntryException.
 	 * @param msg Mensaje de error
 	 */
 	public InvalidEntryException (String msg) {

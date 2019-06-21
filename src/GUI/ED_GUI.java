@@ -63,7 +63,7 @@ public class ED_GUI extends JPanel implements ActionListener {
 	public ED_GUI() {
 	    super(new BorderLayout()); 
 	    
-	    //cosas para la el listener
+	    //cosas para el listener
 	    toolkit = Toolkit.getDefaultToolkit();
 	    panel = new JOptionPane();
 	    panel.setFont(new Font("Century Gothic",Font.BOLD, 20) );

@@ -2,14 +2,14 @@ package Controlador;
 
 @SuppressWarnings("serial")
 /**
- * Clase InvalidFileLocation, la cual lanzara excepciones en casos de que la ubicacion no sea valida
+ * Clase InvalidFileLocation, modela una excepcion que refleja si la ubicacion no es valida.
  * @author Alan, Mati y Nico
  *
  */
 public class InvalidFileLocationException extends Exception{
 	
 	/**
-	 * Llama a la clase exception con el mensaje de error
+	 * Constructor de la clase.
 	 * @param msg Mensaje de error
 	 */
 	public InvalidFileLocationException (String msg) {

@@ -2,14 +2,14 @@ package Controlador;
 
 @SuppressWarnings("serial")
 /**
- * Clase InvalidFileNameException, la cual lanzara excepciones en casos de que el nombre del archivo no sea valido
+ * Clase InvalidFileNameException, modela una excepcion que refleja si el nombre del archivo no es valido.
  * @author Nico, Alan y Mati
  *
  */
 public class InvalidFileNameException extends Exception{
 	
 	/**
-	 * Llama a la clase exception con el mensaje de error
+	 * Constructor de la clase.
 	 * @param msj Mensaje de error
 	 */
 	public InvalidFileNameException(String msj) {

@@ -9,7 +9,7 @@ package TDALista;
 public class BoundaryViolationException extends Exception {
 
 	/**
-	 * Constructor de la clase.
+	 * Constructor de la clase BoundaryViolationException.
 	 * @param msg Mensaje de error
 	 */
 	public BoundaryViolationException(String msg) {
