@@ -21,7 +21,8 @@ import TDAMapeo.*;
  */
 public class Logica {
 	private Tree<Pair<String,PositionList<String>>> arbol;
-		
+	private int cantDirectorios;
+	private int cantArchivos;
 	/**
 	 * Parsea el contenido del archivo ubicado en a direccion dir y crea un arbol de acuerdo al contenido del archivo.
 	 * @param dir direccion donde se encuentra el archivo a parsear.
@@ -31,6 +32,8 @@ public class Logica {
 	
 	public Logica (String dir) throws InvalidFileLocationException,InvalidFileException {
 		arbol= new Arbol<Pair<String,PositionList<String>>>();
+		cantDirectorios=0;
+		cantArchivos=0;
 		Queue<String> q = readFile(dir);
 
 		boolean val = valido(q);
@@ -71,6 +74,7 @@ public class Logica {
 		try {
 			Pair<String, PositionList<String>> primerPar = new Pair<String,PositionList<String>>("",new ListaDE<String>()); // Es el directorio raiz del arbol
 			arbol.createRoot(primerPar); // Crea la raiz del arbol con "primerPar".
+			cantDirectorios++;
 			cumple = esValido(q,arbol.root()) && q.isEmpty(); // Devuelve verdadero si el archivo tiene el formato valido y la pila queda vacia (si no queda vacia la pila significa que hay mas de 1 carpeta principal.
 		}
 		catch(InvalidOperationException | EmptyTreeException e) {} // Esto no deberia pasar nunca
@@ -161,7 +165,8 @@ public class Logica {
 				q.dequeue();			
 				do {
 					nuevoPar = new Pair<String,PositionList<String>>("",new ListaDE<String>());
-					hijo = arbol.addLastChild(position, nuevoPar);									//y se le añade como padre nodo y un hijo
+					hijo = arbol.addLastChild(position, nuevoPar);	//y se le añade como padre nodo y un hijo
+					cantDirectorios++;
 					cumple = esValido(q,hijo);
 				}
 				while(!comprobar(q.front(),"</lista_sub_carpetas>") && cumple);
@@ -276,6 +281,7 @@ public class Logica {
 				if (cumple) {
 					c.dequeue();
 					l.addLast(nombre);
+					cantArchivos++;
 				}
 			}
 		}
@@ -315,6 +321,7 @@ public class Logica {
 		
 		Position<Pair<String,PositionList<String>>> directorio=buscar(direccionD); //busca el directorio y se lo asigna a "directorio".
 		directorio.element().getValue().addLast(nombreA); //agrega el archivo en el directorio.
+		cantArchivos++;
 
 	}
 	
@@ -347,6 +354,7 @@ public class Logica {
 		}
 		if (!removi)
 			throw new InvalidFileLocationException("direccion invalida");
+		cantArchivos--;
 	}
 	
 	/**
@@ -379,6 +387,7 @@ public class Logica {
 				throw new InvalidFileLocationException("La direccion no es valida en el sistema de archivos");
 			}
 		}
+		cantDirectorios++;
 	}
 	
 	/**
@@ -389,8 +398,10 @@ public class Logica {
 	
 	private void eliminarSucesores(Position<Pair<String,PositionList<String>>> padre) throws InvalidPositionException {
 		for (Position<Pair<String,PositionList<String>>> p:arbol.children(padre)) {
+			cantArchivos-=p.element().getValue().size();
 			eliminarSucesores(p);
 			arbol.removeExternalNode(p);
+			cantDirectorios--;
 		}
 	}
 	
@@ -401,14 +412,18 @@ public class Logica {
 	 */
 	
 	public void eliminarDirectorio(String dir) throws InvalidFileLocationException {
+		int archivos=0;
 		try {
 			Position<Pair<String,PositionList<String>>> eliminar=buscar(dir);
+			archivos=eliminar.element().getValue().size();
 			eliminarSucesores(eliminar);
 			arbol.removeExternalNode(eliminar);
 		}
 		catch (InvalidPositionException e) {
 			//NO DEBERIA PASAR ya que la posicion es del arbol														
 		}
+		cantDirectorios--;
+		cantArchivos-=archivos;
 	}
 	
 	/**
@@ -443,6 +458,7 @@ public class Logica {
 	private void copiarDirectorio(Position<Pair<String,PositionList<String>>> origen,Position<Pair<String,PositionList<String>>> destino) {
 		try {
 			destino=arbol.addFirstChild(destino, origen.element());
+			cantDirectorios++;
 			for(Position<Pair<String,PositionList<String>>> p:arbol.children(origen)) {
 				copiarDirectorio(p,destino);
 			}
@@ -456,15 +472,8 @@ public class Logica {
 	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
 	 */
 	
-	@SuppressWarnings("unused")
+
 	public Pair<Integer,Integer> cantidadDeDirectoriosYArchivos() {
-		int cantDirectorios=0;
-		int cantArchivos=0;
-		for (Pair<String,PositionList<String>> p: arbol) {
-			cantDirectorios++;
-			for (String arch:p.getValue())
-				cantArchivos++;
-		}
 		Pair<Integer,Integer> toreturn= new Pair<Integer,Integer>(cantDirectorios,cantArchivos);
 		return toreturn;
 	}
