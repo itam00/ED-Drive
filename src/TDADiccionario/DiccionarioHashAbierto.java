@@ -85,6 +85,11 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return toreturn;
 	}
 
+	/**
+	 * Metodo auxiliar que verifica si un numero es primo
+	 * @param n
+	 * @return
+	 */
 	private boolean es_primo(int n) {
 		boolean toreturn=true;
 		for (int i=3;i<Math.sqrt(n) && toreturn;i+=2)
@@ -92,6 +97,11 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 		return toreturn;
 	}
 	
+	/**
+	 * Metodo auxiliar que busca el proximo primo
+	 * @param n Numero a buscar el siguiente primo 
+	 * @return siguiente primo
+	 */
 	private int proximo_primo(int n) {
 		n++;
 		while (!es_primo(n))
@@ -100,7 +110,10 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	}
 	
 	
-	
+	/**
+	 * Metodo auxiliar de insert
+	 * el cual se ejecutara en caso de que se necesite agrandar el diccionario
+	 */
 	@SuppressWarnings("unchecked")
 	protected void redimensionar() {
 		PositionList<Entry<K,V>>[] aux;

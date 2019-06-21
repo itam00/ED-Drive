@@ -55,10 +55,6 @@ public class NodoDE <E> implements Position<E> {
 		anterior=n;
 	}
 	
-	/**
-	 * retorna el elemento almacenado en el nodo
-	 * @return elemento del nodo 
-	 */
 	public E element() {
 		return elem;
 	}
