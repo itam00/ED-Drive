@@ -464,12 +464,12 @@ public class Logica {
 				copiarDirectorio(p,destino);
 			}
 		} catch (InvalidPositionException e) {
-			//no deberia pasar ya que es una posicion del mismo arbol, por lo tanto es valida
+			//no deberia pasar ya que es una posicion del mismo arbol, por lo tanto es valida.
 		}
 	}
 	
 	/**
-	 * recorre todo el arbol buscando cada directorio y archivo en el.
+	 * retorna un par con la cantida de directorios y archivos.
 	 * @return Un par de enteros donde la primer componente representa la cantidad de directorios y la segunda la cantidad de archivos.
 	 */
 	
