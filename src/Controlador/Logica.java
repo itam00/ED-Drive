@@ -459,6 +459,7 @@ public class Logica {
 		try {
 			destino=arbol.addFirstChild(destino, origen.element());
 			cantDirectorios++;
+			cantArchivos+=destino.element().getValue().size();
 			for(Position<Pair<String,PositionList<String>>> p:arbol.children(origen)) {
 				copiarDirectorio(p,destino);
 			}
