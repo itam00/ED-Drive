@@ -10,8 +10,8 @@ import java.util.*;
 	 */
 
 public class ElementIterator<E> implements Iterator<E> {
-	protected Position<E> cursor;
-	protected PositionList<E> list;
+	protected Position<E> cursor; //Apunta a uno a los elementos de la lista
+	protected PositionList<E> list; //Lista a recorrer
 	
 	/**
 	 * Contructor de la clase ElementIterator el cual guarda la lista y setea el cursor en el primer elemento de la misma.
@@ -31,7 +31,7 @@ public class ElementIterator<E> implements Iterator<E> {
 	}
 	
 	/**
-	 * Consulta que se fija si hay un elemento seguiente.
+	 * Consulta que se fija si hay un elemento siguiente.
 	 * @return Verdadero si tiene siguiente falso en caso contrario.
 	 */
 	public boolean hasNext() {
