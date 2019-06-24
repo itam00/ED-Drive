@@ -480,7 +480,7 @@ public class Logica {
 	}
 	
 	/**
-	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.chivo es correcta.
+	 * Busca en el arbol el directorio pasado a traves del parametro position y lo retorna.
 	 * @param dir Directorio a buscar.
 	 * @return Una posicion que encapsula el directorio donde se buscara el que directorio que se esta buscando.
 	 * @throws InvalidFileLocationException En caso de que el directorio buscado no exista en el arbol (la direccion es incorrecta).
@@ -587,9 +587,9 @@ public class Logica {
 	}
 	
 	/**
-	 * Genera una coleccion de cadenas , las cuales contienen nombres de directorios, archivos y un separador '\'
-	 * que indica el fin d un nivel y el comienzo de otro
-	 * @return coleccion de cadenas con el listado por nivel	
+	 * Genera una coleccion de cadenas , las cuales contienen nombres de directorios, archivos y un separador '\'.
+	 * que indica el fin d un nivel y el comienzo de otro.
+	 * @return coleccion de cadenas con el listado por nivel.	
 	 */
 	
 	@SuppressWarnings("unused")
@@ -633,7 +633,7 @@ public class Logica {
 	
 	/** 
 	 * crea un listado por profundidad de los directorios del arbol, guarda la direccion de los directorios como clave
-	 * y la profundidad como valor en el mapeo
+	 * y la profundidad como valor en el mapeo.
 	 * @return mapeo donde se cuardaran las direccion es y la profundidad de dicha direccion.
 	 */
 	
@@ -646,11 +646,11 @@ public class Logica {
 		return toReturn;
 	}
 	/**
-	 * metodo auxiliar de listadoPorProfundidad()
-	 * @param dir direccion del directorio
-	 * @param prof profunidad del directorio
-	 * @param pos posicion sobre la que se encuentra 
-	 * @param m	mapeo donde se añadiran los directorios y la profunidad de cada uno
+	 * metodo auxiliar de listadoPorProfundidad().
+	 * @param dir direccion del directorio.
+	 * @param prof profunidad del directorio.
+	 * @param pos posicion sobre la que se encuentra. 
+	 * @param m	mapeo donde se añadiran los directorios y la profunidad de cada uno.
 	 */
 	private void listadoProfundidad(String dir,int prof,Position<Pair<String,PositionList<String>>> pos,Map<String,Integer> m){
 		dir+=pos.element().getKey()+" \\ ";
@@ -664,8 +664,8 @@ public class Logica {
 	}
 		
 	/**
-	 * Listado por extencion que retornar un Diccionario con las archivos
-	 * @return Diccionario con extencion como clave y nombre como valor
+	 * Listado por extencion que retornar un Diccionario con las archivos.
+	 * @return Diccionario con extencion como clave y nombre como valor.
 	 */
 	
 	public Dictionary<String,String> listadoPorExtencion(){
@@ -678,9 +678,9 @@ public class Logica {
 	}
 	
 	/**
-	 * Metodo auxiliar recursivo para Listado por extencion
-	 * @param pos Posicion con los hijos a insertar en el diccionario
-	 * @param D Diccionario con los archivos a agregar
+	 * Metodo auxiliar recursivo para Listado por extencion.
+	 * @param pos Posicion con los hijos a insertar en el diccionario.
+	 * @param D Diccionario con los archivos a agregar.
 	 */
 	
 	private void listadoExtencion(Position<Pair<String, PositionList<String>>> pos, Dictionary<String,String> D) {
@@ -695,9 +695,9 @@ public class Logica {
 	}
 	
 	/**
-	 * Metodo auxiliar para obtener la extencion de un archivo
-	 * @param c Archivo a obtener extencion
-	 * @return Extencion del archivo
+	 * Metodo auxiliar para obtener la extencion de un archivo.
+	 * @param c Archivo a obtener extencion.
+	 * @return Extencion del archivo.
 	 */
 	
 	private String obtenerExtencion(String c) {
@@ -731,7 +731,7 @@ public class Logica {
 	}
 	
 	/**
-	 * metodo auxiliar del metodo generarArbolString()
+	 * metodo auxiliar del metodo generarArbolString().
 	 * @param i	cadena que se encargara de agregar "────" a cada directorio y archivo.
 	 * @param p	posicion del arbol a partir de la cual se agregaran las carpetas y archivos al string.
 	 * @return	cadena con el estado actual del arbol.
