@@ -53,8 +53,8 @@ public class Logica {
 	}
 	
 	/**
-	 * Dice si el arbol esta vacio
-	 * @return true si el arbol esta vacio o falso en caso contrario
+	 * Dice si el arbol esta vacio.
+	 * @return true si el arbol esta vacio o falso en caso contrario.
 	 */
 	
 	public boolean isEmptyTree() {
@@ -64,9 +64,9 @@ public class Logica {
 	/**
  	* Valida si el archivo leido es valido comprobando su sintaxis y comprobando que la cola donde estaban todos los 
  	* elementos haya quedado vacia. En caso de ser valido agrega al arbol todos los directorios con sus archivos
- 	* correspondientes
- 	* @param q cola con el archivo a validar
- 	* @return Verdadero si es valido, falso en caso contrario
+ 	* correspondientes.
+ 	* @param q cola con el archivo a validar.
+ 	* @return Verdadero si es valido, falso en caso contrario.
  	*/
 	
 	private boolean valido(Queue<String> q) {
@@ -83,9 +83,9 @@ public class Logica {
 	
 	/**
 	 * Lee un archivo si es posible y retorna una cola con todos los elementos
-	 * separados por lineas y espacios que habia en un archivo 
-	 * @param dir direccion del archivo que se va a leer
-	 * @return cola con los elementos del archivo separados por espacios y saltos de linea
+	 * separados por lineas y espacios que habia en un archivo. 
+	 * @param dir direccion del archivo que se va a leer.
+	 * @return cola con los elementos del archivo separados por espacios y saltos de linea.
 	 */
 	
 	private Queue<String> readFile(String dir) throws InvalidFileLocationException{
@@ -121,10 +121,10 @@ public class Logica {
 	}
 	
 	/**
-	 * agrega el contenido de un arreglo de string a una cola 
-	 * @param c arreglo del strings
-	 * @param q cola en la que se colocaran las componentes del arreglo
-	 * @return cola con las componenetes del arreglo
+	 * agrega el contenido de un arreglo de string a una cola.
+	 * @param c arreglo del strings.
+	 * @param q cola en la que se colocaran las componentes del arreglo.
+	 * @return cola con las componenetes del arreglo.
 	 */
 	
 	private Queue<String> agregarEtiquetas(String[] c,Queue<String> q){
@@ -143,10 +143,10 @@ public class Logica {
 	/**
 	 * metodo que auxiliar quevalida si el formato de los elementos de una cola cumple
 	 * con la sintaxis. Ademas agrega el nombre del directorio y los nombres los
-	 * archivos a la lista del par a Par contenido en el TNodo. 
-	 * @param q cola con elementos a ser comprobados
-	 * @param nodo Nodo al cual se le agregara el nombre del directorio y los "archivos" al Par que este contiene
-	 * @return  true si el archivo es valido false en caso contrario
+	 * archivos a la lista del par a Par contenido en el TNodo.
+	 * @param q cola con elementos a ser comprobados.
+	 * @param nodo Nodo al cual se le agregara el nombre del directorio y los "archivos" al Par que este contiene.
+	 * @return  true si el archivo es valido false en caso contrario.
 	 */
 	
 	private boolean esValido(Queue<String> q, Position<Pair<String, PositionList<String>>> position) {
@@ -184,10 +184,10 @@ public class Logica {
 	
 	/**
 	 * comprueba que los string pasados por parametro son iguales sin importar
-	 * las tabulaciones y espacios que esten delante
-	 * @param c cadena que puede tener tabulaciones y espacios
-	 * @param resultado	cadena a comparar
-	 * @return si las cadenas son iguales verdadero caso contrario falso
+	 * las tabulaciones y espacios que esten delante.
+	 * @param c cadena que puede tener tabulaciones y espacios.
+	 * @param resultado	cadena a comparar.
+	 * @return si las cadenas son iguales verdadero caso contrario falso.
 	 */
 	
 	private boolean comprobar(String c,String resultado) {
@@ -199,8 +199,8 @@ public class Logica {
 	/**
 	 * verifica si la sintaxis del nombre de una carpeta es correcta
 	 * y agrega el nombre en la cola "nom" con una N al principio.
-	 * @param c nombre de la carpeta (puede contener o no tabulaciones)
-	 * @return verdadero si la sintaxis es correcta falso en caso contrario
+	 * @param c nombre de la carpeta (puede contener o no tabulaciones).
+	 * @return verdadero si la sintaxis es correcta falso en caso contrario.
 	 */
 	
 	private boolean esNombreValido(String c, Pair<String, PositionList<String>> pair) {
@@ -232,10 +232,10 @@ public class Logica {
 	}
 
 	/**
-	 * verifica si los elementos de la cola q respetan la sintaxis de los archivos
+	 * verifica si los elementos de la cola q respetan la sintaxis de los archivos.
 	 * y agrega el nombre del archivo en la cola "nom" con una A al principio.
-	 * desencola un archivo si y solo si este verifica la sintaxis
-	 * @param c cola en la que se verifica la sintaxis de sus elementos
+	 * desencola un archivo si y solo si este verifica la sintaxis.
+	 * @param c cola en la que se verifica la sintaxis de sus elementos.
 	 * @param l lista donde se guardaran los nombres de los archivos del directorio donde se encuentran.
 	 */
 	
@@ -326,8 +326,8 @@ public class Logica {
 	}
 	
 	/**
-	 * elimina el archivo que se encuentra en el directorio ubicado en la direccion direccionD
-	 * @param direccionD direccion donde se encuentra el directorio que contiene el archivo
+	 * elimina el archivo que se encuentra en el directorio ubicado en la direccion direccionD.
+	 * @param direccionD direccion donde se encuentra el directorio que contiene el archivo.
 	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
 	 */
 	
@@ -358,9 +358,9 @@ public class Logica {
 	}
 	
 	/**
-	 * agrega un subdirectorio del directorio que se encuentra en dir
-	 * @param dir direccion donde se encuentra el directorio donde se agregara un nuevo subdirectorio
-	 * @param nombreD2 nombre del directorio que se agrega
+	 * agrega un subdirectorio del directorio que se encuentra en dir.
+	 * @param dir direccion donde se encuentra el directorio donde se agregara un nuevo subdirectorio.
+	 * @param nombreD2 nombre del directorio que se agrega.
 	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
 	 */
 	
@@ -375,7 +375,7 @@ public class Logica {
 				try {
 					arbol.createRoot(new Pair<String,PositionList<String>>(nombreD2,new ListaDE<String>()));
 				}
-				catch (InvalidOperationException e){} // No deveria suceder nunca
+				catch (InvalidOperationException e){} // No deberia suceder nunca
 				//si el arbol estaba vacio entonces se debe crear la raiz con un nuevo par
 		}
 		else {
@@ -406,7 +406,7 @@ public class Logica {
 	}
 	
 	/**
-	 * Elimina del arbol el Directorio correspondiente a la direccionD1
+	 * Elimina del arbol el Directorio correspondiente a la direccionD1.
 	 * @param direccionD1 String que indica la direccion donde se encuentra el Directorio que se quiere eliminar.
 	 * @throws InvalidFileLocationException en caso de que la direccion no sea valida.
 	 */
@@ -420,14 +420,14 @@ public class Logica {
 			arbol.removeExternalNode(eliminar);
 		}
 		catch (InvalidPositionException e) {
-			//NO DEBERIA PASAR ya que la posicion es del arbol														
+			//no deberia pasar ya que la posicion es del arbol														
 		}
 		cantDirectorios--;
 		cantArchivos-=archivos;
 	}
 	
 	/**
-	 * Mueve un directorio y otodo su contenido a una direccion pasada por parametro
+	 * Mueve un directorio y todo su contenido a una direccion pasada por parametro.
 	 * @param dir1 direccion donde se encuentra el directorio que va a ser movido.
 	 * @param dir2 direccion donde se colocara el directorio a mover.
 	 * @throws InvalidFileLocationException en caso de que dir1 o dir 2 no sean validas, y en caso de que la direccion destino sea igual a origen o sea sucesor de origen.
