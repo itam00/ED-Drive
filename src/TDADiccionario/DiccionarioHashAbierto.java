@@ -16,10 +16,10 @@ public class DiccionarioHashAbierto<K,V> implements Dictionary<K,V> {
 	protected int cant; // Cantidad de elementos
 	protected int primo; //Cantidad maxima de elementos del diccionario
 	
-	@SuppressWarnings("unchecked")
 	/**
 	 * Crea un nuevo diccionario
 	 */
+	@SuppressWarnings("unchecked")
 	public DiccionarioHashAbierto() {
 		primo=3;
 		cant=0;
